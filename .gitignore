@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+
+# Database & Storage
+backend/petcare.db
+*.sqlite3
+*.db
+
+# Environment variables & secrets
+.env
+.env.local
+.env.*.local
+
+# Build & Output
+frontend/dist/
+frontend/build/
+.cache/
+
+# IDE & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
