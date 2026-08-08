@@ -61,7 +61,7 @@ def update_user(
     if data.phone is not None:
         user.phone = data.phone
     if data.avatar_url is not None:
-        user.avatar_url = data.avatar_url
+        user.avatar_url = data.avatar_url if data.avatar_url.strip() else None
     if data.password is not None and data.password.strip():
         user.password_hash = get_password_hash(data.password)
     if data.is_active is not None and current_user.role == UserRole.ADMIN:

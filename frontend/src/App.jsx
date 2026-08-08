@@ -16,6 +16,9 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 
+// Common User Profile Page
+import UserProfilePage from './pages/UserProfilePage';
+
 // Customer Pages
 import CustomerDashboard from './pages/customer/CustomerDashboard';
 import MyPetsPage from './pages/customer/MyPetsPage';
@@ -80,6 +83,7 @@ function App() {
               <Route path="invoices/:id" element={<InvoiceViewPage />} />
               <Route path="notifications" element={<NotificationsPage />} />
               <Route path="reviews" element={<ReviewsPage />} />
+              <Route path="profile" element={<UserProfilePage />} />
             </Route>
 
             {/* Staff Routes */}
@@ -93,6 +97,7 @@ function App() {
               <Route path="medical-records" element={<StaffMedicalRecordsPage />} />
               <Route path="vaccinations" element={<StaffVaccinationsPage />} />
               <Route path="availability" element={<StaffAvailabilityPage />} />
+              <Route path="profile" element={<UserProfilePage />} />
             </Route>
 
             {/* Admin Routes */}
@@ -111,6 +116,7 @@ function App() {
               <Route path="reports" element={<AdminReportsPage />} />
               <Route path="audit-logs" element={<AdminAuditLogsPage />} />
               <Route path="settings" element={<AdminSettingsPage />} />
+              <Route path="profile" element={<UserProfilePage />} />
             </Route>
           </Routes>
         </ToastProvider>

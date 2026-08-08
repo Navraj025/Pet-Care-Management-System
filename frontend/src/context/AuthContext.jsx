@@ -34,11 +34,20 @@ export const AuthProvider = ({ children }) => {
       id: data.user_id,
       email: data.email,
       full_name: data.full_name,
-      role: data.role
+      role: data.role,
+      avatar_url: data.avatar_url || null
     };
     localStorage.setItem('user', JSON.stringify(userInfo));
     setToken(data.access_token);
     setUser(userInfo);
+  };
+
+  const updateUserProfile = (updatedUser) => {
+    setUser((prev) => {
+      const merged = { ...prev, ...updatedUser };
+      localStorage.setItem('user', JSON.stringify(merged));
+      return merged;
+    });
   };
 
   const logout = () => {
@@ -61,8 +70,21 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const getProfilePath = (role) => {
+    switch (role) {
+      case 'ADMIN':
+        return '/admin/profile';
+      case 'STAFF':
+        return '/staff/profile';
+      case 'CUSTOMER':
+        return '/customer/profile';
+      default:
+        return '/';
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, logout, getDashboardPath }}>
+    <AuthContext.Provider value={{ user, token, loading, login, logout, updateUserProfile, getDashboardPath, getProfilePath }}>
       {children}
     </AuthContext.Provider>
   );
