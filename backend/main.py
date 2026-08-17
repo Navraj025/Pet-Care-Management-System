@@ -65,6 +65,17 @@ app.include_router(audit_logs.router, prefix="/api")
 app.include_router(settings.router, prefix="/api")
 
 
+@app.get("/")
+def root():
+    return {
+        "status": "online",
+        "service": "Smart Pet Care SaaS Backend API",
+        "version": "1.0.0",
+        "documentation": "/docs",
+        "health_check": "/api/health"
+    }
+
+
 @app.get("/api/health")
 def health_check():
     return {
