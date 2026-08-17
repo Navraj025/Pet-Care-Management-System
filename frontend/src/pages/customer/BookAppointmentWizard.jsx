@@ -7,6 +7,7 @@ import {
 import API from '../../services/api';
 import { useToast } from '../../context/ToastContext';
 import MockPaymentModal from '../../components/MockPaymentModal';
+import PetAvatar from '../../components/PetAvatar';
 
 const BookAppointmentWizard = () => {
   const [step, setStep] = useState(1);
@@ -161,9 +162,7 @@ const BookAppointmentWizard = () => {
                   }`}
                 >
                   <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center text-2xl font-bold">
-                      {pet.species === 'Dog' ? '🐶' : pet.species === 'Cat' ? '🐱' : '🐰'}
-                    </div>
+                    <PetAvatar pet={pet} size="sm" className="rounded-xl" />
                     <div>
                       <h4 className="font-bold text-slate-900 text-base">{pet.name}</h4>
                       <p className="text-xs text-slate-400">{pet.breed || pet.species} • {pet.gender}</p>

@@ -9,9 +9,10 @@ from app.models import (
 )
 from app.auth.security import get_password_hash
 
-def seed_database():
+def seed_database(drop_existing: bool = True):
     print("[INFO] Initializing Database Seeding...")
-    Base.metadata.drop_all(bind=engine)
+    if drop_existing:
+        Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
 
     db = SessionLocal()

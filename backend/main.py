@@ -1,6 +1,8 @@
 import os
+from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.database import Base, engine
@@ -13,6 +15,18 @@ from app.api import (
 
 # Initialize database tables on app start
 Base.metadata.create_all(bind=engine)
+
+# Auto-seed initial demo data if database is brand new & empty
+try:
+    from app.database import SessionLocal
+    from app.models.user import User
+    with SessionLocal() as db:
+        if db.query(User).count() == 0:
+            print("[INFO] Empty database detected. Auto-seeding initial demo dataset...")
+            from seed import seed_database
+            seed_database(drop_existing=False)
+except Exception as e:
+    print(f"[INFO] Database status check complete: {e}")
 
 app = FastAPI(
     title="Smart Pet Care Appointment & Customer Management System",
@@ -60,6 +74,30 @@ def health_check():
     }
 
 
+frontend_dist = Path(__file__).resolve().parent.parent / "frontend" / "dist"
+uploads_dir = Path(__file__).resolve().parent / "uploads"
+uploads_dir.mkdir(parents=True, exist_ok=True)
+app.mount("/uploads", StaticFiles(directory=uploads_dir), name="uploads")
+
+if frontend_dist.exists():
+    app.mount(
+        "/assets",
+        StaticFiles(directory=frontend_dist / "assets"),
+        name="frontend-assets",
+    )
+
+
+    @app.get("/{full_path:path}", include_in_schema=False)
+    def serve_frontend(full_path: str):
+        return FileResponse(frontend_dist / "index.html")
+
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+
+    host = "127.0.0.1"
+    port = 8000
+    print("\nSmart Pet Care is starting...")
+    print(f"Open the app: http://{host}:{port}")
+    print(f"API docs:     http://{host}:{port}/docs\n")
+    uvicorn.run(app, host=host, port=port)

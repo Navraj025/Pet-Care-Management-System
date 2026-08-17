@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Dog, Plus, Search, ChevronRight, AlertCircle, Trash2 } from 'lucide-react';
+import { Dog, Plus, Search, ChevronRight, Trash2, ImagePlus } from 'lucide-react';
 import API from '../../services/api';
 import { useToast } from '../../context/ToastContext';
+import PetAvatar from '../../components/PetAvatar';
 
 const MyPetsPage = () => {
   const [pets, setPets] = useState([]);
@@ -21,6 +22,7 @@ const MyPetsPage = () => {
   const [microchip, setMicrochip] = useState('');
   const [allergies, setAllergies] = useState('');
   const [conditions, setConditions] = useState('');
+  const [avatarFile, setAvatarFile] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
   const fetchPets = async () => {
@@ -43,7 +45,7 @@ const MyPetsPage = () => {
     setSubmitting(true);
 
     try {
-      await API.post('/pets', {
+      const res = await API.post('/pets', {
         name,
         species,
         breed: breed || null,
@@ -54,6 +56,15 @@ const MyPetsPage = () => {
         allergies: allergies || null,
         existing_conditions: conditions || null
       });
+
+      if (avatarFile) {
+        const formData = new FormData();
+        formData.append('file', avatarFile);
+        await API.post(`/pets/${res.data.id}/avatar`, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+      }
+
       showSuccess(`Pet '${name}' registered successfully!`);
       setShowAddModal(false);
       // Reset form
@@ -63,6 +74,7 @@ const MyPetsPage = () => {
       setMicrochip('');
       setAllergies('');
       setConditions('');
+      setAvatarFile(null);
       fetchPets();
     } catch (err) {
       console.error("Failed to add pet:", err);
@@ -144,9 +156,7 @@ const MyPetsPage = () => {
             >
               <div className="flex justify-between items-start">
                 <div className="flex items-center space-x-3">
-                  <div className="w-14 h-14 rounded-2xl bg-teal-100 text-teal-900 flex items-center justify-center text-2xl font-bold">
-                    {pet.species === 'Dog' ? '🐶' : pet.species === 'Cat' ? '🐱' : '🐰'}
-                  </div>
+                  <PetAvatar pet={pet} />
                   <div>
                     <h3 className="font-extrabold text-slate-900 text-lg">{pet.name}</h3>
                     <p className="text-xs text-slate-400 font-medium">
@@ -310,6 +320,20 @@ const MyPetsPage = () => {
                   placeholder="Sensitive stomach, arthritis..."
                   className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
                 />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Pet Profile Photo</label>
+                <label className="flex items-center justify-center gap-2 w-full px-3 py-3 text-xs font-bold text-teal-700 border border-dashed border-teal-300 bg-teal-50 rounded-xl cursor-pointer hover:bg-teal-100 transition-colors">
+                  <ImagePlus className="w-4 h-4" />
+                  <span>{avatarFile ? avatarFile.name : 'Upload JPG, PNG, or WEBP'}</span>
+                  <input
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp"
+                    className="hidden"
+                    onChange={(e) => setAvatarFile(e.target.files?.[0] || null)}
+                  />
+                </label>
               </div>
 
               <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200">

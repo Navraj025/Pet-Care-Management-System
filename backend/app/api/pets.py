@@ -1,5 +1,9 @@
+import shutil
+from pathlib import Path
 from typing import List, Optional
-from fastapi import APIRouter, Depends, HTTPException, Query
+from uuid import uuid4
+
+from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -11,6 +15,8 @@ from app.auth.deps import get_current_user, require_roles
 from app.services.audit_service import log_audit_action
 
 router = APIRouter(prefix="/pets", tags=["Pets"])
+UPLOAD_DIR = Path(__file__).resolve().parents[2] / "uploads" / "pets"
+ALLOWED_IMAGE_TYPES = {"image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp"}
 
 
 @router.get("", response_model=List[PetOut])
@@ -113,6 +119,38 @@ def update_pet(
     for field, val in data.model_dump(exclude_unset=True).items():
         setattr(pet, field, val)
 
+    db.commit()
+    db.refresh(pet)
+    return pet
+
+
+@router.post("/{pet_id}/avatar", response_model=PetOut)
+def upload_pet_avatar(
+    pet_id: int,
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    pet = db.query(Pet).filter(Pet.id == pet_id).first()
+    if not pet:
+        raise HTTPException(status_code=404, detail="Pet not found")
+
+    if current_user.role == UserRole.CUSTOMER:
+        if not current_user.customer_profile or pet.customer_id != current_user.customer_profile.id:
+            raise HTTPException(status_code=403, detail="Not authorized to edit this pet")
+
+    extension = ALLOWED_IMAGE_TYPES.get(file.content_type)
+    if not extension:
+        raise HTTPException(status_code=400, detail="Please upload a JPG, PNG, or WEBP image")
+
+    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    filename = f"pet-{pet.id}-{uuid4().hex}{extension}"
+    file_path = UPLOAD_DIR / filename
+
+    with file_path.open("wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    pet.avatar_url = f"/uploads/pets/{filename}"
     db.commit()
     db.refresh(pet)
     return pet

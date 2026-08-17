@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import API from '../../services/api';
 import StatusBadge from '../../components/StatusBadge';
+import PetAvatar from '../../components/PetAvatar';
 import { useAuth } from '../../context/AuthContext';
 
 const CustomerDashboard = () => {
@@ -134,9 +135,7 @@ const CustomerDashboard = () => {
               <div key={pet.id} className="bg-white p-5 rounded-3xl border border-slate-200 shadow-xs space-y-3 hover:shadow-md transition-all">
                 <div className="flex justify-between items-start">
                   <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 rounded-2xl bg-teal-100 text-teal-800 flex items-center justify-center font-bold text-lg">
-                      {pet.species === 'Dog' ? '🐶' : pet.species === 'Cat' ? '🐱' : '🐰'}
-                    </div>
+                    <PetAvatar pet={pet} size="sm" />
                     <div>
                       <h4 className="font-bold text-slate-900 text-base">{pet.name}</h4>
                       <p className="text-xs text-slate-400">{pet.breed || pet.species} • {pet.gender}</p>

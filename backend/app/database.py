@@ -1,10 +1,16 @@
 import os
+from pathlib import Path
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 # Default to SQLite for seamless local execution; configurable via DATABASE_URL
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./petcare.db")
+DEFAULT_DB_PATH = Path(__file__).resolve().parents[1] / "petcare.db"
+DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{DEFAULT_DB_PATH.as_posix()}")
+
+# Standardize postgres:// to postgresql:// for SQLAlchemy compatibility
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
 connect_args = {}
 if DATABASE_URL.startswith("sqlite"):

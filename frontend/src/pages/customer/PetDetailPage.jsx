@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
-  Dog, FileText, Syringe, Calendar, Pill, Clock, AlertTriangle, ArrowLeft, ShieldCheck
+  ArrowLeft, Camera
 } from 'lucide-react';
 import API from '../../services/api';
 import StatusBadge from '../../components/StatusBadge';
+import PetAvatar from '../../components/PetAvatar';
+import { useToast } from '../../context/ToastContext';
 
 const PetDetailPage = () => {
   const { id } = useParams();
@@ -14,6 +16,8 @@ const PetDetailPage = () => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('Overview');
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const { showSuccess, showError } = useToast();
 
   useEffect(() => {
     const fetchPetData = async () => {
@@ -36,6 +40,25 @@ const PetDetailPage = () => {
     };
     fetchPetData();
   }, [id]);
+
+  const handleAvatarUpload = async (file) => {
+    if (!file) return;
+    setUploadingAvatar(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await API.post(`/pets/${id}/avatar`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      setPet(res.data);
+      showSuccess('Pet photo updated');
+    } catch (err) {
+      console.error('Failed to upload pet photo:', err);
+      showError(err.response?.data?.detail || 'Failed to upload pet photo');
+    } finally {
+      setUploadingAvatar(false);
+    }
+  };
 
   if (loading) {
     return <div className="py-20 text-center text-slate-500 text-sm">Loading pet healthcare records...</div>;
@@ -65,8 +88,18 @@ const PetDetailPage = () => {
       {/* Pet Header Card */}
       <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-xs flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div className="flex items-center space-x-4">
-          <div className="w-20 h-20 rounded-3xl bg-teal-100 text-teal-900 flex items-center justify-center text-4xl shadow-inner font-bold">
-            {pet.species === 'Dog' ? '🐶' : pet.species === 'Cat' ? '🐱' : '🐰'}
+          <div className="relative">
+            <PetAvatar pet={pet} size="lg" />
+            <label className="absolute -right-1 -bottom-1 w-8 h-8 rounded-full bg-teal-600 hover:bg-teal-700 text-white flex items-center justify-center shadow-md cursor-pointer transition-colors">
+              <Camera className="w-4 h-4" />
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                className="hidden"
+                disabled={uploadingAvatar}
+                onChange={(e) => handleAvatarUpload(e.target.files?.[0])}
+              />
+            </label>
           </div>
           <div>
             <div className="flex items-center space-x-3">

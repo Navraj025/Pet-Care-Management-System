@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Dog, Search, FileText, ChevronRight } from 'lucide-react';
 import API from '../../services/api';
+import PetAvatar from '../../components/PetAvatar';
 
 const StaffPetsPage = () => {
   const [pets, setPets] = useState([]);
@@ -51,9 +52,7 @@ const StaffPetsPage = () => {
           {filteredPets.map((pet) => (
             <div key={pet.id} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-4">
               <div className="flex items-center space-x-3">
-                <div className="w-14 h-14 rounded-2xl bg-teal-100 text-teal-800 flex items-center justify-center text-2xl font-bold">
-                  {pet.species === 'Dog' ? '🐶' : pet.species === 'Cat' ? '🐱' : '🐰'}
-                </div>
+                <PetAvatar pet={pet} />
                 <div>
                   <h3 className="font-extrabold text-slate-900 text-base">{pet.name}</h3>
                   <p className="text-xs text-slate-400">{pet.breed || pet.species} • {pet.gender}</p>
