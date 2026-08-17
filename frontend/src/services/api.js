@@ -1,7 +1,12 @@
 import axios from 'axios';
 
+const rawBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://petcare-backend-rztw.onrender.com';
+const baseURL = rawBaseUrl.endsWith('/api')
+  ? rawBaseUrl
+  : `${rawBaseUrl.replace(/\/+$/, '')}/api`;
+
 const API = axios.create({
-  baseURL: '/api',
+  baseURL,
   headers: {
     'Content-Type': 'application/json',
   },
