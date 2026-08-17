@@ -1,80 +1,40 @@
-# 🚀 Render Deployment Guide for Smart Pet Care Backend & PostgreSQL
+# 🎁 100% FREE Render Deployment Guide (Zero Payment / Credit Card Required)
 
-This guide provides step-by-step instructions to deploy the FastAPI backend and PostgreSQL database on Render.
+Render allows you to host both your **FastAPI Backend API** and your **Database** for **100% FREE** with **NO Credit Card / Payment Required**.
 
 ---
 
-## ⚡ Method 1: 1-Click Deployment using Render Blueprint (Recommended)
+## ⚡ Option 1: 100% FREE 1-Click Deployment on Render (Recommended)
 
-Since the project includes a `render.yaml` Blueprint file, Render can provision the PostgreSQL database and backend web service automatically.
+This option uses Render's **Free Web Service Tier** + auto-initialized SQLite database. It requires **ZERO credit card** and **ZERO payment details**.
 
-1. **Push your code to GitHub / GitLab**.
-2. Go to your [Render Dashboard](https://dashboard.render.com).
+1. Push your updated code to GitHub.
+2. Go to [Render Dashboard](https://dashboard.render.com).
 3. Click **New +** ➔ **Blueprint**.
-4. Connect your GitHub repository.
-5. Render will automatically detect `render.yaml`, set up the `petcare-db` database and `petcare-backend` web service, and wire the `DATABASE_URL` environment variable automatically.
+4. Connect your GitHub repository (`Navraj025/Pet-Care-Management-System`).
+5. Render will detect `render.yaml` and select the **Free Plan** (`plan: free`).
 6. Click **Apply**.
+7. Your app will build, launch, and **automatically seed all 15 Users, 18 Pets, 19 Appointments, Invoices, and Medical Records** on start!
 
 ---
 
-## 🛠️ Method 2: Manual Deployment on Render
+## 🗄️ Option 2: 100% FREE Cloud PostgreSQL Database (No Credit Card)
 
-If you prefer setting up services manually:
+If you want a **Cloud PostgreSQL Database** for free without entering payment details on Render:
 
-### Step 1: Create the PostgreSQL Database on Render
-1. Go to [Render Dashboard](https://dashboard.render.com) ➔ Click **New +** ➔ **PostgreSQL**.
-2. Set the following details:
-   - **Name**: `petcare-db`
-   - **Database**: `petcare`
-   - **User**: `petcare_user`
-   - **Region**: Choose the closest region to you (e.g. Singapore or Frankfurt)
-   - **Plan**: Free / Standard
-3. Click **Create Database**.
-4. Once created, copy the **Internal Database URL** (e.g. `postgres://petcare_user:password@dpg-xxxx-a.singapore-postgres.render.com/petcare`).
-
-### Step 2: Create the Web Service on Render
-1. Click **New +** ➔ **Web Service**.
-2. Connect your GitHub repository.
-3. Configure the service settings:
-   - **Name**: `petcare-backend`
-   - **Root Directory**: `backend`
-   - **Environment**: `Python 3`
-   - **Build Command**: `pip install -r requirements.txt`
-   - **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
-
-### Step 3: Set Environment Variables on Render
-Under the **Environment** tab of your Web Service, add the following key-value pairs:
-
-| Environment Variable | Value | Description |
-| :--- | :--- | :--- |
-| `DATABASE_URL` | *(Paste Internal Database URL)* | Connects FastAPI to Render PostgreSQL |
-| `JWT_SECRET` | `super-secret-key-petcare-btech-2026` | Used to sign & verify JWT login tokens |
-| `PYTHON_VERSION` | `3.11.0` | Recommended Python version |
+1. Create a free account on **[Neon.tech](https://neon.tech)** or **[Supabase.com](https://supabase.com)** (100% free forever, no credit card needed).
+2. Create a new database project and copy the PostgreSQL connection string (`DATABASE_URL`).
+3. Go to your Render Web Service Dashboard ➔ **Environment**.
+4. Add Environment Variable:
+   * **Key**: `DATABASE_URL`
+   * **Value**: *(Paste your Neon/Supabase PostgreSQL connection string)*
+5. Click **Save Changes**. Your Render app will re-deploy and auto-seed onto your free cloud PostgreSQL database!
 
 ---
 
-## ⚙️ Automatic Seeding & DB Initialization
+## 🔑 Login Credentials
 
-The backend application is configured to **automatically seed** initial demo data when connected to a fresh PostgreSQL database:
-* When the app starts up on Render, `main.py` detects if the `users` table is empty.
-* If empty, it automatically executes `seed.py` without dropping existing tables, inserting all **15 Users, 18 Pets, 19 Appointments, 8 Services, Invoices, and Medical Records**.
-* Subsequent server restarts will preserve your existing database without re-seeding.
-
----
-
-## 🔑 Demo Account Credentials
-
-Once deployed, log into your backend API or React frontend with:
-
+Once your deployment is Live, test login with:
 * **Admin**: `admin@petcare.com` / `password123`
 * **Veterinarian**: `dr.smith@petcare.com` / `password123`
 * **Customer**: `customer@petcare.com` / `password123`
-
----
-
-## 🧪 Verification
-
-After deployment finishes on Render:
-1. Open `https://<your-render-app>.onrender.com/docs` to test Swagger UI docs.
-2. Test `POST /api/auth/login` using `admin@petcare.com` and `password123`.
-3. Check `GET /api/health` to confirm the service status is `online`.
