@@ -64,29 +64,29 @@ const InvoiceViewPage = () => {
       </div>
 
       {/* Printable Invoice Container */}
-      <div id="printable-invoice" className="bg-white dark:bg-slate-900 p-8 sm:p-12 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-lg space-y-8 text-slate-800 dark:text-slate-200 transition-colors">
+      <div id="printable-invoice" className="bg-white dark:bg-slate-900 p-4 sm:p-8 lg:p-12 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-lg space-y-6 sm:space-y-8 text-slate-800 dark:text-slate-200 transition-colors">
         {/* Header */}
-        <div className="flex justify-between items-start border-b border-slate-200 dark:border-slate-800 pb-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start border-b border-slate-200 dark:border-slate-800 pb-6 gap-4">
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-teal-700 text-white rounded-2xl flex items-center justify-center font-bold">
-              <Heart className="w-7 h-7 fill-current text-teal-100" />
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-teal-700 text-white rounded-2xl flex items-center justify-center font-bold shrink-0">
+              <Heart className="w-6 h-6 sm:w-7 sm:h-7 fill-current text-teal-100" />
             </div>
             <div>
-              <h2 className="font-extrabold text-xl tracking-tight text-slate-900 dark:text-slate-100">Smart Pet Care & Vet Center</h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400">124 Healthcare Boulevard, Suite 400, Tech City, MH</p>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Phone: +91 98765 43210 | contact@smartpetcare.com</p>
+              <h2 className="font-extrabold text-base sm:text-xl tracking-tight text-slate-900 dark:text-slate-100">Smart Pet Care & Vet Center</h2>
+              <p className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400">124 Healthcare Boulevard, Suite 400, Tech City, MH</p>
+              <p className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400">Phone: +91 98765 43210 | contact@smartpetcare.com</p>
             </div>
           </div>
 
-          <div className="text-right">
-            <h3 className="font-black text-2xl text-teal-800 dark:text-teal-400 tracking-tight">OFFICIAL INVOICE</h3>
-            <p className="text-xs font-mono font-bold text-slate-700 dark:text-slate-300 mt-1">{invoice.invoice_number}</p>
-            <p className="text-xs text-slate-400">Issue Date: {invoice.issue_date}</p>
+          <div className="text-left sm:text-right">
+            <h3 className="font-black text-xl sm:text-2xl text-teal-800 dark:text-teal-400 tracking-tight">OFFICIAL INVOICE</h3>
+            <p className="text-xs font-mono font-bold text-slate-700 dark:text-slate-300 mt-0.5 sm:mt-1">{invoice.invoice_number}</p>
+            <p className="text-[11px] sm:text-xs text-slate-400">Issue Date: {invoice.issue_date}</p>
           </div>
         </div>
 
         {/* Info Grid */}
-        <div className="grid grid-cols-2 gap-6 text-xs bg-slate-50 dark:bg-slate-800/60 p-6 rounded-2xl border border-slate-100 dark:border-slate-700">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 text-xs bg-slate-50 dark:bg-slate-800/60 p-4 sm:p-6 rounded-2xl border border-slate-100 dark:border-slate-700">
           <div>
             <span className="font-bold text-slate-400 uppercase tracking-wider block text-[10px] mb-1">Customer & Owner</span>
             <p className="font-bold text-slate-900 dark:text-slate-100 text-sm">{appt?.customer?.user?.full_name}</p>
@@ -105,33 +105,35 @@ const InvoiceViewPage = () => {
         {/* Appointment Breakdown Table */}
         <div className="space-y-3">
           <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm uppercase tracking-wider">Line Items</h4>
-          <table className="w-full text-left text-xs border-collapse">
-            <thead>
-              <tr className="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700">
-                <th className="p-3">Description</th>
-                <th className="p-3">Category</th>
-                <th className="p-3">Attending Vet</th>
-                <th className="p-3 text-right">Amount (Price at booking)</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-              {lineItems.map((item) => (
-                <tr key={item.id}>
-                  <td className="p-3 font-bold text-slate-900 dark:text-slate-100">{item.name}</td>
-                  <td className="p-3 text-slate-500 dark:text-slate-400">{item.category}</td>
-                  <td className="p-3 text-slate-600 dark:text-slate-300">{appt?.staff?.user?.full_name}</td>
-                  <td className="p-3 text-right font-bold text-slate-900 dark:text-slate-100">
-                    {formatCurrency(item.price)}
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs border-collapse min-w-[460px]">
+              <thead>
+                <tr className="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700">
+                  <th className="p-3">Description</th>
+                  <th className="p-3">Category</th>
+                  <th className="p-3">Attending Vet</th>
+                  <th className="p-3 text-right">Amount (Price at booking)</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                {lineItems.map((item) => (
+                  <tr key={item.id}>
+                    <td className="p-3 font-bold text-slate-900 dark:text-slate-100">{item.name}</td>
+                    <td className="p-3 text-slate-500 dark:text-slate-400">{item.category}</td>
+                    <td className="p-3 text-slate-600 dark:text-slate-300">{appt?.staff?.user?.full_name}</td>
+                    <td className="p-3 text-right font-bold text-slate-900 dark:text-slate-100">
+                      {formatCurrency(item.price)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* Summary Calculations */}
         <div className="flex justify-end pt-4 border-t border-slate-200 dark:border-slate-700 text-xs">
-          <div className="w-64 space-y-2">
+          <div className="w-full sm:w-64 space-y-2">
             <div className="flex justify-between text-slate-600 dark:text-slate-400">
               <span>Subtotal Fee</span>
               <span>{formatCurrency(payment?.amount || 0)}</span>

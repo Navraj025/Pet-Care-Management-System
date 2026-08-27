@@ -87,15 +87,15 @@ const StaffAvailabilityPage = () => {
   }
 
   return (
-    <div className="space-y-8 max-w-4xl mx-auto">
+    <div className="space-y-6 sm:space-y-8 max-w-4xl mx-auto">
       <div>
-        <h2 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">Shift Availability Management</h2>
+        <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100">Shift Availability Management</h2>
         <p className="text-xs text-slate-500 dark:text-slate-400">Configure your shift hours, break periods, and custom leave days for slot generation</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
         {/* Working Hours Form */}
-        <div className="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
+        <div className="bg-white dark:bg-slate-900 p-5 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
           <h3 className="font-bold text-base text-slate-900 dark:text-slate-100 flex items-center space-x-2">
             <Clock className="w-5 h-5 text-teal-600 dark:text-teal-400" />
             <span>Regular Shift Hours</span>

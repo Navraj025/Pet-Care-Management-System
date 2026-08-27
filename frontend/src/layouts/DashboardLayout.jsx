@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthContext';
 
 const DashboardLayout = ({ allowedRoles, title }) => {
   const { user, loading } = useAuth();
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   if (loading) {
     return (
@@ -28,11 +29,11 @@ const DashboardLayout = ({ allowedRoles, title }) => {
   }
 
   return (
-    <div className="min-h-screen flex bg-slate-50 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200">
-      <Sidebar />
+    <div className="min-h-screen flex bg-slate-50 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200 relative overflow-x-hidden">
+      <Sidebar mobileOpen={mobileSidebarOpen} setMobileOpen={setMobileSidebarOpen} />
       <div className="flex-1 flex flex-col min-w-0">
-        <Header title={title} />
-        <main className="flex-1 p-6 lg:p-8 overflow-y-auto">
+        <Header title={title} onToggleSidebar={() => setMobileSidebarOpen(!mobileSidebarOpen)} />
+        <main className="flex-1 p-3 sm:p-6 lg:p-8 overflow-y-auto">
           <Outlet />
         </main>
       </div>

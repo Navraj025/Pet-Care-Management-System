@@ -54,13 +54,13 @@ const AdminSettingsPage = () => {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <div>
-        <h2 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">System Configuration Settings</h2>
+        <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100">System Configuration Settings</h2>
         <p className="text-xs text-slate-500 dark:text-slate-400">Global business rules, clinic profile details, tax percentages, and policies</p>
       </div>
 
-      <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
+      <div className="bg-white dark:bg-slate-900 p-5 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
         <form onSubmit={handleSave} className="space-y-4 text-xs">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Clinic Center Name</label>
               <input
@@ -81,7 +81,7 @@ const AdminSettingsPage = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Phone Line</label>
               <input
@@ -116,7 +116,7 @@ const AdminSettingsPage = () => {
           <button
             type="submit"
             disabled={saving}
-            className="bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs px-6 py-3 rounded-xl shadow-md transition-all flex items-center space-x-2"
+            className="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs px-6 py-3 rounded-xl shadow-md transition-all flex items-center justify-center space-x-2"
           >
             <Save className="w-4 h-4" />
             <span>{saving ? "Saving..." : "Save System Settings"}</span>

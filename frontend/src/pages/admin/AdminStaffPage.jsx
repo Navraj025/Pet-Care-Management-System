@@ -71,15 +71,15 @@ const AdminStaffPage = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <div>
-          <h2 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">Staff & Veterinarian Management</h2>
+          <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100">Staff & Veterinarian Management</h2>
           <p className="text-xs text-slate-500 dark:text-slate-400">Manage licensed veterinarians, groomers, specializations, and working schedules</p>
         </div>
 
         <button
           onClick={() => setShowAddModal(true)}
-          className="bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-md transition-all flex items-center space-x-2"
+          className="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-md transition-all flex items-center justify-center space-x-2 shrink-0"
         >
           <Plus className="w-4 h-4" />
           <span>Add New Staff / Vet</span>
@@ -89,23 +89,23 @@ const AdminStaffPage = () => {
       {loading ? (
         <div className="py-20 text-center text-slate-400 text-sm">Loading staff members...</div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {staffList.map((st) => (
-            <div key={st.id} className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
-              <div className="flex items-center space-x-4">
-                <div className="w-14 h-14 rounded-2xl bg-teal-100 dark:bg-teal-900/60 text-teal-800 dark:text-teal-200 flex items-center justify-center text-xl font-bold">
+            <div key={st.id} className="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
+              <div className="flex items-center space-x-4 min-w-0">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-teal-100 dark:bg-teal-900/60 text-teal-800 dark:text-teal-200 flex items-center justify-center text-lg sm:text-xl font-bold shrink-0">
                   {st.user?.full_name?.charAt(0)}
                 </div>
-                <div>
-                  <h3 className="font-extrabold text-slate-900 dark:text-slate-100 text-base">{st.user?.full_name}</h3>
-                  <p className="text-xs font-semibold text-teal-700 dark:text-teal-300">{st.specialization}</p>
+                <div className="min-w-0">
+                  <h3 className="font-extrabold text-slate-900 dark:text-slate-100 text-base truncate">{st.user?.full_name}</h3>
+                  <p className="text-xs font-semibold text-teal-700 dark:text-teal-300 truncate">{st.specialization}</p>
                 </div>
               </div>
 
-              <div className="space-y-1.5 text-xs text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-100 dark:border-slate-700">
+              <div className="space-y-1.5 text-xs text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/60 p-3.5 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-700">
                 <div className="flex justify-between">
                   <span className="text-slate-400">Email:</span>
-                  <span className="font-semibold text-slate-800 dark:text-slate-200">{st.user?.email}</span>
+                  <span className="font-semibold text-slate-800 dark:text-slate-200 truncate max-w-[150px] text-right">{st.user?.email}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-400">Phone:</span>
@@ -117,7 +117,7 @@ const AdminStaffPage = () => {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-400">Working Days:</span>
-                  <span className="font-medium text-slate-800 dark:text-slate-200">{st.working_days}</span>
+                  <span className="font-medium text-slate-800 dark:text-slate-200 truncate max-w-[130px] text-right">{st.working_days}</span>
                 </div>
               </div>
             </div>
@@ -127,11 +127,11 @@ const AdminStaffPage = () => {
 
       {/* Add Staff Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-900 w-full max-w-lg rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 p-6 space-y-4 transition-colors">
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+          <div className="bg-white dark:bg-slate-900 w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 space-y-4 transition-colors my-auto">
             <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Register Staff Member</h3>
             <form onSubmit={handleCreateStaff} className="space-y-3">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Full Name *</label>
                   <input

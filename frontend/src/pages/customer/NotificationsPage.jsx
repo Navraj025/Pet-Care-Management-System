@@ -44,15 +44,15 @@ const NotificationsPage = () => {
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
         <div>
-          <h2 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">Notification Center</h2>
+          <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100">Notification Center</h2>
           <p className="text-xs text-slate-500 dark:text-slate-400">In-app alerts for appointment reminders, vaccination dues, and payment updates</p>
         </div>
 
         <button
           onClick={handleMarkAllRead}
-          className="text-xs font-bold text-teal-600 dark:text-teal-400 hover:text-teal-800 dark:hover:text-teal-300 flex items-center space-x-1"
+          className="text-xs font-bold text-teal-600 dark:text-teal-400 hover:text-teal-800 dark:hover:text-teal-300 flex items-center space-x-1 shrink-0"
         >
           <CheckCheck className="w-4 h-4" />
           <span>Mark All Read</span>

@@ -84,15 +84,15 @@ const StaffMedicalRecordsPage = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <div>
-          <h2 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">Clinical Consultation Records</h2>
+          <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100">Clinical Consultation Records</h2>
           <p className="text-xs text-slate-500 dark:text-slate-400">Record diagnostic assessments, treatments, prescriptions, and follow-ups</p>
         </div>
 
         <button
           onClick={() => setShowAddModal(true)}
-          className="bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-md transition-all flex items-center space-x-2"
+          className="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-md transition-all flex items-center justify-center space-x-2 shrink-0"
         >
           <Plus className="w-4 h-4" />
           <span>Add Consultation Record</span>

@@ -44,13 +44,13 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white dark:bg-slate-900 p-8 sm:p-10 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl transition-colors">
+    <div className="min-h-[85vh] flex items-center justify-center py-6 sm:py-12 px-3 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-6 sm:space-y-8 bg-white dark:bg-slate-900 p-5 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl transition-colors">
         <div className="text-center space-y-2">
-          <div className="w-14 h-14 bg-teal-600 text-white rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-teal-500/20">
-            <Heart className="w-7 h-7 fill-current" />
+          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-teal-600 text-white rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-teal-500/20">
+            <Heart className="w-6 h-6 sm:w-7 sm:h-7 fill-current" />
           </div>
-          <h2 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">Portal Login</h2>
+          <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">Portal Login</h2>
           <p className="text-xs text-slate-500 dark:text-slate-400">Sign in to access your dashboard & records</p>
         </div>
 
@@ -59,7 +59,7 @@ const LoginPage = () => {
           <span className="text-[10px] font-extrabold text-teal-700 dark:text-teal-300 uppercase tracking-wider block text-center">
             🚀 Quick Demo Login Credentials
           </span>
-          <div className="grid grid-cols-3 gap-1.5">
+          <div className="grid grid-cols-1 xs:grid-cols-3 gap-1.5">
             <button
               type="button"
               onClick={() => fillQuickDemo('admin@petcare.com', 'password123')}

@@ -14,32 +14,32 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
-      <div className="text-center max-w-2xl mx-auto space-y-3">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 space-y-8 sm:space-y-12">
+      <div className="text-center max-w-2xl mx-auto space-y-2 sm:space-y-3">
         <h1 className="text-xs font-bold text-teal-600 dark:text-teal-400 uppercase tracking-widest">Get In Touch</h1>
-        <h2 className="text-4xl font-extrabold text-slate-900 dark:text-slate-100">Contact & Support</h2>
-        <p className="text-slate-600 dark:text-slate-400 text-sm">
+        <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-slate-100">Contact & Support</h2>
+        <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm">
           Have questions about your pet's appointment, veterinary services, or system architecture? Reach out to us.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-start">
         {/* Left Side: Developer & Clinic Information Card */}
         <div className="space-y-6">
           {/* Main Developer Contact Card */}
-          <div className="bg-gradient-to-br from-slate-900 via-teal-950 to-slate-900 text-white p-8 rounded-3xl space-y-6 shadow-xl border border-slate-800">
+          <div className="bg-gradient-to-br from-slate-900 via-teal-950 to-slate-900 text-white p-5 sm:p-8 rounded-3xl space-y-6 shadow-xl border border-slate-800">
             <div className="flex items-center space-x-3 border-b border-slate-800 pb-4">
-              <div className="p-3 bg-teal-500/20 text-teal-400 rounded-2xl">
+              <div className="p-3 bg-teal-500/20 text-teal-400 rounded-2xl shrink-0">
                 <Code className="w-6 h-6" />
               </div>
-              <div>
-                <span className="text-[10px] font-bold text-teal-400 uppercase tracking-widest block">Project Developer & Architect</span>
-                <h3 className="text-2xl font-extrabold">{developerInfo.name}</h3>
+              <div className="min-w-0">
+                <span className="text-[10px] font-bold text-teal-400 uppercase tracking-widest block truncate">Project Developer & Architect</span>
+                <h3 className="text-xl sm:text-2xl font-extrabold truncate">{developerInfo.name}</h3>
               </div>
             </div>
 
             <div className="space-y-5 text-xs">
-              <div className="flex items-start space-x-4">
+              <div className="flex items-start space-x-3 sm:space-x-4">
                 <div className="p-2.5 bg-teal-500/10 text-teal-400 rounded-xl shrink-0">
                   <Phone className="w-4 h-4" />
                 </div>
@@ -51,19 +51,19 @@ const ContactPage = () => {
                 </div>
               </div>
 
-              <div className="flex items-start space-x-4">
+              <div className="flex items-start space-x-3 sm:space-x-4">
                 <div className="p-2.5 bg-teal-500/10 text-teal-400 rounded-xl shrink-0">
                   <Mail className="w-4 h-4" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <h4 className="font-bold text-slate-300">Email</h4>
-                  <a href={developerInfo.mailtoUrl} className="text-teal-300 hover:text-teal-200 font-semibold transition-colors">
+                  <a href={developerInfo.mailtoUrl} className="text-teal-300 hover:text-teal-200 font-semibold transition-colors truncate block">
                     {developerInfo.email}
                   </a>
                 </div>
               </div>
 
-              <div className="flex items-start space-x-4">
+              <div className="flex items-start space-x-3 sm:space-x-4">
                 <div className="p-2.5 bg-teal-500/10 text-teal-400 rounded-xl shrink-0">
                   <MapPin className="w-4 h-4" />
                 </div>
@@ -78,7 +78,7 @@ const ContactPage = () => {
           </div>
 
           {/* Central Healthcare Facility Info */}
-          <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3 text-xs transition-colors">
+          <div className="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-2 text-xs transition-colors">
             <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm">Central Veterinary Healthcare Center</h4>
             <p className="text-slate-500 dark:text-slate-400">124 Healthcare Boulevard, Suite 400, Tech City</p>
             <p className="text-slate-400 dark:text-slate-400">Operating Hours: Mon - Sat (09:00 AM - 06:00 PM)</p>
@@ -86,11 +86,11 @@ const ContactPage = () => {
         </div>
 
         {/* Right Side: Contact Form */}
-        <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
+        <div className="bg-white dark:bg-slate-900 p-5 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
           {submitted ? (
-            <div className="py-12 text-center space-y-4">
-              <CheckCircle2 className="w-16 h-16 text-emerald-500 mx-auto" />
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Message Dispatched!</h3>
+            <div className="py-8 sm:py-12 text-center space-y-4">
+              <CheckCircle2 className="w-14 h-14 sm:w-16 sm:h-16 text-emerald-500 mx-auto" />
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100">Message Dispatched!</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
                 Thank you for contacting Smart Pet Care. Your message has been routed directly to the developer & clinic desk.
               </p>
@@ -103,8 +103,8 @@ const ContactPage = () => {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
-              <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100 mb-4">Send a Direct Message</h3>
-              <div className="grid grid-cols-2 gap-4">
+              <h3 className="font-bold text-base sm:text-lg text-slate-900 dark:text-slate-100 mb-3 sm:mb-4">Send a Direct Message</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Your Name</label>
                   <input

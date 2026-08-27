@@ -30,7 +30,7 @@ const MedicalRecordsPage = () => {
       {loading ? (
         <div className="py-20 text-center text-slate-400 text-sm">Loading medical history...</div>
       ) : records.length === 0 ? (
-        <div className="bg-white dark:bg-slate-900 p-12 rounded-3xl border border-slate-200 dark:border-slate-800 text-center space-y-3 transition-colors">
+        <div className="bg-white dark:bg-slate-900 p-8 sm:p-12 rounded-3xl border border-slate-200 dark:border-slate-800 text-center space-y-3 transition-colors">
           <FileText className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto" />
           <h3 className="font-bold text-slate-800 dark:text-slate-200 text-base">No Medical Records Recorded</h3>
           <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
@@ -38,22 +38,22 @@ const MedicalRecordsPage = () => {
           </p>
         </div>
       ) : (
-        <div className="space-y-6 relative before:absolute before:inset-0 before:left-4 before:w-0.5 before:bg-teal-200 dark:before:bg-teal-900">
+        <div className="space-y-6 relative before:absolute before:inset-0 before:left-3.5 sm:before:left-4 before:w-0.5 before:bg-teal-200 dark:before:bg-teal-900">
           {records.map((rec) => (
-            <div key={rec.id} className="relative pl-10 space-y-2">
-              <div className="absolute left-2 top-2 w-4 h-4 bg-teal-600 rounded-full border-4 border-white dark:border-slate-900 shadow-sm"></div>
+            <div key={rec.id} className="relative pl-7 sm:pl-10 space-y-2">
+              <div className="absolute left-1.5 sm:left-2 top-2 w-4 h-4 bg-teal-600 rounded-full border-4 border-white dark:border-slate-900 shadow-sm"></div>
 
-              <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
+              <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-slate-100 dark:border-slate-800 pb-3 gap-2">
                   <div>
-                    <span className="text-xs font-bold text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-950 px-3 py-1 rounded-full border border-teal-200 dark:border-teal-800">
+                    <span className="text-[10px] sm:text-xs font-bold text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-950 px-2.5 sm:px-3 py-1 rounded-full border border-teal-200 dark:border-teal-800">
                       CONSULTATION RECORD
                     </span>
                     <h3 className="font-bold text-slate-900 dark:text-slate-100 text-base mt-2">
                       Pet: {rec.pet?.name || 'Pet'}
                     </h3>
                   </div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400 text-right">
+                  <div className="text-xs text-slate-500 dark:text-slate-400 text-left sm:text-right">
                     <span className="font-bold text-slate-800 dark:text-slate-200 block">{rec.date}</span>
                     <span>Vet: {rec.staff?.user?.full_name || 'Staff Veterinarian'}</span>
                   </div>

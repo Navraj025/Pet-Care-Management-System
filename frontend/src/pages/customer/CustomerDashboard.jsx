@@ -40,22 +40,22 @@ const CustomerDashboard = () => {
   const overdueVacs = vaccinations.filter((v) => v.status === 'OVERDUE');
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Welcome Banner */}
-      <div className="bg-gradient-to-r from-teal-800 via-teal-900 to-slate-900 text-white p-8 rounded-3xl shadow-xl flex flex-col md:flex-row justify-between items-center gap-6">
+      <div className="bg-gradient-to-r from-teal-800 via-teal-900 to-slate-900 text-white p-5 sm:p-8 rounded-3xl shadow-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-5 sm:gap-6">
         <div className="space-y-2">
-          <div className="inline-flex items-center space-x-2 bg-teal-500/20 border border-teal-500/30 text-teal-300 px-3 py-1 rounded-full text-xs font-bold">
+          <div className="inline-flex items-center space-x-2 bg-teal-500/20 border border-teal-500/30 text-teal-300 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold">
             <Sparkles className="w-3.5 h-3.5" />
             <span>CUSTOMER DASHBOARD</span>
           </div>
-          <h2 className="text-3xl font-extrabold tracking-tight">Welcome back, {user?.full_name}! 👋</h2>
+          <h2 className="text-xl sm:text-3xl font-extrabold tracking-tight">Welcome back, {user?.full_name}! 👋</h2>
           <p className="text-xs text-teal-100 max-w-xl">
             You currently have <span className="font-bold text-white">{pets.length} registered pet(s)</span>. Keep track of upcoming appointments and health immunizations.
           </p>
         </div>
         <Link
           to="/customer/book-appointment"
-          className="bg-teal-400 hover:bg-teal-300 text-slate-950 font-extrabold px-6 py-3 rounded-2xl shadow-lg transition-all text-xs flex items-center space-x-2 shrink-0"
+          className="w-full sm:w-auto bg-teal-400 hover:bg-teal-300 text-slate-950 font-extrabold px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl shadow-lg transition-all text-xs flex items-center justify-center space-x-2 shrink-0"
         >
           <PlusCircle className="w-4 h-4" />
           <span>Book Appointment</span>
@@ -64,56 +64,56 @@ const CustomerDashboard = () => {
 
       {/* Overdue Vaccination Alert Banner */}
       {overdueVacs.length > 0 && (
-        <div className="bg-rose-50 border border-rose-200 p-4 rounded-2xl flex items-center justify-between text-rose-900 text-xs font-semibold">
-          <div className="flex items-center space-x-3">
-            <ShieldAlert className="w-5 h-5 text-rose-600 shrink-0" />
+        <div className="bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-900 p-3.5 sm:p-4 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between text-rose-900 dark:text-rose-200 text-xs font-semibold gap-2">
+          <div className="flex items-center space-x-2.5 sm:space-x-3">
+            <ShieldAlert className="w-5 h-5 text-rose-600 dark:text-rose-400 shrink-0" />
             <span>Attention: You have {overdueVacs.length} overdue vaccination booster(s) required!</span>
           </div>
-          <Link to="/customer/vaccinations" className="text-rose-700 underline font-bold">
+          <Link to="/customer/vaccinations" className="text-rose-700 dark:text-rose-300 underline font-bold shrink-0">
             View Vaccinations
           </Link>
         </div>
       )}
 
       {/* Key Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs flex items-center justify-between transition-colors">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+        <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs flex items-center justify-between transition-colors">
           <div>
-            <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Registered Pets</p>
-            <h3 className="text-3xl font-black text-slate-900 dark:text-slate-100 mt-1">{pets.length}</h3>
+            <p className="text-[10px] sm:text-xs text-slate-400 font-semibold uppercase tracking-wider">Registered Pets</p>
+            <h3 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-100 mt-1">{pets.length}</h3>
           </div>
-          <div className="w-12 h-12 bg-teal-50 dark:bg-teal-950 text-teal-600 dark:text-teal-400 rounded-2xl flex items-center justify-center">
-            <Dog className="w-6 h-6" />
+          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-teal-50 dark:bg-teal-950 text-teal-600 dark:text-teal-400 rounded-2xl flex items-center justify-center shrink-0">
+            <Dog className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs flex items-center justify-between transition-colors">
+        <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs flex items-center justify-between transition-colors">
           <div>
-            <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Total Bookings</p>
-            <h3 className="text-3xl font-black text-slate-900 dark:text-slate-100 mt-1">{appointments.length}</h3>
+            <p className="text-[10px] sm:text-xs text-slate-400 font-semibold uppercase tracking-wider">Total Bookings</p>
+            <h3 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-100 mt-1">{appointments.length}</h3>
           </div>
-          <div className="w-12 h-12 bg-sky-50 dark:bg-sky-950 text-sky-600 dark:text-sky-400 rounded-2xl flex items-center justify-center">
-            <Calendar className="w-6 h-6" />
+          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-sky-50 dark:bg-sky-950 text-sky-600 dark:text-sky-400 rounded-2xl flex items-center justify-center shrink-0">
+            <Calendar className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs flex items-center justify-between transition-colors">
+        <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs flex items-center justify-between transition-colors">
           <div>
-            <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Vaccine Records</p>
-            <h3 className="text-3xl font-black text-slate-900 dark:text-slate-100 mt-1">{vaccinations.length}</h3>
+            <p className="text-[10px] sm:text-xs text-slate-400 font-semibold uppercase tracking-wider">Vaccine Records</p>
+            <h3 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-100 mt-1">{vaccinations.length}</h3>
           </div>
-          <div className="w-12 h-12 bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 rounded-2xl flex items-center justify-center">
-            <Syringe className="w-6 h-6" />
+          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 rounded-2xl flex items-center justify-center shrink-0">
+            <Syringe className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs flex items-center justify-between transition-colors">
+        <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs flex items-center justify-between transition-colors">
           <div>
-            <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Overdue Alerts</p>
-            <h3 className="text-3xl font-black text-rose-600 dark:text-rose-400 mt-1">{overdueVacs.length}</h3>
+            <p className="text-[10px] sm:text-xs text-slate-400 font-semibold uppercase tracking-wider">Overdue Alerts</p>
+            <h3 className="text-2xl sm:text-3xl font-black text-rose-600 dark:text-rose-400 mt-1">{overdueVacs.length}</h3>
           </div>
-          <div className="w-12 h-12 bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 rounded-2xl flex items-center justify-center">
-            <ShieldAlert className="w-6 h-6" />
+          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 rounded-2xl flex items-center justify-center shrink-0">
+            <ShieldAlert className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
         </div>
       </div>

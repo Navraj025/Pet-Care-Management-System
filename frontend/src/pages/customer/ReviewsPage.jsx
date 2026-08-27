@@ -58,12 +58,12 @@ const ReviewsPage = () => {
   return (
     <div className="space-y-8 max-w-4xl mx-auto">
       <div>
-        <h2 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">Feedback & Reviews</h2>
+        <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100">Feedback & Reviews</h2>
         <p className="text-xs text-slate-500 dark:text-slate-400">Rate your experience after completed veterinary or grooming visits</p>
       </div>
 
       {/* Submit Feedback Form */}
-      <div className="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
+      <div className="bg-white dark:bg-slate-900 p-5 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
         <h3 className="font-bold text-base text-slate-900 dark:text-slate-100 flex items-center space-x-2">
           <MessageSquare className="w-5 h-5 text-teal-600 dark:text-teal-400" />
           <span>Submit Visit Feedback</span>
@@ -90,17 +90,17 @@ const ReviewsPage = () => {
 
             <div>
               <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Rating (1 to 5 Stars)</label>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-1 sm:space-x-2">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
                     key={star}
                     type="button"
                     onClick={() => setRating(star)}
-                    className={`p-2 rounded-xl transition-transform ${
+                    className={`p-1.5 sm:p-2 rounded-xl transition-transform ${
                       rating >= star ? 'text-amber-400 scale-110' : 'text-slate-200 dark:text-slate-700'
                     }`}
                   >
-                    <Star className="w-6 h-6 fill-current" />
+                    <Star className="w-5 h-5 sm:w-6 sm:h-6 fill-current" />
                   </button>
                 ))}
               </div>
@@ -120,7 +120,7 @@ const ReviewsPage = () => {
             <button
               type="submit"
               disabled={submitting}
-              className="bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs px-6 py-3 rounded-xl shadow-md transition-all"
+              className="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs px-6 py-3 rounded-xl shadow-md transition-all"
             >
               {submitting ? "Submitting..." : "Submit Review"}
             </button>

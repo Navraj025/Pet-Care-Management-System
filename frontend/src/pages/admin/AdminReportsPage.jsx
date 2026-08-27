@@ -32,16 +32,16 @@ const AdminReportsPage = () => {
   const popularServices = summary?.popular_services || [];
 
   return (
-    <div className="space-y-8">
-      <div className="flex justify-between items-center no-print">
+    <div className="space-y-6 sm:space-y-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 no-print">
         <div>
-          <h2 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">Executive Reports & Analytics</h2>
+          <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100">Executive Reports & Analytics</h2>
           <p className="text-xs text-slate-500 dark:text-slate-400">Revenue performance in INR (₹), service demand, and appointment cancellation metrics</p>
         </div>
 
         <button
           onClick={() => window.print()}
-          className="bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-md transition-all flex items-center space-x-2"
+          className="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-md transition-all flex items-center justify-center space-x-2 shrink-0"
         >
           <Printer className="w-4 h-4" />
           <span>Export / Print Report</span>
@@ -49,22 +49,22 @@ const AdminReportsPage = () => {
       </div>
 
       {/* Summary KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
-          <p className="text-xs text-slate-400 font-semibold uppercase">Total Monthly Revenue</p>
-          <h3 className="text-2xl sm:text-3xl font-black text-teal-700 dark:text-teal-400 mt-1">{formatCurrency(kpis.monthly_revenue)}</h3>
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+        <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
+          <p className="text-[10px] sm:text-xs text-slate-400 font-semibold uppercase">Total Monthly Revenue</p>
+          <h3 className="text-xl sm:text-3xl font-black text-teal-700 dark:text-teal-400 mt-1">{formatCurrency(kpis.monthly_revenue)}</h3>
         </div>
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
-          <p className="text-xs text-slate-400 font-semibold uppercase">Today's Revenue</p>
-          <h3 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-100 mt-1">{formatCurrency(kpis.today_revenue)}</h3>
+        <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
+          <p className="text-[10px] sm:text-xs text-slate-400 font-semibold uppercase">Today's Revenue</p>
+          <h3 className="text-xl sm:text-3xl font-black text-slate-900 dark:text-slate-100 mt-1">{formatCurrency(kpis.today_revenue)}</h3>
         </div>
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
-          <p className="text-xs text-slate-400 font-semibold uppercase">Pending Receivable</p>
-          <h3 className="text-2xl sm:text-3xl font-black text-amber-600 dark:text-amber-400 mt-1">{formatCurrency(kpis.pending_payments)}</h3>
+        <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
+          <p className="text-[10px] sm:text-xs text-slate-400 font-semibold uppercase">Pending Receivable</p>
+          <h3 className="text-xl sm:text-3xl font-black text-amber-600 dark:text-amber-400 mt-1">{formatCurrency(kpis.pending_payments)}</h3>
         </div>
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
-          <p className="text-xs text-slate-400 font-semibold uppercase">Cancellation Rate</p>
-          <h3 className="text-2xl sm:text-3xl font-black text-rose-600 dark:text-rose-400 mt-1">{kpis.cancelled_appointments} Cancelled</h3>
+        <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
+          <p className="text-[10px] sm:text-xs text-slate-400 font-semibold uppercase">Cancellation Rate</p>
+          <h3 className="text-xl sm:text-3xl font-black text-rose-600 dark:text-rose-400 mt-1">{kpis.cancelled_appointments} Cancelled</h3>
         </div>
       </div>
 

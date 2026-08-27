@@ -48,14 +48,14 @@ const StaffPetsPage = () => {
       {loading ? (
         <div className="py-20 text-center text-slate-400 text-sm">Loading pet directory...</div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredPets.map((pet) => (
-            <div key={pet.id} className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
-              <div className="flex items-center space-x-3">
-                <PetAvatar pet={pet} />
-                <div>
-                  <h3 className="font-extrabold text-slate-900 dark:text-slate-100 text-base">{pet.name}</h3>
-                  <p className="text-xs text-slate-400">{pet.breed || pet.species} • {pet.gender}</p>
+            <div key={pet.id} className="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
+              <div className="flex items-center space-x-3 min-w-0">
+                <PetAvatar pet={pet} className="shrink-0" />
+                <div className="min-w-0">
+                  <h3 className="font-extrabold text-slate-900 dark:text-slate-100 text-base truncate">{pet.name}</h3>
+                  <p className="text-xs text-slate-400 truncate">{pet.breed || pet.species} • {pet.gender}</p>
                 </div>
               </div>
 

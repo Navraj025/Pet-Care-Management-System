@@ -132,11 +132,11 @@ const BookAppointmentWizard = () => {
         </div>
 
         {/* Progress Bar */}
-        <div className="grid grid-cols-5 gap-2 pt-2">
+        <div className="flex overflow-x-auto gap-2 pt-2 pb-1 scrollbar-none sm:grid sm:grid-cols-5">
           {['1. Select Pet', '2. Services', '3. Specialist', '4. Date & Time', '5. Confirm'].map((label, idx) => {
             const stepNum = idx + 1;
             return (
-              <div key={label} className="space-y-1">
+              <div key={label} className="space-y-1 min-w-[90px] sm:min-w-0 shrink-0">
                 <div
                   className={`h-2 rounded-full transition-all ${
                     step >= stepNum ? 'bg-teal-600' : 'bg-slate-200 dark:bg-slate-800'
@@ -153,8 +153,8 @@ const BookAppointmentWizard = () => {
 
       {/* Step 1: Select Pet */}
       {step === 1 && (
-        <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-6 transition-colors">
-          <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100">Step 1: Choose Your Pet</h3>
+        <div className="bg-white dark:bg-slate-900 p-5 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-6 transition-colors">
+          <h3 className="font-bold text-base sm:text-lg text-slate-900 dark:text-slate-100">Step 1: Choose Your Pet</h3>
 
           {pets.length === 0 ? (
             <div className="text-center py-8 text-xs text-slate-500 space-y-2">
@@ -167,25 +167,25 @@ const BookAppointmentWizard = () => {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               {pets.map((pet) => (
                 <div
                   key={pet.id}
                   onClick={() => setSelectedPet(pet)}
-                  className={`p-5 rounded-2xl border-2 cursor-pointer transition-all flex items-center justify-between ${
+                  className={`p-4 sm:p-5 rounded-2xl border-2 cursor-pointer transition-all flex items-center justify-between ${
                     selectedPet?.id === pet.id
                       ? 'border-teal-600 bg-teal-50/60 dark:bg-teal-950/40 shadow-md'
                       : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
                   }`}
                 >
-                  <div className="flex items-center space-x-3">
-                    <PetAvatar pet={pet} size="sm" className="rounded-xl" />
-                    <div>
-                      <h4 className="font-bold text-slate-900 dark:text-slate-100 text-base">{pet.name}</h4>
-                      <p className="text-xs text-slate-400">{pet.breed || pet.species} • {pet.gender}</p>
+                  <div className="flex items-center space-x-3 min-w-0">
+                    <PetAvatar pet={pet} size="sm" className="rounded-xl shrink-0" />
+                    <div className="min-w-0">
+                      <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm sm:text-base truncate">{pet.name}</h4>
+                      <p className="text-xs text-slate-400 truncate">{pet.breed || pet.species} • {pet.gender}</p>
                     </div>
                   </div>
-                  {selectedPet?.id === pet.id && <CheckCircle2 className="w-6 h-6 text-teal-600 dark:text-teal-400" />}
+                  {selectedPet?.id === pet.id && <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-teal-600 dark:text-teal-400 shrink-0" />}
                 </div>
               ))}
             </div>
@@ -195,7 +195,7 @@ const BookAppointmentWizard = () => {
             <button
               onClick={() => setStep(2)}
               disabled={!selectedPet}
-              className="bg-teal-600 hover:bg-teal-700 disabled:opacity-50 text-white font-bold text-xs px-6 py-3 rounded-xl flex items-center space-x-1 shadow-md"
+              className="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 disabled:opacity-50 text-white font-bold text-xs px-6 py-3 rounded-xl flex items-center justify-center space-x-1 shadow-md"
             >
               <span>Next: Select Services</span>
               <ChevronRight className="w-4 h-4" />

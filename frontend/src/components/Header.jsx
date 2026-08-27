@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Bell, User as UserIcon, Settings, LogOut, ChevronDown, Heart, Shield, Sun, Moon } from 'lucide-react';
+import { Bell, User as UserIcon, Settings, LogOut, ChevronDown, Heart, Sun, Moon, Menu } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import API from '../services/api';
 
-const Header = ({ title = "Dashboard" }) => {
+const Header = ({ title = "Dashboard", onToggleSidebar }) => {
   const { user, logout, getProfilePath } = useAuth();
-  const { theme, toggleTheme, isDarkMode } = useTheme();
+  const { toggleTheme, isDarkMode } = useTheme();
   const [unreadCount, setUnreadCount] = useState(0);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -45,22 +45,32 @@ const Header = ({ title = "Dashboard" }) => {
   const profilePath = getProfilePath(role);
 
   return (
-    <header className="h-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 flex items-center justify-between sticky top-0 z-30 shadow-xs transition-colors duration-200">
-      {/* Page Title & Breadcrumb */}
-      <div className="flex items-center space-x-4">
-        {/* Clickable Brand Logo in Mobile/Header */}
+    <header className="h-16 sm:h-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-3 sm:px-6 flex items-center justify-between sticky top-0 z-30 shadow-xs transition-colors duration-200">
+      {/* Sidebar Toggle & Page Title */}
+      <div className="flex items-center space-x-2 sm:space-x-4 min-w-0">
+        {/* Mobile Hamburger Menu Toggle for Sidebar */}
+        <button
+          onClick={onToggleSidebar}
+          aria-label="Open Sidebar Menu"
+          className="md:hidden p-2 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors shrink-0"
+        >
+          <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
+        </button>
+
+        {/* Brand Logo in Mobile */}
         <Link
           to="/"
-          className="flex items-center space-x-2 md:hidden group"
+          className="flex items-center space-x-2 md:hidden group shrink-0"
           title="Return to Home Page"
         >
-          <div className="w-9 h-9 rounded-xl bg-teal-600 flex items-center justify-center text-white shadow-md">
-            <Heart className="w-5 h-5 fill-current" />
+          <div className="w-8 h-8 rounded-lg bg-teal-600 flex items-center justify-center text-white shadow-md">
+            <Heart className="w-4 h-4 fill-current" />
           </div>
         </Link>
-        <div>
-          <h1 className="text-xl font-extrabold text-slate-800 dark:text-slate-100 tracking-tight">{title}</h1>
-          <p className="text-xs text-slate-400 dark:text-slate-400">Welcome back, {user?.full_name}</p>
+
+        <div className="min-w-0">
+          <h1 className="text-base sm:text-xl font-extrabold text-slate-800 dark:text-slate-100 tracking-tight truncate">{title}</h1>
+          <p className="text-[10px] sm:text-xs text-slate-400 dark:text-slate-400 truncate hidden xs:block">Welcome back, {user?.full_name}</p>
         </div>
       </div>
 

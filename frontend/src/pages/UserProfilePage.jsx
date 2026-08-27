@@ -161,28 +161,28 @@ const UserProfilePage = () => {
   const role = user?.role;
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 pb-12">
+    <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8 pb-12">
       {/* Top Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 text-white p-8 rounded-3xl shadow-xl flex justify-between items-center">
+      <div className="bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 text-white p-6 sm:p-8 rounded-3xl shadow-xl flex justify-between items-center">
         <div className="space-y-1">
-          <span className="text-xs font-bold text-teal-400 uppercase tracking-widest block">
+          <span className="text-[10px] sm:text-xs font-bold text-teal-400 uppercase tracking-widest block">
             {role} PROFILE & ACCOUNT
           </span>
-          <h2 className="text-3xl font-extrabold tracking-tight">User Account Settings</h2>
+          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">User Account Settings</h2>
           <p className="text-xs text-slate-300">Manage your profile picture, contact details, and account credentials.</p>
         </div>
       </div>
 
-      <form onSubmit={handleSaveProfile} className="space-y-8">
+      <form onSubmit={handleSaveProfile} className="space-y-6 sm:space-y-8">
         {/* Profile Header & Avatar Card */}
-        <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center gap-8 transition-colors">
+        <div className="bg-white dark:bg-slate-900 p-5 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center gap-6 sm:gap-8 transition-colors">
           {/* Avatar Preview & Controls */}
-          <div className="relative group flex flex-col items-center">
-            <div className="w-32 h-32 rounded-3xl bg-slate-100 dark:bg-slate-800 overflow-hidden border-4 border-teal-500 shadow-md relative flex items-center justify-center">
+          <div className="relative group flex flex-col items-center shrink-0">
+            <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-3xl bg-slate-100 dark:bg-slate-800 overflow-hidden border-4 border-teal-500 shadow-md relative flex items-center justify-center">
               {avatarPreview ? (
                 <img src={avatarPreview} alt="Avatar Preview" className="w-full h-full object-cover" />
               ) : (
-                <span className="text-4xl font-extrabold text-teal-700 dark:text-teal-400">
+                <span className="text-3xl sm:text-4xl font-extrabold text-teal-700 dark:text-teal-400">
                   {fullName?.charAt(0) || 'U'}
                 </span>
               )}
@@ -221,14 +221,14 @@ const UserProfilePage = () => {
           </div>
 
           {/* Identity Info Summary */}
-          <div className="space-y-2 text-center sm:text-left flex-1">
+          <div className="space-y-2 text-center sm:text-left flex-1 min-w-0">
             <div className="flex items-center justify-center sm:justify-start space-x-2">
-              <h3 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">{fullName}</h3>
-              <span className="text-xs font-bold text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-950 px-2.5 py-0.5 rounded-full border border-teal-200 dark:border-teal-800">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100 truncate">{fullName}</h3>
+              <span className="text-xs font-bold text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-950 px-2.5 py-0.5 rounded-full border border-teal-200 dark:border-teal-800 shrink-0">
                 {role}
               </span>
             </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400">{user?.email}</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{user?.email}</p>
             <p className="text-xs text-slate-400 dark:text-slate-400">
               Account Created: {new Date(createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
             </p>
@@ -236,7 +236,7 @@ const UserProfilePage = () => {
         </div>
 
         {/* Personal & Contact Information Card */}
-        <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-6 transition-colors">
+        <div className="bg-white dark:bg-slate-900 p-5 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-6 transition-colors">
           <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100 flex items-center space-x-2 border-b border-slate-100 dark:border-slate-800 pb-3">
             <User className="w-5 h-5 text-teal-600 dark:text-teal-400" />
             <span>Personal & Contact Information</span>

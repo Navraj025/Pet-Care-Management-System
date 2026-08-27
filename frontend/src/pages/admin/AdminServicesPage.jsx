@@ -95,15 +95,15 @@ const AdminServicesPage = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <div>
-          <h2 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">Clinic Service Catalog</h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400">Configure medical, vaccination, dental, and grooming packages and pricing in INR (₹)</p>
+          <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100">Clinic Service Catalog</h2>
+          <p className="text-xs text-slate-500 dark:text-slate-400">Configure medical, grooming, vaccination offerings and pricing in INR (₹)</p>
         </div>
 
         <button
           onClick={openCreateModal}
-          className="bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-md transition-all flex items-center space-x-2"
+          className="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-md transition-all flex items-center justify-center space-x-2 shrink-0"
         >
           <Plus className="w-4 h-4" />
           <span>Add New Service</span>
@@ -111,11 +111,11 @@ const AdminServicesPage = () => {
       </div>
 
       {loading ? (
-        <div className="py-20 text-center text-slate-400 text-sm">Loading services catalog...</div>
+        <div className="py-20 text-center text-slate-400 text-sm">Loading service catalog...</div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {services.map((srv) => (
-            <div key={srv.id} className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between space-y-4 transition-colors">
+            <div key={srv.id} className="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between space-y-4 transition-colors">
               <div>
                 <div className="flex justify-between items-start mb-2">
                   <span className="text-[10px] uppercase font-bold px-2.5 py-0.5 bg-teal-50 dark:bg-teal-950 text-teal-700 dark:text-teal-300 rounded border border-teal-200 dark:border-teal-800">
