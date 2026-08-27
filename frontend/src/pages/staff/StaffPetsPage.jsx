@@ -30,18 +30,18 @@ const StaffPetsPage = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-extrabold text-slate-900">Pet Patients Directory</h2>
-        <p className="text-xs text-slate-500">Search and view clinical records for all registered patients</p>
+        <h2 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">Pet Patients Directory</h2>
+        <p className="text-xs text-slate-500 dark:text-slate-400">Search and view clinical records for all registered patients</p>
       </div>
 
-      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex items-center space-x-3">
+      <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs flex items-center space-x-3 transition-colors">
         <Search className="w-4 h-4 text-slate-400" />
         <input
           type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search patient by name or microchip ID..."
-          className="w-full text-xs bg-transparent focus:outline-none"
+          className="w-full text-xs bg-transparent focus:outline-none text-slate-900 dark:text-slate-100 placeholder-slate-400"
         />
       </div>
 
@@ -50,26 +50,26 @@ const StaffPetsPage = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredPets.map((pet) => (
-            <div key={pet.id} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-4">
+            <div key={pet.id} className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
               <div className="flex items-center space-x-3">
                 <PetAvatar pet={pet} />
                 <div>
-                  <h3 className="font-extrabold text-slate-900 text-base">{pet.name}</h3>
+                  <h3 className="font-extrabold text-slate-900 dark:text-slate-100 text-base">{pet.name}</h3>
                   <p className="text-xs text-slate-400">{pet.breed || pet.species} • {pet.gender}</p>
                 </div>
               </div>
 
-              <div className="space-y-1 text-xs text-slate-600 bg-slate-50 p-3 rounded-2xl border border-slate-100">
+              <div className="space-y-1 text-xs text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/60 p-3 rounded-2xl border border-slate-100 dark:border-slate-700">
                 <div className="flex justify-between">
                   <span>Weight:</span>
-                  <span className="font-semibold text-slate-800">{pet.weight ? `${pet.weight} kg` : 'N/A'}</span>
+                  <span className="font-semibold text-slate-800 dark:text-slate-200">{pet.weight ? `${pet.weight} kg` : 'N/A'}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Microchip Tag:</span>
-                  <span className="font-mono text-slate-800">{pet.microchip_id || 'None'}</span>
+                  <span className="font-mono text-slate-800 dark:text-slate-200">{pet.microchip_id || 'None'}</span>
                 </div>
                 {pet.allergies && (
-                  <div className="text-rose-600 font-semibold pt-1 border-t border-slate-200">
+                  <div className="text-rose-600 dark:text-rose-400 font-semibold pt-1 border-t border-slate-200 dark:border-slate-700">
                     Allergies: {pet.allergies}
                   </div>
                 )}

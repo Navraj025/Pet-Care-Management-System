@@ -98,15 +98,16 @@ def get_report_summary(
     ]
 
     # 3. Service Popularity
+    from app.models.appointment_service import AppointmentService
+
     service_rows = db.query(
         Service.name,
         Service.category,
-        func.count(Appointment.id).label("cnt"),
-        func.coalesce(func.sum(Payment.final_amount), 0.0).label("tot_rev")
-    ).join(Appointment, Service.id == Appointment.service_id)\
-     .outerjoin(Payment, Appointment.id == Payment.appointment_id)\
+        func.count(AppointmentService.id).label("cnt"),
+        func.coalesce(func.sum(AppointmentService.price_at_booking), 0.0).label("tot_rev")
+    ).join(AppointmentService, Service.id == AppointmentService.service_id)\
      .group_by(Service.id)\
-     .order_by(func.count(Appointment.id).desc()).limit(6).all()
+     .order_by(func.count(AppointmentService.id).desc()).limit(6).all()
 
     popular_services = [
         ServicePopularity(

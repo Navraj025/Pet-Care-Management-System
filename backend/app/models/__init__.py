@@ -4,6 +4,7 @@ from app.models.staff import Staff
 from app.models.pet import Pet
 from app.models.service import Service
 from app.models.appointment import Appointment, AppointmentStatus
+from app.models.appointment_service import AppointmentService
 from app.models.medical_record import MedicalRecord
 from app.models.vaccination import Vaccination, VaccinationStatus
 from app.models.availability import Availability
@@ -23,6 +24,7 @@ __all__ = [
     "Service",
     "Appointment",
     "AppointmentStatus",
+    "AppointmentService",
     "MedicalRecord",
     "Vaccination",
     "VaccinationStatus",

@@ -57,7 +57,7 @@ const PetAiAssistantModal = () => {
 
       {/* Modal / Floating Window */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 z-50 w-96 max-w-[calc(100vw-3rem)] h-[520px] bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5">
+        <div className="fixed bottom-24 right-6 z-50 w-96 max-w-[calc(100vw-3rem)] h-[520px] bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 transition-colors">
           {/* Header */}
           <div className="bg-gradient-to-r from-teal-700 to-teal-900 p-4 text-white flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -78,7 +78,7 @@ const PetAiAssistantModal = () => {
           </div>
 
           {/* Messages Body */}
-          <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-slate-50">
+          <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-slate-50 dark:bg-slate-950 transition-colors">
             {messages.map((msg, index) => (
               <div
                 key={index}
@@ -88,17 +88,17 @@ const PetAiAssistantModal = () => {
                   className={`max-w-[85%] rounded-2xl p-3 text-sm shadow-sm ${
                     msg.sender === 'user'
                       ? 'bg-teal-600 text-white rounded-br-none'
-                      : 'bg-white text-slate-800 border border-slate-200 rounded-bl-none'
+                      : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 rounded-bl-none'
                   }`}
                 >
                   <p className="whitespace-pre-line leading-relaxed">{msg.text}</p>
                   {msg.actions && msg.actions.length > 0 && (
-                    <div className="mt-3 flex flex-wrap gap-1.5 border-t border-slate-100 pt-2">
+                    <div className="mt-3 flex flex-wrap gap-1.5 border-t border-slate-100 dark:border-slate-700 pt-2">
                       {msg.actions.map((act, idx) => (
                         <button
                           key={idx}
                           onClick={() => handleSend(act)}
-                          className="text-xs bg-teal-50 hover:bg-teal-100 text-teal-700 font-medium px-2.5 py-1 rounded-lg border border-teal-200 transition-colors"
+                          className="text-xs bg-teal-50 dark:bg-teal-950/60 hover:bg-teal-100 dark:hover:bg-teal-900 text-teal-700 dark:text-teal-300 font-medium px-2.5 py-1 rounded-lg border border-teal-200 dark:border-teal-800 transition-colors"
                         >
                           {act}
                         </button>
@@ -110,7 +110,7 @@ const PetAiAssistantModal = () => {
             ))}
             {loading && (
               <div className="flex justify-start">
-                <div className="bg-white border border-slate-200 rounded-2xl p-3 text-xs text-slate-500 flex items-center space-x-2">
+                <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-3 text-xs text-slate-500 dark:text-slate-400 flex items-center space-x-2">
                   <span className="w-2 h-2 bg-teal-500 rounded-full animate-bounce"></span>
                   <span className="w-2 h-2 bg-teal-500 rounded-full animate-bounce [animation-delay:0.2s]"></span>
                   <span className="w-2 h-2 bg-teal-500 rounded-full animate-bounce [animation-delay:0.4s]"></span>
@@ -126,14 +126,14 @@ const PetAiAssistantModal = () => {
               e.preventDefault();
               handleSend();
             }}
-            className="p-3 bg-white border-t border-slate-200 flex items-center space-x-2"
+            className="p-3 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex items-center space-x-2 transition-colors"
           >
             <input
               type="text"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               placeholder="Ask about vaccinations, appointments, care..."
-              className="flex-1 bg-slate-100 text-slate-800 text-sm px-3.5 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="flex-1 bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-100 placeholder-slate-400 text-sm px-3.5 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500"
             />
             <button
               type="submit"

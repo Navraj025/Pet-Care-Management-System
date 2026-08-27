@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Users, Dog, Calendar, DollarSign, CreditCard, ShieldAlert, TrendingUp,
+  Users, Dog, Calendar, IndianRupee, CreditCard, ShieldAlert, TrendingUp,
   BarChart2, ArrowUpRight, CheckCircle2, Clock, Sparkles
 } from 'lucide-react';
 import {
@@ -9,6 +9,7 @@ import {
 } from 'recharts';
 import API from '../../services/api';
 import StatusBadge from '../../components/StatusBadge';
+import { formatCurrency } from '../../utils/formatters';
 
 const AdminDashboard = () => {
   const [summary, setSummary] = useState(null);
@@ -49,49 +50,49 @@ const AdminDashboard = () => {
             <span>ADMINISTRATOR SaaS CONTROL PANEL</span>
           </div>
           <h2 className="text-3xl font-extrabold tracking-tight">System Operations Dashboard</h2>
-          <p className="text-xs text-slate-300">Live monitoring of revenue metrics, appointments, and client analytics.</p>
+          <p className="text-xs text-slate-300">Live monitoring of revenue metrics in INR (₹), appointments, and client analytics.</p>
         </div>
       </div>
 
-      {/* 8 Metric KPI Cards Grid */}
+      {/* 4 Metric KPI Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs flex items-center justify-between transition-colors">
           <div>
             <p className="text-xs text-slate-400 font-semibold uppercase">Total Customers</p>
-            <h3 className="text-3xl font-black text-slate-900 mt-1">{kpis.total_customers}</h3>
+            <h3 className="text-3xl font-black text-slate-900 dark:text-slate-100 mt-1">{kpis.total_customers}</h3>
           </div>
-          <div className="w-12 h-12 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center">
+          <div className="w-12 h-12 bg-teal-50 dark:bg-teal-950 text-teal-600 dark:text-teal-400 rounded-2xl flex items-center justify-center">
             <Users className="w-6 h-6" />
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs flex items-center justify-between transition-colors">
           <div>
             <p className="text-xs text-slate-400 font-semibold uppercase">Total Registered Pets</p>
-            <h3 className="text-3xl font-black text-slate-900 mt-1">{kpis.total_pets}</h3>
+            <h3 className="text-3xl font-black text-slate-900 dark:text-slate-100 mt-1">{kpis.total_pets}</h3>
           </div>
-          <div className="w-12 h-12 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center">
+          <div className="w-12 h-12 bg-sky-50 dark:bg-sky-950 text-sky-600 dark:text-sky-400 rounded-2xl flex items-center justify-center">
             <Dog className="w-6 h-6" />
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs flex items-center justify-between transition-colors">
           <div>
             <p className="text-xs text-slate-400 font-semibold uppercase">Today's Appointments</p>
-            <h3 className="text-3xl font-black text-slate-900 mt-1">{kpis.today_appointments}</h3>
+            <h3 className="text-3xl font-black text-slate-900 dark:text-slate-100 mt-1">{kpis.today_appointments}</h3>
           </div>
-          <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center">
+          <div className="w-12 h-12 bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 rounded-2xl flex items-center justify-center">
             <Calendar className="w-6 h-6" />
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs flex items-center justify-between transition-colors">
           <div>
             <p className="text-xs text-slate-400 font-semibold uppercase">Monthly Revenue</p>
-            <h3 className="text-3xl font-black text-teal-700 mt-1">${kpis.monthly_revenue?.toFixed(2)}</h3>
+            <h3 className="text-2xl sm:text-3xl font-black text-teal-700 dark:text-teal-400 mt-1">{formatCurrency(kpis.monthly_revenue)}</h3>
           </div>
-          <div className="w-12 h-12 bg-teal-100 text-teal-800 rounded-2xl flex items-center justify-center font-bold">
-            <DollarSign className="w-6 h-6" />
+          <div className="w-12 h-12 bg-teal-100 dark:bg-teal-900/60 text-teal-800 dark:text-teal-200 rounded-2xl flex items-center justify-center font-bold">
+            <IndianRupee className="w-6 h-6" />
           </div>
         </div>
       </div>
@@ -99,13 +100,13 @@ const AdminDashboard = () => {
       {/* Analytics Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Revenue Trend Chart */}
-        <div className="lg:col-span-2 bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-xs space-y-4">
+        <div className="lg:col-span-2 bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
           <div className="flex justify-between items-center">
             <div>
-              <h3 className="font-bold text-lg text-slate-900">Revenue Analytics</h3>
-              <p className="text-xs text-slate-400">Daily gross revenue over recent period</p>
+              <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100">Revenue Analytics</h3>
+              <p className="text-xs text-slate-400">Daily gross revenue in INR (₹)</p>
             </div>
-            <Link to="/admin/reports" className="text-xs font-bold text-teal-600 hover:underline flex items-center space-x-1">
+            <Link to="/admin/reports" className="text-xs font-bold text-teal-600 dark:text-teal-400 hover:underline flex items-center space-x-1">
               <span>Detailed Report</span>
               <ArrowUpRight className="w-4 h-4" />
             </Link>
@@ -117,6 +118,7 @@ const AdminDashboard = () => {
                 <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} />
                 <YAxis stroke="#94a3b8" fontSize={11} />
                 <Tooltip
+                  formatter={(val) => [formatCurrency(val), 'Revenue']}
                   contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '12px', color: '#fff', fontSize: '12px' }}
                 />
                 <Bar dataKey="revenue" fill="#0d9488" radius={[6, 6, 0, 0]} />
@@ -126,8 +128,8 @@ const AdminDashboard = () => {
         </div>
 
         {/* Appointment Status Pie Chart */}
-        <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-xs space-y-4">
-          <h3 className="font-bold text-lg text-slate-900">Status Distribution</h3>
+        <div className="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
+          <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100">Status Distribution</h3>
           <p className="text-xs text-slate-400">Breakdown by appointment status</p>
 
           <div className="h-52 w-full">
@@ -156,9 +158,9 @@ const AdminDashboard = () => {
               <div key={item.status} className="flex justify-between items-center">
                 <span className="flex items-center space-x-2">
                   <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: COLORS[idx % COLORS.length] }}></span>
-                  <span className="text-slate-600 font-medium">{item.status}</span>
+                  <span className="text-slate-600 dark:text-slate-300 font-medium">{item.status}</span>
                 </span>
-                <span className="font-bold text-slate-900">{item.count}</span>
+                <span className="font-bold text-slate-900 dark:text-slate-100">{item.count}</span>
               </div>
             ))}
           </div>
@@ -166,11 +168,11 @@ const AdminDashboard = () => {
       </div>
 
       {/* Popular Services Table */}
-      <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-xs space-y-4">
-        <h3 className="font-bold text-lg text-slate-900">Popular Services Performance</h3>
+      <div className="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
+        <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100">Popular Services Performance</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
+            <thead className="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700">
               <tr>
                 <th className="p-3">Service Name</th>
                 <th className="p-3">Category</th>
@@ -178,13 +180,13 @@ const AdminDashboard = () => {
                 <th className="p-3 text-right">Total Revenue</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
               {popularServices.map((srv, idx) => (
-                <tr key={idx} className="hover:bg-slate-50/60">
-                  <td className="p-3 font-bold text-slate-900">{srv.service_name}</td>
-                  <td className="p-3 text-slate-500">{srv.category}</td>
-                  <td className="p-3 font-bold text-teal-700">{srv.bookings_count} bookings</td>
-                  <td className="p-3 text-right font-extrabold text-slate-900">${srv.total_revenue.toFixed(2)}</td>
+                <tr key={idx} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/60">
+                  <td className="p-3 font-bold text-slate-900 dark:text-slate-100">{srv.service_name}</td>
+                  <td className="p-3 text-slate-500 dark:text-slate-400">{srv.category}</td>
+                  <td className="p-3 font-bold text-teal-700 dark:text-teal-400">{srv.bookings_count} bookings</td>
+                  <td className="p-3 text-right font-extrabold text-slate-900 dark:text-slate-100">{formatCurrency(srv.total_revenue)}</td>
                 </tr>
               ))}
             </tbody>

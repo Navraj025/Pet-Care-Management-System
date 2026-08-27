@@ -16,9 +16,9 @@ const ContactPage = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
       <div className="text-center max-w-2xl mx-auto space-y-3">
-        <h1 className="text-xs font-bold text-teal-600 uppercase tracking-widest">Get In Touch</h1>
-        <h2 className="text-4xl font-extrabold text-slate-900">Contact & Support</h2>
-        <p className="text-slate-600 text-sm">
+        <h1 className="text-xs font-bold text-teal-600 dark:text-teal-400 uppercase tracking-widest">Get In Touch</h1>
+        <h2 className="text-4xl font-extrabold text-slate-900 dark:text-slate-100">Contact & Support</h2>
+        <p className="text-slate-600 dark:text-slate-400 text-sm">
           Have questions about your pet's appointment, veterinary services, or system architecture? Reach out to us.
         </p>
       </div>
@@ -78,70 +78,70 @@ const ContactPage = () => {
           </div>
 
           {/* Central Healthcare Facility Info */}
-          <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-3 text-xs">
-            <h4 className="font-bold text-slate-900 text-sm">Central Veterinary Healthcare Center</h4>
-            <p className="text-slate-500">124 Healthcare Boulevard, Suite 400, Tech City</p>
-            <p className="text-slate-400">Operating Hours: Mon - Sat (09:00 AM - 06:00 PM)</p>
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3 text-xs transition-colors">
+            <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm">Central Veterinary Healthcare Center</h4>
+            <p className="text-slate-500 dark:text-slate-400">124 Healthcare Boulevard, Suite 400, Tech City</p>
+            <p className="text-slate-400 dark:text-slate-400">Operating Hours: Mon - Sat (09:00 AM - 06:00 PM)</p>
           </div>
         </div>
 
         {/* Right Side: Contact Form */}
-        <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-xs">
+        <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
           {submitted ? (
             <div className="py-12 text-center space-y-4">
               <CheckCircle2 className="w-16 h-16 text-emerald-500 mx-auto" />
-              <h3 className="text-2xl font-bold text-slate-900">Message Dispatched!</h3>
-              <p className="text-xs text-slate-500 max-w-sm mx-auto">
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Message Dispatched!</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
                 Thank you for contacting Smart Pet Care. Your message has been routed directly to the developer & clinic desk.
               </p>
               <button
                 onClick={() => setSubmitted(false)}
-                className="text-xs font-bold text-teal-600 hover:text-teal-700"
+                className="text-xs font-bold text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300"
               >
                 Send another message
               </button>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
-              <h3 className="font-bold text-lg text-slate-900 mb-4">Send a Direct Message</h3>
+              <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100 mb-4">Send a Direct Message</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Your Name</label>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Your Name</label>
                   <input
                     type="text"
                     required
                     placeholder="Jane Doe"
-                    className="w-full px-3.5 py-2.5 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 text-xs border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Email Address</label>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Email Address</label>
                   <input
                     type="email"
                     required
                     placeholder="jane@example.com"
-                    className="w-full px-3.5 py-2.5 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 text-xs border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Subject</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Subject</label>
                 <input
                   type="text"
                   required
                   placeholder="Appointment inquiry / Feedback"
-                  className="w-full px-3.5 py-2.5 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                  className="w-full px-3.5 py-2.5 text-xs border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Message</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Message</label>
                 <textarea
                   rows="4"
                   required
                   placeholder="Write your query here..."
-                  className="w-full px-3.5 py-2.5 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                  className="w-full px-3.5 py-2.5 text-xs border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
                 ></textarea>
               </div>
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 // Layouts
 import PublicLayout from './layouts/PublicLayout';
@@ -52,76 +53,78 @@ import AdminSettingsPage from './pages/admin/AdminSettingsPage';
 
 function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <ToastProvider>
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<PublicLayout />}>
-              <Route index element={<LandingPage />} />
-              <Route path="about" element={<AboutPage />} />
-              <Route path="services" element={<ServicesPage />} />
-              <Route path="contact" element={<ContactPage />} />
-              <Route path="login" element={<LoginPage />} />
-              <Route path="register" element={<RegisterPage />} />
-              <Route path="forgot-password" element={<ForgotPasswordPage />} />
-            </Route>
+    <ThemeProvider>
+      <BrowserRouter>
+        <AuthProvider>
+          <ToastProvider>
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<PublicLayout />}>
+                <Route index element={<LandingPage />} />
+                <Route path="about" element={<AboutPage />} />
+                <Route path="services" element={<ServicesPage />} />
+                <Route path="contact" element={<ContactPage />} />
+                <Route path="login" element={<LoginPage />} />
+                <Route path="register" element={<RegisterPage />} />
+                <Route path="forgot-password" element={<ForgotPasswordPage />} />
+              </Route>
 
-            {/* Customer Routes */}
-            <Route
-              path="/customer"
-              element={<DashboardLayout allowedRoles={['CUSTOMER']} title="Customer Portal" />}
-            >
-              <Route path="dashboard" element={<CustomerDashboard />} />
-              <Route path="pets" element={<MyPetsPage />} />
-              <Route path="pets/:id" element={<PetDetailPage />} />
-              <Route path="book-appointment" element={<BookAppointmentWizard />} />
-              <Route path="appointments" element={<MyAppointmentsPage />} />
-              <Route path="medical-records" element={<MedicalRecordsPage />} />
-              <Route path="vaccinations" element={<VaccinationsPage />} />
-              <Route path="payments" element={<PaymentsInvoicesPage />} />
-              <Route path="invoices/:id" element={<InvoiceViewPage />} />
-              <Route path="notifications" element={<NotificationsPage />} />
-              <Route path="reviews" element={<ReviewsPage />} />
-              <Route path="profile" element={<UserProfilePage />} />
-            </Route>
+              {/* Customer Routes */}
+              <Route
+                path="/customer"
+                element={<DashboardLayout allowedRoles={['CUSTOMER']} title="Customer Portal" />}
+              >
+                <Route path="dashboard" element={<CustomerDashboard />} />
+                <Route path="pets" element={<MyPetsPage />} />
+                <Route path="pets/:id" element={<PetDetailPage />} />
+                <Route path="book-appointment" element={<BookAppointmentWizard />} />
+                <Route path="appointments" element={<MyAppointmentsPage />} />
+                <Route path="medical-records" element={<MedicalRecordsPage />} />
+                <Route path="vaccinations" element={<VaccinationsPage />} />
+                <Route path="payments" element={<PaymentsInvoicesPage />} />
+                <Route path="invoices/:id" element={<InvoiceViewPage />} />
+                <Route path="notifications" element={<NotificationsPage />} />
+                <Route path="reviews" element={<ReviewsPage />} />
+                <Route path="profile" element={<UserProfilePage />} />
+              </Route>
 
-            {/* Staff Routes */}
-            <Route
-              path="/staff"
-              element={<DashboardLayout allowedRoles={['STAFF', 'ADMIN']} title="Staff & Vet Portal" />}
-            >
-              <Route path="dashboard" element={<StaffDashboard />} />
-              <Route path="appointments" element={<StaffAppointmentsPage />} />
-              <Route path="pets" element={<StaffPetsPage />} />
-              <Route path="medical-records" element={<StaffMedicalRecordsPage />} />
-              <Route path="vaccinations" element={<StaffVaccinationsPage />} />
-              <Route path="availability" element={<StaffAvailabilityPage />} />
-              <Route path="profile" element={<UserProfilePage />} />
-            </Route>
+              {/* Staff Routes */}
+              <Route
+                path="/staff"
+                element={<DashboardLayout allowedRoles={['STAFF', 'ADMIN']} title="Staff & Vet Portal" />}
+              >
+                <Route path="dashboard" element={<StaffDashboard />} />
+                <Route path="appointments" element={<StaffAppointmentsPage />} />
+                <Route path="pets" element={<StaffPetsPage />} />
+                <Route path="medical-records" element={<StaffMedicalRecordsPage />} />
+                <Route path="vaccinations" element={<StaffVaccinationsPage />} />
+                <Route path="availability" element={<StaffAvailabilityPage />} />
+                <Route path="profile" element={<UserProfilePage />} />
+              </Route>
 
-            {/* Admin Routes */}
-            <Route
-              path="/admin"
-              element={<DashboardLayout allowedRoles={['ADMIN']} title="Admin Operations Portal" />}
-            >
-              <Route path="dashboard" element={<AdminDashboard />} />
-              <Route path="customers" element={<AdminCustomersPage />} />
-              <Route path="staff" element={<AdminStaffPage />} />
-              <Route path="pets" element={<StaffPetsPage />} />
-              <Route path="services" element={<AdminServicesPage />} />
-              <Route path="appointments" element={<AdminAppointmentsPage />} />
-              <Route path="availability" element={<StaffAvailabilityPage />} />
-              <Route path="payments" element={<PaymentsInvoicesPage />} />
-              <Route path="reports" element={<AdminReportsPage />} />
-              <Route path="audit-logs" element={<AdminAuditLogsPage />} />
-              <Route path="settings" element={<AdminSettingsPage />} />
-              <Route path="profile" element={<UserProfilePage />} />
-            </Route>
-          </Routes>
-        </ToastProvider>
-      </AuthProvider>
-    </BrowserRouter>
+              {/* Admin Routes */}
+              <Route
+                path="/admin"
+                element={<DashboardLayout allowedRoles={['ADMIN']} title="Admin Operations Portal" />}
+              >
+                <Route path="dashboard" element={<AdminDashboard />} />
+                <Route path="customers" element={<AdminCustomersPage />} />
+                <Route path="staff" element={<AdminStaffPage />} />
+                <Route path="pets" element={<StaffPetsPage />} />
+                <Route path="services" element={<AdminServicesPage />} />
+                <Route path="appointments" element={<AdminAppointmentsPage />} />
+                <Route path="availability" element={<StaffAvailabilityPage />} />
+                <Route path="payments" element={<PaymentsInvoicesPage />} />
+                <Route path="reports" element={<AdminReportsPage />} />
+                <Route path="audit-logs" element={<AdminAuditLogsPage />} />
+                <Route path="settings" element={<AdminSettingsPage />} />
+                <Route path="profile" element={<UserProfilePage />} />
+              </Route>
+            </Routes>
+          </ToastProvider>
+        </AuthProvider>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

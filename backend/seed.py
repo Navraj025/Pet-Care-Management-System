@@ -3,7 +3,7 @@ import random
 from app.database import SessionLocal, Base, engine
 from app.models import (
     User, UserRole, Customer, Staff, Pet, Service,
-    Appointment, AppointmentStatus, MedicalRecord, Vaccination,
+    Appointment, AppointmentStatus, AppointmentService, MedicalRecord, Vaccination,
     VaccinationStatus, Availability, Payment, PaymentStatus, PaymentMethod,
     Invoice, Notification, Review, AuditLog, SystemSetting
 )
@@ -22,8 +22,8 @@ def seed_database(drop_existing: bool = True):
         settings_data = [
             ("clinic_name", "Smart Pet Care & Veterinary Center"),
             ("clinic_email", "contact@smartpetcare.com"),
-            ("clinic_phone", "+1 (800) 555-PETS"),
-            ("clinic_address", "124 Healthcare Boulevard, Suite 400, Tech City"),
+            ("clinic_phone", "+91 98765 43210"),
+            ("clinic_address", "124 Healthcare Boulevard, Suite 400, Tech City, MH"),
             ("tax_rate_percent", "5.0"),
             ("cancellation_policy_hours", "2")
         ]
@@ -39,7 +39,7 @@ def seed_database(drop_existing: bool = True):
             email="admin@petcare.com",
             password_hash=password_hash,
             full_name="Dr. Arthur Pendelton (Admin)",
-            phone="+1 555-0100",
+            phone="+91 98765 00000",
             role=UserRole.ADMIN,
             is_active=True
         )
@@ -48,9 +48,9 @@ def seed_database(drop_existing: bool = True):
 
         # Staff (3 Veterinarians & Groomers)
         staff_data = [
-            ("dr.smith@petcare.com", "Dr. Robert Smith, DVM", "+1 555-0101", "Senior Veterinarian & Surgeon", "Specializes in canine internal medicine and orthopedic surgeries."),
-            ("dr.emily@petcare.com", "Dr. Emily Watson", "+1 555-0102", "Feline & Exotic Pet Specialist", "Focuses on feline wellness, nutrition, and small mammal care."),
-            ("groomer.alex@petcare.com", "Alex Rivera", "+1 555-0103", "Master Pet Stylist & Groomer", "Certified professional groomer with 8+ years of styling experience.")
+            ("dr.smith@petcare.com", "Dr. Robert Smith, DVM", "+91 98765 00001", "Senior Veterinarian & Surgeon", "Specializes in canine internal medicine and orthopedic surgeries."),
+            ("dr.emily@petcare.com", "Dr. Emily Watson", "+91 98765 00002", "Feline & Exotic Pet Specialist", "Focuses on feline wellness, nutrition, and small mammal care."),
+            ("groomer.alex@petcare.com", "Alex Rivera", "+91 98765 00003", "Master Pet Stylist & Groomer", "Certified professional groomer with 8+ years of styling experience.")
         ]
         staff_list = []
         for email, name, phone, spec, bio in staff_data:
@@ -75,16 +75,16 @@ def seed_database(drop_existing: bool = True):
 
         # Customers (10 Owners)
         customer_raw = [
-            ("customer@petcare.com", "Main Demo Owner", "+1 555-0200", "742 Evergreen Terrace, Springfield", "Emergency: +1 555-9999"),
-            ("john.doe@gmail.com", "John Doe", "+1 555-0201", "123 Elm Street, Cityville", "Wife: +1 555-8888"),
-            ("sarah.m@gmail.com", "Sarah Miller", "+1 555-0202", "456 Oak Avenue, Metropolis", "Brother: +1 555-7777"),
-            ("david.k@gmail.com", "David Kim", "+1 555-0203", "789 Pine Road, Gotham", "Self: +1 555-0203"),
-            ("lisa.chen@yahoo.com", "Lisa Chen", "+1 555-0204", "321 Maple Lane, Star City", "Sister: +1 555-6666"),
-            ("michael.b@outlook.com", "Michael Brown", "+1 555-0205", "654 Birch Boulevard, Central City", "Emergency: +1 555-5555"),
-            ("emma.wilson@hotmail.com", "Emma Wilson", "+1 555-0206", "987 Cedar Drive, Coast City", "Mother: +1 555-4444"),
-            ("james.taylor@gmail.com", "James Taylor", "+1 555-0207", "147 Spruce Street, Bludhaven", "Friend: +1 555-3333"),
-            ("olivia.davis@yahoo.com", "Olivia Davis", "+1 555-0208", "258 Willow Way, Keystone", "Husband: +1 555-2222"),
-            ("daniel.white@gmail.com", "Daniel White", "+1 555-0209", "369 Ash Court, Smallville", "Father: +1 555-1111")
+            ("customer@petcare.com", "Main Demo Owner", "+91 98765 00010", "742 Evergreen Terrace, Mumbai", "Emergency: +91 98765 99999"),
+            ("john.doe@gmail.com", "John Doe", "+91 98765 00011", "123 Elm Street, Bengaluru", "Wife: +91 98765 88888"),
+            ("sarah.m@gmail.com", "Sarah Miller", "+91 98765 00012", "456 Oak Avenue, Delhi", "Brother: +91 98765 77777"),
+            ("david.k@gmail.com", "David Kim", "+91 98765 00013", "789 Pine Road, Pune", "Self: +91 98765 00013"),
+            ("lisa.chen@yahoo.com", "Lisa Chen", "+91 98765 00014", "321 Maple Lane, Hyderabad", "Sister: +91 98765 66666"),
+            ("michael.b@outlook.com", "Michael Brown", "+91 98765 00015", "654 Birch Boulevard, Chennai", "Emergency: +91 98765 55555"),
+            ("emma.wilson@hotmail.com", "Emma Wilson", "+91 98765 00016", "987 Cedar Drive, Kolkata", "Mother: +91 98765 44444"),
+            ("james.taylor@gmail.com", "James Taylor", "+91 98765 00017", "147 Spruce Street, Ahmedabad", "Friend: +91 98765 33333"),
+            ("olivia.davis@yahoo.com", "Olivia Davis", "+91 98765 00018", "258 Willow Way, Jaipur", "Husband: +91 98765 22222"),
+            ("daniel.white@gmail.com", "Daniel White", "+91 98765 00019", "369 Ash Court, Chandigarh", "Father: +91 98765 11111")
         ]
         customers_list = []
         for email, name, phone, addr, emerg in customer_raw:
@@ -97,16 +97,16 @@ def seed_database(drop_existing: bool = True):
             db.commit()
             customers_list.append(cust)
 
-        # 3. Services
+        # 3. Services (Prices in INR ₹)
         services_raw = [
-            ("General Health Checkup", "Veterinary", "Comprehensive physical examination, vitals check, and general health report.", 30, 65.0),
-            ("Veterinary Consultation", "Veterinary", "In-depth clinical assessment for sick or injured pets with treatment plan.", 45, 95.0),
-            ("Rabies Vaccination", "Vaccination", "Standard anti-rabies immunizing vaccine for dogs and cats.", 15, 35.0),
-            ("DHPP Core Vaccine", "Vaccination", "5-in-1 combination vaccine covering Distemper, Hepatitis, Parainfluenza, Parvovirus.", 15, 45.0),
-            ("Dental Cleaning & Scaling", "Dental", "Ultrasonic dental scaling, polishing, and oral hygiene treatment.", 60, 150.0),
-            ("Full Grooming Package", "Grooming", "Breed-specific haircut, bath, blow dry, nail clipping, and ear cleaning.", 60, 80.0),
-            ("Bath & De-Shedding Dry", "Grooming", "Hypoallergenic shampoo bath, de-shedding brush out, and coat blow dry.", 45, 55.0),
-            ("Nail Trimming & Paw Care", "Grooming", "Precision claw trimming, filing, and paw pad soothing balm treatment.", 20, 25.0)
+            ("General Health Checkup", "Veterinary", "Comprehensive physical examination, vitals check, and general health report.", 30, 4250.0),
+            ("Veterinary Consultation", "Veterinary", "In-depth clinical assessment for sick or injured pets with treatment plan.", 45, 6800.0),
+            ("Rabies Vaccination", "Vaccination", "Standard anti-rabies immunizing vaccine for dogs and cats.", 15, 3400.0),
+            ("DHPP Core Vaccine", "Vaccination", "5-in-1 combination vaccine covering Distemper, Hepatitis, Parainfluenza, Parvovirus.", 15, 5100.0),
+            ("Dental Cleaning & Scaling", "Dental", "Ultrasonic dental scaling, polishing, and oral hygiene treatment.", 60, 12750.0),
+            ("Full Grooming Package", "Grooming", "Breed-specific haircut, bath, blow dry, nail clipping, and ear cleaning.", 60, 8500.0),
+            ("Bath & De-Shedding Dry", "Grooming", "Hypoallergenic shampoo bath, de-shedding brush out, and coat blow dry.", 45, 5100.0),
+            ("Nail Trimming & Paw Care", "Grooming", "Precision claw trimming, filing, and paw pad soothing balm treatment.", 20, 2550.0)
         ]
         service_list = []
         for name, cat, desc, dur, price in services_raw:
@@ -161,28 +161,50 @@ def seed_database(drop_existing: bool = True):
             past_date = today - timedelta(days=random.randint(2, 40))
             pet = random.choice(pet_list)
             staff = random.choice(staff_list)
-            srv = random.choice(service_list)
+            # Pick 1 or 2 services for multi-service demonstration
+            selected_srvs = random.sample(service_list, k=2 if i % 3 == 0 else 1)
+            primary_srv = selected_srvs[0]
+            tot_duration = sum(s.duration_minutes for s in selected_srvs)
+            tot_subtotal = sum(s.price for s in selected_srvs)
+
+            sh = 10 + (i % 6)
+            start_time_str = f"{sh:02d}:00"
+            end_min = tot_duration
+            eh = sh + (end_min // 60)
+            em = end_min % 60
+            end_time_str = f"{eh:02d}:{em:02d}"
 
             appt = Appointment(
                 customer_id=pet.customer_id,
                 pet_id=pet.id,
                 staff_id=staff.id,
-                service_id=srv.id,
+                service_id=primary_srv.id,
                 appointment_date=past_date,
-                start_time="10:00",
-                end_time="10:30",
+                start_time=start_time_str,
+                end_time=end_time_str,
                 status=AppointmentStatus.COMPLETED,
                 notes="Routine follow-up completed successfully."
             )
             db.add(appt)
             db.commit()
 
+            # Add AppointmentService records
+            for srv in selected_srvs:
+                appt_srv = AppointmentService(
+                    appointment_id=appt.id,
+                    service_id=srv.id,
+                    price_at_booking=srv.price,
+                    duration_minutes=srv.duration_minutes
+                )
+                db.add(appt_srv)
+            db.commit()
+
             # Payment
-            tax = round(srv.price * 0.05, 2)
-            tot = round(srv.price + tax, 2)
+            tax = round(tot_subtotal * 0.05, 2)
+            tot = round(tot_subtotal + tax, 2)
             payment = Payment(
                 appointment_id=appt.id,
-                amount=srv.price,
+                amount=tot_subtotal,
                 tax=tax,
                 discount=0.0,
                 final_amount=tot,
@@ -207,7 +229,7 @@ def seed_database(drop_existing: bool = True):
             db.commit()
 
             # Medical Record for consultation/health check
-            if srv.category in ["Veterinary", "Dental"]:
+            if any(s.category in ["Veterinary", "Dental"] for s in selected_srvs):
                 med = MedicalRecord(
                     pet_id=pet.id,
                     staff_id=staff.id,
@@ -230,7 +252,7 @@ def seed_database(drop_existing: bool = True):
                 rev = Review(
                     appointment_id=appt.id,
                     customer_id=pet.customer_id,
-                    service_id=srv.id,
+                    service_id=primary_srv.id,
                     rating=random.choice([4, 5]),
                     comment=f"Excellent service by {staff.user.full_name}! {pet.name} was treated with care."
                 )
@@ -242,27 +264,47 @@ def seed_database(drop_existing: bool = True):
             future_date = today + timedelta(days=random.randint(1, 10))
             pet = pet_list[i]
             staff = staff_list[i % len(staff_list)]
-            srv = service_list[i % len(service_list)]
+            selected_srvs = [service_list[i % len(service_list)], service_list[(i + 2) % len(service_list)]] if i % 2 == 1 else [service_list[i % len(service_list)]]
+            primary_srv = selected_srvs[0]
+            tot_duration = sum(s.duration_minutes for s in selected_srvs)
+            tot_subtotal = sum(s.price for s in selected_srvs)
+
+            sh = 10 + i
+            start_time_str = f"{sh:02d}:00"
+            eh = sh + (tot_duration // 60)
+            em = tot_duration % 60
+            end_time_str = f"{eh:02d}:{em:02d}"
 
             appt = Appointment(
                 customer_id=pet.customer_id,
                 pet_id=pet.id,
                 staff_id=staff.id,
-                service_id=srv.id,
+                service_id=primary_srv.id,
                 appointment_date=future_date,
-                start_time=f"{10 + i}:00",
-                end_time=f"{10 + i}:30",
+                start_time=start_time_str,
+                end_time=end_time_str,
                 status=AppointmentStatus.CONFIRMED if i % 2 == 0 else AppointmentStatus.PENDING,
                 notes="Standard appointment booking."
             )
             db.add(appt)
             db.commit()
 
-            tax = round(srv.price * 0.05, 2)
-            tot = round(srv.price + tax, 2)
+            # Add AppointmentService records
+            for srv in selected_srvs:
+                appt_srv = AppointmentService(
+                    appointment_id=appt.id,
+                    service_id=srv.id,
+                    price_at_booking=srv.price,
+                    duration_minutes=srv.duration_minutes
+                )
+                db.add(appt_srv)
+            db.commit()
+
+            tax = round(tot_subtotal * 0.05, 2)
+            tot = round(tot_subtotal + tax, 2)
             payment = Payment(
                 appointment_id=appt.id,
-                amount=srv.price,
+                amount=tot_subtotal,
                 tax=tax,
                 discount=0.0,
                 final_amount=tot,

@@ -22,7 +22,7 @@ class Appointment(Base):
     customer_id = Column(Integer, ForeignKey("customers.id", ondelete="CASCADE"), nullable=False)
     pet_id = Column(Integer, ForeignKey("pets.id", ondelete="CASCADE"), nullable=False)
     staff_id = Column(Integer, ForeignKey("staff.id", ondelete="CASCADE"), nullable=False)
-    service_id = Column(Integer, ForeignKey("services.id", ondelete="RESTRICT"), nullable=False)
+    service_id = Column(Integer, ForeignKey("services.id", ondelete="SET NULL"), nullable=True)
     
     appointment_date = Column(Date, nullable=False)
     start_time = Column(String(10), nullable=False) # e.g. "10:00"
@@ -40,6 +40,7 @@ class Appointment(Base):
     pet = relationship("Pet", back_populates="appointments")
     staff = relationship("Staff", back_populates="appointments")
     service = relationship("Service", back_populates="appointments")
+    appointment_services = relationship("AppointmentService", back_populates="appointment", cascade="all, delete-orphan")
     
     payment = relationship("Payment", back_populates="appointment", uselist=False, cascade="all, delete-orphan")
     invoice = relationship("Invoice", back_populates="appointment", uselist=False, cascade="all, delete-orphan")

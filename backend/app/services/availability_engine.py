@@ -1,5 +1,5 @@
 from datetime import datetime, date, time, timedelta
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from sqlalchemy.orm import Session
 
 from app.models.staff import Staff
@@ -12,14 +12,27 @@ from app.schemas.availability import TimeSlot
 def calculate_available_slots(
     db: Session,
     staff_id: int,
-    service_id: int,
-    target_date: date
+    service_id: Optional[int] = None,
+    target_date: date = date.today(),
+    service_ids: Optional[List[int]] = None
 ) -> List[TimeSlot]:
     staff = db.query(Staff).filter(Staff.id == staff_id).first()
-    service = db.query(Service).filter(Service.id == service_id).first()
     
-    if not staff or not service or not staff.is_available:
+    # Resolve services & combined duration
+    services = []
+    if service_ids:
+        services = db.query(Service).filter(Service.id.in_(service_ids), Service.is_active == True).all()
+    elif service_id:
+        srv = db.query(Service).filter(Service.id == service_id, Service.is_active == True).first()
+        if srv:
+            services = [srv]
+
+    if not staff or not staff.is_available or not services:
         return []
+
+    total_duration_minutes = sum(s.duration_minutes for s in services)
+    if total_duration_minutes <= 0:
+        total_duration_minutes = 30
 
     # 1. Check Day of Week (e.g. "Mon,Tue,Wed,Thu,Fri,Sat")
     day_name = target_date.strftime("%a") # e.g., "Mon"
@@ -66,8 +79,8 @@ def calculate_available_slots(
         booked_end = datetime.combine(target_date, time(a_eh, a_em))
         booked_intervals.append((booked_start, booked_end))
 
-    # 4. Generate Slots based on Service Duration (e.g. 30 min, 45 min, 60 min)
-    duration = timedelta(minutes=service.duration_minutes)
+    # 4. Generate Slots based on Combined Service Duration
+    duration = timedelta(minutes=total_duration_minutes)
     step = timedelta(minutes=30) # 30 min slot interval grid
 
     slots: List[TimeSlot] = []

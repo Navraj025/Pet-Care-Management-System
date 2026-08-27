@@ -7,22 +7,22 @@ const StatusBadge = ({ status }) => {
       case 'PAID':
       case 'COMPLETED':
       case 'ACTIVE':
-        return 'bg-emerald-100 text-emerald-800 border-emerald-300';
+        return 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800';
       case 'PENDING':
       case 'UPCOMING':
       case 'CHECKED_IN':
-        return 'bg-amber-100 text-amber-800 border-amber-300';
+        return 'bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-800';
       case 'IN_PROGRESS':
-        return 'bg-sky-100 text-sky-800 border-sky-300';
+        return 'bg-sky-100 dark:bg-sky-950/80 text-sky-800 dark:text-sky-300 border-sky-300 dark:border-sky-800';
       case 'CANCELLED':
       case 'FAILED':
       case 'OVERDUE':
       case 'NO_SHOW':
-        return 'bg-rose-100 text-rose-800 border-rose-300';
+        return 'bg-rose-100 dark:bg-rose-950/80 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-800';
       case 'REFUNDED':
-        return 'bg-slate-100 text-slate-800 border-slate-300';
+        return 'bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border-slate-300 dark:border-slate-700';
       default:
-        return 'bg-slate-100 text-slate-700 border-slate-200';
+        return 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700';
     }
   };
 

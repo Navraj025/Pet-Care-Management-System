@@ -48,52 +48,52 @@ const StaffDashboard = () => {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs flex items-center justify-between transition-colors">
           <div>
             <p className="text-xs text-slate-400 font-semibold uppercase">Today's Schedule</p>
-            <h3 className="text-3xl font-black text-slate-900 mt-1">{todayAppts.length}</h3>
+            <h3 className="text-3xl font-black text-slate-900 dark:text-slate-100 mt-1">{todayAppts.length}</h3>
           </div>
-          <div className="w-12 h-12 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center">
+          <div className="w-12 h-12 bg-teal-50 dark:bg-teal-950 text-teal-600 dark:text-teal-400 rounded-2xl flex items-center justify-center">
             <Calendar className="w-6 h-6" />
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs flex items-center justify-between transition-colors">
           <div>
             <p className="text-xs text-slate-400 font-semibold uppercase">Total Assigned</p>
-            <h3 className="text-3xl font-black text-slate-900 mt-1">{appointments.length}</h3>
+            <h3 className="text-3xl font-black text-slate-900 dark:text-slate-100 mt-1">{appointments.length}</h3>
           </div>
-          <div className="w-12 h-12 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center">
+          <div className="w-12 h-12 bg-sky-50 dark:bg-sky-950 text-sky-600 dark:text-sky-400 rounded-2xl flex items-center justify-center">
             <Clock className="w-6 h-6" />
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs flex items-center justify-between transition-colors">
           <div>
             <p className="text-xs text-slate-400 font-semibold uppercase">Patients Handled</p>
-            <h3 className="text-3xl font-black text-slate-900 mt-1">{pets.length}</h3>
+            <h3 className="text-3xl font-black text-slate-900 dark:text-slate-100 mt-1">{pets.length}</h3>
           </div>
-          <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center">
+          <div className="w-12 h-12 bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 rounded-2xl flex items-center justify-center">
             <Dog className="w-6 h-6" />
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs flex items-center justify-between transition-colors">
           <div>
             <p className="text-xs text-slate-400 font-semibold uppercase">Vaccines Administered</p>
-            <h3 className="text-3xl font-black text-slate-900 mt-1">{vaccinations.length}</h3>
+            <h3 className="text-3xl font-black text-slate-900 dark:text-slate-100 mt-1">{vaccinations.length}</h3>
           </div>
-          <div className="w-12 h-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center">
+          <div className="w-12 h-12 bg-purple-50 dark:bg-purple-950 text-purple-600 dark:text-purple-400 rounded-2xl flex items-center justify-center">
             <Syringe className="w-6 h-6" />
           </div>
         </div>
       </div>
 
       {/* Appointments List for Today */}
-      <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-xs space-y-4">
+      <div className="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
         <div className="flex justify-between items-center">
-          <h3 className="font-bold text-lg text-slate-900">Today's Patient Schedule</h3>
-          <Link to="/staff/appointments" className="text-xs font-bold text-teal-600 hover:underline">
+          <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100">Today's Patient Schedule</h3>
+          <Link to="/staff/appointments" className="text-xs font-bold text-teal-600 dark:text-teal-400 hover:underline">
             View All Appointments
           </Link>
         </div>
@@ -103,14 +103,14 @@ const StaffDashboard = () => {
         ) : (
           <div className="space-y-3">
             {todayAppts.map((appt) => (
-              <div key={appt.id} className="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex justify-between items-center text-xs">
+              <div key={appt.id} className="p-4 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700 flex justify-between items-center text-xs transition-colors">
                 <div className="space-y-1">
                   <div className="flex items-center space-x-2">
-                    <span className="font-bold text-slate-900 text-sm">{appt.pet?.name} ({appt.pet?.species})</span>
+                    <span className="font-bold text-slate-900 dark:text-slate-100 text-sm">{appt.pet?.name} ({appt.pet?.species})</span>
                     <StatusBadge status={appt.status} />
                   </div>
-                  <p className="text-slate-500">Service: {appt.service?.name} • Time: {appt.start_time} - {appt.end_time}</p>
-                  <p className="text-[11px] text-slate-400">Owner: {appt.customer?.user?.full_name} ({appt.customer?.user?.phone})</p>
+                  <p className="text-slate-500 dark:text-slate-400">Service: {appt.service?.name} • Time: {appt.start_time} - {appt.end_time}</p>
+                  <p className="text-[11px] text-slate-400 dark:text-slate-400">Owner: {appt.customer?.user?.full_name} ({appt.customer?.user?.phone})</p>
                 </div>
 
                 <Link

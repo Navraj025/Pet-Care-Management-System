@@ -54,62 +54,62 @@ const AdminSettingsPage = () => {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <div>
-        <h2 className="text-2xl font-extrabold text-slate-900">System Configuration Settings</h2>
-        <p className="text-xs text-slate-500">Global business rules, clinic profile details, tax percentages, and policies</p>
+        <h2 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">System Configuration Settings</h2>
+        <p className="text-xs text-slate-500 dark:text-slate-400">Global business rules, clinic profile details, tax percentages, and policies</p>
       </div>
 
-      <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-xs">
+      <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
         <form onSubmit={handleSave} className="space-y-4 text-xs">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block font-semibold text-slate-700 mb-1">Clinic Center Name</label>
+              <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Clinic Center Name</label>
               <input
                 type="text"
                 value={settings.clinic_name}
                 onChange={(e) => setSettings({ ...settings, clinic_name: e.target.value })}
-                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                className="w-full px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
               />
             </div>
             <div>
-              <label className="block font-semibold text-slate-700 mb-1">Support Email</label>
+              <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Support Email</label>
               <input
                 type="email"
                 value={settings.clinic_email}
                 onChange={(e) => setSettings({ ...settings, clinic_email: e.target.value })}
-                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                className="w-full px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block font-semibold text-slate-700 mb-1">Phone Line</label>
+              <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Phone Line</label>
               <input
                 type="text"
                 value={settings.clinic_phone}
                 onChange={(e) => setSettings({ ...settings, clinic_phone: e.target.value })}
-                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                className="w-full px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
               />
             </div>
             <div>
-              <label className="block font-semibold text-slate-700 mb-1">Tax Percentage (%)</label>
+              <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Tax Percentage (%)</label>
               <input
                 type="number"
                 step="0.1"
                 value={settings.tax_rate_percent}
                 onChange={(e) => setSettings({ ...settings, tax_rate_percent: e.target.value })}
-                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                className="w-full px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
               />
             </div>
           </div>
 
           <div>
-            <label className="block font-semibold text-slate-700 mb-1">Facility Address</label>
+            <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Facility Address</label>
             <input
               type="text"
               value={settings.clinic_address}
               onChange={(e) => setSettings({ ...settings, clinic_address: e.target.value })}
-              className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
+              className="w-full px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
             />
           </div>
 

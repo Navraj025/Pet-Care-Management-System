@@ -42,18 +42,18 @@ const RegisterPage = () => {
 
   return (
     <div className="min-h-[85vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-6 bg-white p-8 sm:p-10 rounded-3xl border border-slate-200 shadow-xl">
+      <div className="max-w-md w-full space-y-6 bg-white dark:bg-slate-900 p-8 sm:p-10 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl transition-colors">
         <div className="text-center space-y-2">
           <div className="w-14 h-14 bg-teal-600 text-white rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-teal-500/20">
             <Heart className="w-7 h-7 fill-current" />
           </div>
-          <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">Create Owner Account</h2>
-          <p className="text-xs text-slate-500">Register to manage your pets and book appointments</p>
+          <h2 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">Create Owner Account</h2>
+          <p className="text-xs text-slate-500 dark:text-slate-400">Register to manage your pets and book appointments</p>
         </div>
 
         <form onSubmit={handleRegister} className="space-y-3.5">
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">Full Name</label>
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Full Name</label>
             <div className="relative">
               <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
               <input
@@ -62,13 +62,13 @@ const RegisterPage = () => {
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Sarah Miller"
-                className="w-full pl-10 pr-3.5 py-2.5 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                className="w-full pl-10 pr-3.5 py-2.5 text-xs border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">Email Address</label>
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Email Address</label>
             <div className="relative">
               <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
               <input
@@ -77,14 +77,14 @@ const RegisterPage = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="sarah@example.com"
-                className="w-full pl-10 pr-3.5 py-2.5 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                className="w-full pl-10 pr-3.5 py-2.5 text-xs border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">Phone Number</label>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Phone Number</label>
               <div className="relative">
                 <Phone className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
                 <input
@@ -92,12 +92,12 @@ const RegisterPage = () => {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="+1 555-0199"
-                  className="w-full pl-9 pr-2 py-2.5 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                  className="w-full pl-9 pr-2 py-2.5 text-xs border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
                 />
               </div>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">Password</label>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Password</label>
               <div className="relative">
                 <Key className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
                 <input
@@ -106,14 +106,14 @@ const RegisterPage = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-9 pr-2 py-2.5 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                  className="w-full pl-9 pr-2 py-2.5 text-xs border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
                 />
               </div>
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">Residential Address</label>
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Residential Address</label>
             <div className="relative">
               <MapPin className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
               <input
@@ -121,7 +121,7 @@ const RegisterPage = () => {
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder="742 Evergreen Terrace"
-                className="w-full pl-10 pr-3.5 py-2.5 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                className="w-full pl-10 pr-3.5 py-2.5 text-xs border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none"
               />
             </div>
           </div>
@@ -142,9 +142,9 @@ const RegisterPage = () => {
           </button>
         </form>
 
-        <p className="text-center text-xs text-slate-500">
+        <p className="text-center text-xs text-slate-500 dark:text-slate-400">
           Already have an account?{' '}
-          <Link to="/login" className="font-bold text-teal-600 hover:underline">
+          <Link to="/login" className="font-bold text-teal-600 dark:text-teal-400 hover:underline">
             Login here
           </Link>
         </p>

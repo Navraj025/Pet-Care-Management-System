@@ -29,18 +29,20 @@ const AdminAppointmentsPage = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-extrabold text-slate-900">Master Appointments Directory</h2>
-        <p className="text-xs text-slate-500">Monitor all scheduled appointments, statuses, and assigned doctors</p>
+        <h2 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">Master Appointments Directory</h2>
+        <p className="text-xs text-slate-500 dark:text-slate-400">Monitor all scheduled appointments, multi-service bookings, statuses, and assigned doctors</p>
       </div>
 
-      <div className="flex justify-between items-center bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+      <div className="flex justify-between items-center bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
         <div className="flex gap-2">
           {['ALL', 'PENDING', 'CONFIRMED', 'COMPLETED', 'CANCELLED'].map((st) => (
             <button
               key={st}
               onClick={() => setStatusFilter(st)}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                statusFilter === st ? 'bg-teal-600 text-white shadow-sm' : 'bg-slate-100 text-slate-600'
+                statusFilter === st
+                  ? 'bg-teal-600 text-white shadow-sm'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               {st}
@@ -52,35 +54,43 @@ const AdminAppointmentsPage = () => {
       {loading ? (
         <div className="py-20 text-center text-slate-400 text-sm">Loading appointments...</div>
       ) : (
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden transition-colors">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
+              <thead className="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700">
                 <tr>
                   <th className="p-4">ID</th>
                   <th className="p-4">Date & Time</th>
                   <th className="p-4">Customer</th>
                   <th className="p-4">Pet</th>
-                  <th className="p-4">Service</th>
+                  <th className="p-4">Services</th>
                   <th className="p-4">Assigned Doctor</th>
                   <th className="p-4">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
-                {filtered.map((a) => (
-                  <tr key={a.id} className="hover:bg-slate-50/60">
-                    <td className="p-4 font-mono font-bold text-slate-400">#{a.id}</td>
-                    <td className="p-4 font-bold text-slate-900">
-                      {a.appointment_date} <br />
-                      <span className="text-[11px] font-normal text-teal-700">{a.start_time} - {a.end_time}</span>
-                    </td>
-                    <td className="p-4 text-slate-800 font-medium">{a.customer?.user?.full_name}</td>
-                    <td className="p-4 text-slate-800 font-semibold">{a.pet?.name}</td>
-                    <td className="p-4 font-semibold text-teal-800">{a.service?.name}</td>
-                    <td className="p-4 text-slate-600">{a.staff?.user?.full_name}</td>
-                    <td className="p-4"><StatusBadge status={a.status} /></td>
-                  </tr>
-                ))}
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                {filtered.map((a) => {
+                  const servicesList = a.appointment_services && a.appointment_services.length > 0
+                    ? a.appointment_services.map((as) => as.service?.name || 'Service')
+                    : a.service
+                    ? [a.service.name]
+                    : ['Veterinary Care'];
+
+                  return (
+                    <tr key={a.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/60 transition-colors">
+                      <td className="p-4 font-mono font-bold text-slate-400">#{a.id}</td>
+                      <td className="p-4 font-bold text-slate-900 dark:text-slate-100">
+                        {a.appointment_date} <br />
+                        <span className="text-[11px] font-normal text-teal-700 dark:text-teal-400">{a.start_time} - {a.end_time}</span>
+                      </td>
+                      <td className="p-4 text-slate-800 dark:text-slate-200 font-medium">{a.customer?.user?.full_name}</td>
+                      <td className="p-4 text-slate-800 dark:text-slate-200 font-semibold">{a.pet?.name}</td>
+                      <td className="p-4 font-semibold text-teal-800 dark:text-teal-300">{servicesList.join(', ')}</td>
+                      <td className="p-4 text-slate-600 dark:text-slate-300">{a.staff?.user?.full_name}</td>
+                      <td className="p-4"><StatusBadge status={a.status} /></td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

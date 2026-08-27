@@ -1,5 +1,5 @@
 from datetime import date
-from typing import List
+from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
@@ -16,12 +16,26 @@ router = APIRouter(prefix="/availability", tags=["Availability"])
 @router.get("/slots", response_model=List[TimeSlot])
 def get_available_time_slots(
     staff_id: int = Query(...),
-    service_id: int = Query(...),
     target_date: date = Query(...),
+    service_id: Optional[int] = Query(None),
+    service_ids: Optional[str] = Query(None),
     db: Session = Depends(get_db)
 ):
-    """Dynamically calculates non-conflicting time slots for a given staff, service & date."""
-    return calculate_available_slots(db, staff_id, service_id, target_date)
+    """Dynamically calculates non-conflicting time slots for a given staff, service(s) & date."""
+    parsed_ids = []
+    if service_ids:
+        try:
+            parsed_ids = [int(s.strip()) for s in service_ids.split(",") if s.strip()]
+        except ValueError:
+            parsed_ids = []
+
+    return calculate_available_slots(
+        db,
+        staff_id=staff_id,
+        service_id=service_id,
+        target_date=target_date,
+        service_ids=parsed_ids if parsed_ids else None
+    )
 
 
 @router.post("", response_model=AvailabilityOut)

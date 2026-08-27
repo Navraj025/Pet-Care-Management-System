@@ -79,5 +79,5 @@ def process_payment(
     db.commit()
     db.refresh(payment)
 
-    log_audit_action(db, current_user.id, "PROCESS_PAYMENT", "PAYMENT", payment.id, f"Payment of ${payment.final_amount:.2f} successful ({payment.transaction_id})")
+    log_audit_action(db, current_user.id, "PROCESS_PAYMENT", "PAYMENT", payment.id, f"Payment of ₹{payment.final_amount:.2f} successful ({payment.transaction_id})")
     return payment

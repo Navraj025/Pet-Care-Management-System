@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Clock, Dog, XCircle, CreditCard, PlusCircle } from 'lucide-react';
+import { Calendar, Clock, Dog, XCircle, CreditCard, PlusCircle, Check } from 'lucide-react';
 import API from '../../services/api';
 import StatusBadge from '../../components/StatusBadge';
 import { useToast } from '../../context/ToastContext';
 import MockPaymentModal from '../../components/MockPaymentModal';
+import { formatCurrency } from '../../utils/formatters';
 
 const MyAppointmentsPage = () => {
   const [appointments, setAppointments] = useState([]);
@@ -48,8 +49,8 @@ const MyAppointmentsPage = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-extrabold text-slate-900">My Appointments</h2>
-          <p className="text-xs text-slate-500">View upcoming bookings, cancel, or proceed with payment</p>
+          <h2 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">My Appointments</h2>
+          <p className="text-xs text-slate-500 dark:text-slate-400">View upcoming bookings, cancel, or proceed with payment</p>
         </div>
 
         <Link
@@ -64,10 +65,10 @@ const MyAppointmentsPage = () => {
       {loading ? (
         <div className="py-20 text-center text-slate-400 text-sm">Loading appointments...</div>
       ) : appointments.length === 0 ? (
-        <div className="bg-white p-12 rounded-3xl border border-slate-200 text-center space-y-3">
-          <Calendar className="w-12 h-12 text-slate-300 mx-auto" />
-          <h3 className="font-bold text-slate-800 text-base">No Appointments Found</h3>
-          <p className="text-xs text-slate-500 max-w-sm mx-auto">
+        <div className="bg-white dark:bg-slate-900 p-12 rounded-3xl border border-slate-200 dark:border-slate-800 text-center space-y-3 transition-colors">
+          <Calendar className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto" />
+          <h3 className="font-bold text-slate-800 dark:text-slate-200 text-base">No Appointments Found</h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
             You don't have any appointments scheduled yet.
           </p>
           <Link
@@ -79,57 +80,89 @@ const MyAppointmentsPage = () => {
         </div>
       ) : (
         <div className="space-y-4">
-          {appointments.map((appt) => (
-            <div
-              key={appt.id}
-              className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs flex flex-col md:flex-row justify-between items-start md:items-center gap-6"
-            >
-              <div className="space-y-2">
-                <div className="flex items-center space-x-3">
-                  <StatusBadge status={appt.status} />
-                  <span className="text-xs font-bold text-teal-700 bg-teal-50 px-2.5 py-0.5 rounded">
-                    {appt.service?.category}
-                  </span>
-                </div>
-                <h3 className="font-extrabold text-slate-900 text-lg">{appt.service?.name}</h3>
-                <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500">
-                  <div className="flex items-center space-x-1.5">
-                    <Dog className="w-4 h-4 text-teal-600" />
-                    <span>Pet: <strong className="text-slate-800">{appt.pet?.name}</strong></span>
-                  </div>
-                  <div className="flex items-center space-x-1.5">
-                    <Calendar className="w-4 h-4 text-teal-600" />
-                    <span>Date: <strong className="text-slate-800">{appt.appointment_date}</strong></span>
-                  </div>
-                  <div className="flex items-center space-x-1.5">
-                    <Clock className="w-4 h-4 text-teal-600" />
-                    <span>Time: <strong className="text-slate-800">{appt.start_time} - {appt.end_time}</strong></span>
-                  </div>
-                </div>
-                <p className="text-xs text-slate-400">Doctor/Specialist: {appt.staff?.user?.full_name}</p>
-              </div>
+          {appointments.map((appt) => {
+            const hasMultipleServices = appt.appointment_services && appt.appointment_services.length > 0;
+            const servicesList = hasMultipleServices
+              ? appt.appointment_services
+              : appt.service
+              ? [{ id: appt.service.id, service: appt.service, price_at_booking: appt.service.price }]
+              : [];
+            const subtotalPrice = servicesList.reduce((sum, item) => sum + (item.price_at_booking || item.service?.price || 0), 0);
 
-              <div className="flex flex-wrap items-center gap-2">
-                {appt.status !== 'CANCELLED' && appt.status !== 'COMPLETED' && (
+            return (
+              <div
+                key={appt.id}
+                className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col md:flex-row justify-between items-start md:items-center gap-6 transition-colors"
+              >
+                <div className="space-y-2.5">
+                  <div className="flex items-center space-x-3">
+                    <StatusBadge status={appt.status} />
+                    <span className="text-xs font-bold text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-950 px-2.5 py-0.5 rounded border border-teal-200 dark:border-teal-800">
+                      {hasMultipleServices ? `${servicesList.length} Services Booked` : appt.service?.category}
+                    </span>
+                  </div>
+
+                  {/* Multi Services Title Breakdown */}
+                  <div>
+                    {hasMultipleServices ? (
+                      <div className="space-y-1">
+                        <h3 className="font-extrabold text-slate-900 dark:text-slate-100 text-base">
+                          Multi-Service Booking ({formatCurrency(subtotalPrice)})
+                        </h3>
+                        <div className="flex flex-wrap gap-1.5 pt-0.5">
+                          {servicesList.map((item) => (
+                            <span key={item.id} className="text-xs font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2.5 py-0.5 rounded-lg border border-slate-200 dark:border-slate-700">
+                              ✓ {item.service?.name || 'Service'} ({formatCurrency(item.price_at_booking)})
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <h3 className="font-extrabold text-slate-900 dark:text-slate-100 text-lg">
+                        {appt.service?.name} ({formatCurrency(subtotalPrice)})
+                      </h3>
+                    )}
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
+                    <div className="flex items-center space-x-1.5">
+                      <Dog className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+                      <span>Pet: <strong className="text-slate-800 dark:text-slate-200">{appt.pet?.name}</strong></span>
+                    </div>
+                    <div className="flex items-center space-x-1.5">
+                      <Calendar className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+                      <span>Date: <strong className="text-slate-800 dark:text-slate-200">{appt.appointment_date}</strong></span>
+                    </div>
+                    <div className="flex items-center space-x-1.5">
+                      <Clock className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+                      <span>Time: <strong className="text-slate-800 dark:text-slate-200">{appt.start_time} - {appt.end_time}</strong></span>
+                    </div>
+                  </div>
+                  <p className="text-xs text-slate-400">Doctor/Specialist: {appt.staff?.user?.full_name}</p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  {appt.status !== 'CANCELLED' && appt.status !== 'COMPLETED' && (
+                    <button
+                      onClick={() => handleCancelAppointment(appt.id)}
+                      className="px-3.5 py-2 text-xs font-bold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/50 border border-rose-200 dark:border-rose-800 rounded-xl transition-colors flex items-center space-x-1"
+                    >
+                      <XCircle className="w-4 h-4" />
+                      <span>Cancel</span>
+                    </button>
+                  )}
+
                   <button
-                    onClick={() => handleCancelAppointment(appt.id)}
-                    className="px-3.5 py-2 text-xs font-bold text-rose-600 hover:bg-rose-50 border border-rose-200 rounded-xl transition-colors flex items-center space-x-1"
+                    onClick={() => setSelectedApptForPay(appt)}
+                    className="px-4 py-2 text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white rounded-xl shadow-sm transition-all flex items-center space-x-1.5"
                   >
-                    <XCircle className="w-4 h-4" />
-                    <span>Cancel</span>
+                    <CreditCard className="w-4 h-4" />
+                    <span>Pay / Invoice</span>
                   </button>
-                )}
-
-                <button
-                  onClick={() => setSelectedApptForPay(appt)}
-                  className="px-4 py-2 text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white rounded-xl shadow-sm transition-all flex items-center space-x-1.5"
-                >
-                  <CreditCard className="w-4 h-4" />
-                  <span>Pay / Invoice</span>
-                </button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 

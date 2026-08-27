@@ -1,14 +1,16 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Heart, Calendar, Shield, UserCheck, ArrowRight, LogIn, UserPlus } from 'lucide-react';
+import { Heart, Calendar, Shield, UserCheck, ArrowRight, LogIn, UserPlus, Sun, Moon } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 
 const Navbar = () => {
   const { user, getDashboardPath } = useAuth();
+  const { theme, toggleTheme, isDarkMode } = useTheme();
   const navigate = useNavigate();
 
   return (
-    <nav className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-sm transition-all">
+    <nav className="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 shadow-sm transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
           {/* Logo */}
@@ -17,33 +19,47 @@ const Navbar = () => {
               <Heart className="w-6 h-6 fill-current text-teal-100" />
             </div>
             <div>
-              <span className="font-extrabold text-xl tracking-tight text-slate-900 block leading-tight">
-                SmartPet<span className="text-teal-600">Care</span>
+              <span className="font-extrabold text-xl tracking-tight text-slate-900 dark:text-slate-100 block leading-tight">
+                SmartPet<span className="text-teal-600 dark:text-teal-400">Care</span>
               </span>
-              <span className="text-[10px] uppercase font-bold text-teal-700 tracking-wider block">
+              <span className="text-[10px] uppercase font-bold text-teal-700 dark:text-teal-400 tracking-wider block">
                 SaaS Healthcare
               </span>
             </div>
           </Link>
 
           {/* Navigation Links */}
-          <div className="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-600">
-            <Link to="/" className="hover:text-teal-600 transition-colors">
+          <div className="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-600 dark:text-slate-300">
+            <Link to="/" className="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">
               Home
             </Link>
-            <Link to="/services" className="hover:text-teal-600 transition-colors">
+            <Link to="/services" className="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">
               Services
             </Link>
-            <Link to="/about" className="hover:text-teal-600 transition-colors">
+            <Link to="/about" className="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">
               About Clinic
             </Link>
-            <Link to="/contact" className="hover:text-teal-600 transition-colors">
+            <Link to="/contact" className="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">
               Contact Us
             </Link>
           </div>
 
-          {/* Auth Actions */}
+          {/* Auth & Theme Actions */}
           <div className="flex items-center space-x-3">
+            {/* Theme Toggle Button */}
+            <button
+              onClick={toggleTheme}
+              aria-label="Toggle Theme"
+              title={`Switch to ${isDarkMode ? 'Light' : 'Dark'} Mode`}
+              className="p-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl transition-all flex items-center justify-center"
+            >
+              {isDarkMode ? (
+                <Sun className="w-5 h-5 text-amber-400" />
+              ) : (
+                <Moon className="w-5 h-5 text-slate-600" />
+              )}
+            </button>
+
             {user ? (
               <button
                 onClick={() => navigate(getDashboardPath(user.role))}
@@ -56,9 +72,9 @@ const Navbar = () => {
               <>
                 <Link
                   to="/login"
-                  className="text-slate-700 hover:text-teal-600 font-semibold text-sm px-4 py-2 rounded-xl transition-colors flex items-center space-x-1.5"
+                  className="text-slate-700 dark:text-slate-200 hover:text-teal-600 dark:hover:text-teal-400 font-semibold text-sm px-4 py-2 rounded-xl transition-colors flex items-center space-x-1.5"
                 >
-                  <LogIn className="w-4 h-4 text-teal-600" />
+                  <LogIn className="w-4 h-4 text-teal-600 dark:text-teal-400" />
                   <span>Login</span>
                 </Link>
                 <Link

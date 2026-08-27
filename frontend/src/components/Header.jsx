@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Bell, User as UserIcon, Settings, LogOut, ChevronDown, Heart, Shield } from 'lucide-react';
+import { Bell, User as UserIcon, Settings, LogOut, ChevronDown, Heart, Shield, Sun, Moon } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import API from '../services/api';
 
 const Header = ({ title = "Dashboard" }) => {
   const { user, logout, getProfilePath } = useAuth();
+  const { theme, toggleTheme, isDarkMode } = useTheme();
   const [unreadCount, setUnreadCount] = useState(0);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -43,7 +45,7 @@ const Header = ({ title = "Dashboard" }) => {
   const profilePath = getProfilePath(role);
 
   return (
-    <header className="h-20 bg-white border-b border-slate-200 px-6 flex items-center justify-between sticky top-0 z-30 shadow-xs">
+    <header className="h-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 flex items-center justify-between sticky top-0 z-30 shadow-xs transition-colors duration-200">
       {/* Page Title & Breadcrumb */}
       <div className="flex items-center space-x-4">
         {/* Clickable Brand Logo in Mobile/Header */}
@@ -57,32 +59,46 @@ const Header = ({ title = "Dashboard" }) => {
           </div>
         </Link>
         <div>
-          <h1 className="text-xl font-extrabold text-slate-800 tracking-tight">{title}</h1>
-          <p className="text-xs text-slate-400">Welcome back, {user?.full_name}</p>
+          <h1 className="text-xl font-extrabold text-slate-800 dark:text-slate-100 tracking-tight">{title}</h1>
+          <p className="text-xs text-slate-400 dark:text-slate-400">Welcome back, {user?.full_name}</p>
         </div>
       </div>
 
       {/* Header Actions */}
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-3 sm:space-x-4">
+        {/* Theme Toggle Button */}
+        <button
+          onClick={toggleTheme}
+          aria-label="Toggle Light/Dark Theme"
+          title={`Switch to ${isDarkMode ? 'Light' : 'Dark'} Mode`}
+          className="p-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl transition-all flex items-center justify-center"
+        >
+          {isDarkMode ? (
+            <Sun className="w-5 h-5 text-amber-400" />
+          ) : (
+            <Moon className="w-5 h-5 text-slate-600" />
+          )}
+        </button>
+
         {/* Notifications Bell */}
         <Link
           to={role === 'CUSTOMER' ? '/customer/notifications' : '#'}
-          className="relative p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl transition-colors"
+          className="relative p-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-xl transition-colors"
           title="Notifications"
         >
           <Bell className="w-5 h-5" />
           {unreadCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">
+            <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white dark:border-slate-900 shadow-sm">
               {unreadCount}
             </span>
           )}
         </Link>
 
         {/* Profile Dropdown Area */}
-        <div className="relative border-l border-slate-200 pl-4" ref={dropdownRef}>
+        <div className="relative border-l border-slate-200 dark:border-slate-800 pl-3 sm:pl-4" ref={dropdownRef}>
           <button
             onClick={() => setDropdownOpen(!dropdownOpen)}
-            className="flex items-center space-x-3 p-1.5 rounded-xl hover:bg-slate-100 transition-colors focus:outline-none"
+            className="flex items-center space-x-3 p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus:outline-none"
           >
             {user?.avatar_url ? (
               <img
@@ -96,8 +112,8 @@ const Header = ({ title = "Dashboard" }) => {
               </div>
             )}
             <div className="hidden sm:block text-left">
-              <span className="text-xs font-bold text-slate-800 block leading-tight">{user?.full_name}</span>
-              <span className="text-[10px] font-semibold text-teal-600 uppercase tracking-wider block">
+              <span className="text-xs font-bold text-slate-800 dark:text-slate-200 block leading-tight">{user?.full_name}</span>
+              <span className="text-[10px] font-semibold text-teal-600 dark:text-teal-400 uppercase tracking-wider block">
                 {user?.role}
               </span>
             </div>
@@ -106,11 +122,11 @@ const Header = ({ title = "Dashboard" }) => {
 
           {/* Profile Dropdown Menu */}
           {dropdownOpen && (
-            <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-slate-200 py-2 z-50 animate-in fade-in-50 slide-in-from-top-2">
-              <div className="px-4 py-3 border-b border-slate-100">
-                <p className="text-xs font-bold text-slate-900 truncate">{user?.full_name}</p>
-                <p className="text-[11px] text-slate-400 truncate">{user?.email}</p>
-                <span className="inline-block mt-1.5 px-2 py-0.5 bg-teal-50 text-teal-700 text-[10px] font-bold rounded-md border border-teal-200 uppercase">
+            <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 py-2 z-50 animate-in fade-in-50 slide-in-from-top-2">
+              <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-700">
+                <p className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate">{user?.full_name}</p>
+                <p className="text-[11px] text-slate-400 dark:text-slate-400 truncate">{user?.email}</p>
+                <span className="inline-block mt-1.5 px-2 py-0.5 bg-teal-50 dark:bg-teal-950 text-teal-700 dark:text-teal-300 text-[10px] font-bold rounded-md border border-teal-200 dark:border-teal-800 uppercase">
                   {user?.role} Account
                 </span>
               </div>
@@ -119,7 +135,7 @@ const Header = ({ title = "Dashboard" }) => {
                 <Link
                   to={profilePath}
                   onClick={() => setDropdownOpen(false)}
-                  className="flex items-center space-x-2.5 px-4 py-2.5 text-slate-700 hover:bg-teal-50 hover:text-teal-700 font-medium transition-colors"
+                  className="flex items-center space-x-2.5 px-4 py-2.5 text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-slate-700 hover:text-teal-700 dark:hover:text-teal-300 font-medium transition-colors"
                 >
                   <UserIcon className="w-4 h-4 text-teal-600" />
                   <span>My Profile & Avatar</span>
@@ -129,7 +145,7 @@ const Header = ({ title = "Dashboard" }) => {
                   <Link
                     to="/admin/settings"
                     onClick={() => setDropdownOpen(false)}
-                    className="flex items-center space-x-2.5 px-4 py-2.5 text-slate-700 hover:bg-teal-50 hover:text-teal-700 font-medium transition-colors"
+                    className="flex items-center space-x-2.5 px-4 py-2.5 text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-slate-700 hover:text-teal-700 dark:hover:text-teal-300 font-medium transition-colors"
                   >
                     <Settings className="w-4 h-4 text-teal-600" />
                     <span>System Settings</span>
@@ -138,7 +154,7 @@ const Header = ({ title = "Dashboard" }) => {
                   <Link
                     to={profilePath}
                     onClick={() => setDropdownOpen(false)}
-                    className="flex items-center space-x-2.5 px-4 py-2.5 text-slate-700 hover:bg-teal-50 hover:text-teal-700 font-medium transition-colors"
+                    className="flex items-center space-x-2.5 px-4 py-2.5 text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-slate-700 hover:text-teal-700 dark:hover:text-teal-300 font-medium transition-colors"
                   >
                     <Settings className="w-4 h-4 text-teal-600" />
                     <span>Account Settings</span>
@@ -149,7 +165,7 @@ const Header = ({ title = "Dashboard" }) => {
                   <Link
                     to="/customer/notifications"
                     onClick={() => setDropdownOpen(false)}
-                    className="flex items-center space-x-2.5 px-4 py-2.5 text-slate-700 hover:bg-teal-50 hover:text-teal-700 font-medium transition-colors"
+                    className="flex items-center space-x-2.5 px-4 py-2.5 text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-slate-700 hover:text-teal-700 dark:hover:text-teal-300 font-medium transition-colors"
                   >
                     <Bell className="w-4 h-4 text-teal-600" />
                     <span>Notification Center</span>
@@ -157,13 +173,13 @@ const Header = ({ title = "Dashboard" }) => {
                 )}
               </div>
 
-              <div className="pt-1 border-t border-slate-100">
+              <div className="pt-1 border-t border-slate-100 dark:border-slate-700">
                 <button
                   onClick={() => {
                     setDropdownOpen(false);
                     handleLogout();
                   }}
-                  className="w-full flex items-center space-x-2.5 px-4 py-2.5 text-xs text-rose-600 hover:bg-rose-50 font-bold transition-colors text-left"
+                  className="w-full flex items-center space-x-2.5 px-4 py-2.5 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/50 font-bold transition-colors text-left"
                 >
                   <LogOut className="w-4 h-4 text-rose-500" />
                   <span>Log Out</span>

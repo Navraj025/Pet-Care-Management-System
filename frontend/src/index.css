@@ -5,6 +5,14 @@
 @layer base {
   body {
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200;
+  }
+
+  /* Universal dark mode form control defaults */
+  .dark input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+  .dark select,
+  .dark textarea {
+    @apply bg-slate-800 text-slate-100 border-slate-700 placeholder-slate-400 focus:border-teal-500 focus:ring-teal-500;
   }
 }
 
@@ -18,13 +26,25 @@
   background: #f1f5f9;
 }
 
+.dark ::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
 ::-webkit-scrollbar-thumb {
   background: #cbd5e1;
   border-radius: 9999px;
 }
 
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
 }
 
 /* Glassmorphism background effect */
@@ -32,6 +52,10 @@
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+}
+
+.dark .glass-panel {
+  background: rgba(15, 23, 42, 0.85);
 }
 
 /* Print styling for Invoice print layout */

@@ -1,6 +1,13 @@
 import axios from 'axios';
 
-const rawBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://petcare-backend-rztw.onrender.com';
+const getFallbackUrl = () => {
+  if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+    return 'http://localhost:8000';
+  }
+  return 'https://petcare-backend-rztw.onrender.com';
+};
+
+const rawBaseUrl = import.meta.env.VITE_API_BASE_URL || getFallbackUrl();
 const baseURL = rawBaseUrl.endsWith('/api')
   ? rawBaseUrl
   : `${rawBaseUrl.replace(/\/+$/, '')}/api`;

@@ -121,49 +121,49 @@ const LandingPage = () => {
       {/* Services Overview */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-          <h2 className="text-xs font-bold text-teal-600 uppercase tracking-widest">Comprehensive Care Services</h2>
-          <h3 className="text-3xl font-extrabold text-slate-900">Designed for Every Pet Need</h3>
-          <p className="text-slate-600 text-sm">From routine wellness checkups to specialized surgery and aesthetic grooming.</p>
+          <h2 className="text-xs font-bold text-teal-600 dark:text-teal-400 uppercase tracking-widest">Comprehensive Care Services</h2>
+          <h3 className="text-3xl font-extrabold text-slate-900 dark:text-slate-100">Designed for Every Pet Need</h3>
+          <p className="text-slate-600 dark:text-slate-400 text-sm">From routine wellness checkups to specialized surgery and aesthetic grooming.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 hover:border-teal-500/50 transition-all hover:shadow-xl group">
-            <div className="w-14 h-14 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+          <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 hover:border-teal-500/50 transition-all hover:shadow-xl group">
+            <div className="w-14 h-14 bg-teal-50 dark:bg-teal-950 text-teal-600 dark:text-teal-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <Stethoscope className="w-7 h-7" />
             </div>
-            <h4 className="font-bold text-lg text-slate-900 mb-2">Veterinary Consultations</h4>
-            <p className="text-xs text-slate-600 leading-relaxed mb-4">
+            <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100 mb-2">Veterinary Consultations</h4>
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
               Comprehensive clinical diagnoses, internal medicine, surgery, and tailored prescription treatment plans.
             </p>
-            <Link to="/services" className="text-xs font-bold text-teal-600 hover:text-teal-700 flex items-center space-x-1">
+            <Link to="/services" className="text-xs font-bold text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 flex items-center space-x-1">
               <span>Learn More</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
-          <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 hover:border-teal-500/50 transition-all hover:shadow-xl group">
-            <div className="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+          <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 hover:border-teal-500/50 transition-all hover:shadow-xl group">
+            <div className="w-14 h-14 bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <ShieldCheck className="w-7 h-7" />
             </div>
-            <h4 className="font-bold text-lg text-slate-900 mb-2">Core Vaccinations</h4>
-            <p className="text-xs text-slate-600 leading-relaxed mb-4">
+            <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100 mb-2">Core Vaccinations</h4>
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
               Immunization programs for Rabies, DHPP, FeLV, and FVRCP with automated due-date reminder tracking.
             </p>
-            <Link to="/services" className="text-xs font-bold text-emerald-600 hover:text-emerald-700 flex items-center space-x-1">
+            <Link to="/services" className="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center space-x-1">
               <span>Learn More</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
-          <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 hover:border-teal-500/50 transition-all hover:shadow-xl group">
-            <div className="w-14 h-14 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+          <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 hover:border-teal-500/50 transition-all hover:shadow-xl group">
+            <div className="w-14 h-14 bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <Heart className="w-7 h-7" />
             </div>
-            <h4 className="font-bold text-lg text-slate-900 mb-2">Full Grooming & Spa</h4>
-            <p className="text-xs text-slate-600 leading-relaxed mb-4">
+            <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100 mb-2">Full Grooming & Spa</h4>
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
               Breed-specific styling, de-shedding baths, ear cleansing, and claw trimming by certified stylists.
             </p>
-            <Link to="/services" className="text-xs font-bold text-amber-600 hover:text-amber-700 flex items-center space-x-1">
+            <Link to="/services" className="text-xs font-bold text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 flex items-center space-x-1">
               <span>Learn More</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
@@ -172,36 +172,36 @@ const LandingPage = () => {
       </section>
 
       {/* How It Works */}
-      <section className="bg-slate-100 py-16 border-y border-slate-200">
+      <section className="bg-slate-100 dark:bg-slate-900/60 py-16 border-y border-slate-200 dark:border-slate-800 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-14 space-y-2">
-            <h2 className="text-xs font-bold text-teal-600 uppercase tracking-widest">Seamless Booking Flow</h2>
-            <h3 className="text-3xl font-extrabold text-slate-900">How It Works in 4 Easy Steps</h3>
+            <h2 className="text-xs font-bold text-teal-600 dark:text-teal-400 uppercase tracking-widest">Seamless Booking Flow</h2>
+            <h3 className="text-3xl font-extrabold text-slate-900 dark:text-slate-100">How It Works in 4 Easy Steps</h3>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs relative">
+            <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs relative">
               <span className="w-8 h-8 rounded-full bg-teal-600 text-white font-bold text-sm flex items-center justify-center mb-4">1</span>
-              <h4 className="font-bold text-slate-900 text-sm mb-1">Register Pet Profile</h4>
-              <p className="text-xs text-slate-500">Add pet species, breed, medical background, and emergency notes.</p>
+              <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm mb-1">Register Pet Profile</h4>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Add pet species, breed, medical background, and emergency notes.</p>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs relative">
+            <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs relative">
               <span className="w-8 h-8 rounded-full bg-teal-600 text-white font-bold text-sm flex items-center justify-center mb-4">2</span>
-              <h4 className="font-bold text-slate-900 text-sm mb-1">Select Service & Vet</h4>
-              <p className="text-xs text-slate-500">Browse categories and choose your preferred veterinarian or stylist.</p>
+              <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm mb-1">Select Service & Vet</h4>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Browse categories and choose your preferred veterinarian or stylist.</p>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs relative">
+            <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs relative">
               <span className="w-8 h-8 rounded-full bg-teal-600 text-white font-bold text-sm flex items-center justify-center mb-4">3</span>
-              <h4 className="font-bold text-slate-900 text-sm mb-1">Pick Real-Time Slot</h4>
-              <p className="text-xs text-slate-500">Our Smart Engine dynamically calculates non-conflicting time slots.</p>
+              <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm mb-1">Pick Real-Time Slot</h4>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Our Smart Engine dynamically calculates non-conflicting time slots.</p>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs relative">
+            <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs relative">
               <span className="w-8 h-8 rounded-full bg-teal-600 text-white font-bold text-sm flex items-center justify-center mb-4">4</span>
-              <h4 className="font-bold text-slate-900 text-sm mb-1">Confirm & Invoice</h4>
-              <p className="text-xs text-slate-500">Complete mock online payment and download your official invoice.</p>
+              <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm mb-1">Confirm & Invoice</h4>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Complete mock online payment and download your official invoice.</p>
             </div>
           </div>
         </div>
