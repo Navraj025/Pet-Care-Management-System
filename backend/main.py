@@ -23,17 +23,42 @@ from app.api import (
 # Initialize database tables on app start
 Base.metadata.create_all(bind=engine)
 
-# Auto-seed initial demo data if database is brand new & empty
+# Auto-seed initial demo data if database is brand new & empty, and update service prices
 try:
     from app.database import SessionLocal
     from app.models.user import User
+    from app.models.service import Service
     with SessionLocal() as db:
         if db.query(User).count() == 0:
             print("[INFO] Empty database detected. Auto-seeding initial demo dataset...")
             from seed import seed_database
             seed_database(drop_existing=False)
+        else:
+            # Migration/auto-update: Convert any legacy USD numeric prices in DB (< 500) to INR values
+            price_map = {
+                "General Health Checkup": 4250.0,
+                "Veterinary Consultation": 6800.0,
+                "Rabies Vaccination": 3400.0,
+                "DHPP Core Vaccine": 5100.0,
+                "Dental Cleaning & Scaling": 12750.0,
+                "Full Grooming Package": 8500.0,
+                "Bath & De-Shedding Dry": 5100.0,
+                "Nail Trimming & Paw Care": 2550.0
+            }
+            db_services = db.query(Service).all()
+            updated_count = 0
+            for srv in db_services:
+                if srv.price < 500:
+                    if srv.name in price_map:
+                        srv.price = price_map[srv.name]
+                    else:
+                        srv.price = round(srv.price * 85.0, -1)  # 85 conversion multiplier fallback
+                    updated_count += 1
+            if updated_count > 0:
+                db.commit()
+                print(f"[INFO] Auto-updated {updated_count} service price(s) from USD to INR in database.")
 except Exception as e:
-    print(f"[INFO] Database status check complete: {e}")
+    print(f"[INFO] Database initialization check complete: {e}")
 
 app = FastAPI(
     title="Smart Pet Care Appointment & Customer Management System",
