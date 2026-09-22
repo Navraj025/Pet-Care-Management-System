@@ -36,8 +36,9 @@ API.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      // Clear token if unauthenticated
-      if (window.location.pathname !== '/login' && window.location.pathname !== '/register') {
+      const publicPaths = ['/login', '/register', '/register-business', '/businesses', '/compare-services', '/about', '/contact', '/services'];
+      const isPublicPath = window.location.pathname === '/' || publicPaths.some(p => window.location.pathname.startsWith(p));
+      if (!isPublicPath) {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         window.location.href = '/login';

@@ -16,11 +16,14 @@ router = APIRouter(prefix="/staff", tags=["Staff"])
 @router.get("", response_model=List[StaffOut])
 def list_staff(
     available_only: bool = False,
+    business_id: Optional[int] = None,
     db: Session = Depends(get_db)
 ):
     query = db.query(Staff).join(User).filter(User.is_active == True)
     if available_only:
         query = query.filter(Staff.is_available == True)
+    if business_id:
+        query = query.filter(Staff.business_id == business_id)
     return query.all()
 
 
@@ -38,8 +41,17 @@ def get_my_staff_profile(
 def create_staff(
     data: StaffCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles(["ADMIN"]))
+    current_user: User = Depends(require_roles(["ADMIN", "BUSINESS_OWNER"]))
 ):
+    target_business_id = data.business_id
+    if current_user.role == UserRole.BUSINESS_OWNER:
+        # Resolve business owner's business
+        from app.models.business import Business
+        biz = db.query(Business).filter(Business.owner_id == current_user.id).first()
+        if not biz:
+            raise HTTPException(status_code=400, detail="No business profile found for this business owner")
+        target_business_id = biz.id
+
     if data.user_id:
         user = db.query(User).filter(User.id == data.user_id).first()
         if not user:
@@ -64,6 +76,7 @@ def create_staff(
 
     staff = Staff(
         user_id=user.id,
+        business_id=target_business_id,
         specialization=data.specialization,
         bio=data.bio,
         working_days=data.working_days,
@@ -100,8 +113,19 @@ def update_staff_member(
     if not staff:
         raise HTTPException(status_code=404, detail="Staff member not found")
 
-    if current_user.role != UserRole.ADMIN and (not current_user.staff_profile or current_user.staff_profile.id != staff_id):
-        raise HTTPException(status_code=403, detail="Not authorized to edit staff details")
+    is_authorized = False
+    if current_user.role == UserRole.ADMIN:
+        is_authorized = True
+    elif current_user.role == UserRole.BUSINESS_OWNER:
+        from app.models.business import Business
+        biz = db.query(Business).filter(Business.owner_id == current_user.id).first()
+        if biz and staff.business_id == biz.id:
+            is_authorized = True
+    elif current_user.staff_profile and current_user.staff_profile.id == staff_id:
+        is_authorized = True
+
+    if not is_authorized:
+        raise HTTPException(status_code=403, detail="Not authorized to edit this staff member")
 
     for field, val in data.model_dump(exclude_unset=True).items():
         setattr(staff, field, val)

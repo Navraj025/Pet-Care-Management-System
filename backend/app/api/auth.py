@@ -5,7 +5,7 @@ from app.database import get_db
 from app.models.user import User, UserRole
 from app.models.customer import Customer
 from app.schemas.auth import (
-    LoginRequest, TokenResponse, RegisterCustomerRequest,
+    LoginRequest, TokenResponse, RegisterCustomerRequest, RegisterBusinessOwnerRequest,
     ForgotPasswordRequest, ResetPasswordRequest
 )
 from app.schemas.user import UserOut
@@ -38,6 +38,59 @@ def register_customer(req: RegisterCustomerRequest, db: Session = Depends(get_db
         emergency_contact=req.emergency_contact
     )
     db.add(customer)
+    db.commit()
+
+    access_token = create_access_token(subject=user.id, role=user.role.value)
+    return TokenResponse(
+        access_token=access_token,
+        user_id=user.id,
+        email=user.email,
+        full_name=user.full_name,
+        role=user.role
+    )
+
+
+@router.post("/register-business", response_model=TokenResponse)
+def register_business_owner(req: RegisterBusinessOwnerRequest, db: Session = Depends(get_db)):
+    import re
+    from app.models.business import Business, BusinessStatus
+
+    existing = db.query(User).filter(User.email == req.email).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="Email is already registered")
+
+    user = User(
+        email=req.email,
+        password_hash=get_password_hash(req.password),
+        full_name=req.full_name,
+        phone=req.phone,
+        role=UserRole.BUSINESS_OWNER
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+
+    # Generate unique slug for business
+    raw_slug = re.sub(r'[^a-z0-9]+', '-', req.business_name.lower()).strip('-')
+    unique_slug = f"{raw_slug}-{user.id}"
+
+    business = Business(
+        owner_id=user.id,
+        name=req.business_name.strip(),
+        slug=unique_slug,
+        business_type=req.business_type,
+        city=req.city.strip(),
+        pincode=req.pincode.strip() if req.pincode else None,
+        address=req.address.strip() if req.address else None,
+        description=req.description.strip() if req.description else None,
+        opening_time=req.opening_time,
+        closing_time=req.closing_time,
+        working_days=req.working_days,
+        phone=req.phone,
+        email=req.email,
+        status=BusinessStatus.PENDING # Requires admin approval
+    )
+    db.add(business)
     db.commit()
 
     access_token = create_access_token(subject=user.id, role=user.role.value)

@@ -45,6 +45,22 @@ const Navbar = () => {
               Home
             </Link>
             <Link
+              to="/businesses"
+              className={`hover:text-teal-600 dark:hover:text-teal-400 transition-colors ${
+                isActive('/businesses') ? 'text-teal-600 dark:text-teal-400 font-bold' : ''
+              }`}
+            >
+              Marketplace
+            </Link>
+            <Link
+              to="/compare-services"
+              className={`hover:text-teal-600 dark:hover:text-teal-400 transition-colors ${
+                isActive('/compare-services') ? 'text-teal-600 dark:text-teal-400 font-bold' : ''
+              }`}
+            >
+              Compare Prices
+            </Link>
+            <Link
               to="/services"
               className={`hover:text-teal-600 dark:hover:text-teal-400 transition-colors ${
                 isActive('/services') ? 'text-teal-600 dark:text-teal-400 font-bold' : ''
@@ -140,6 +156,24 @@ const Navbar = () => {
               }`}
             >
               Home
+            </Link>
+            <Link
+              to="/businesses"
+              onClick={closeMenu}
+              className={`p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ${
+                isActive('/businesses') ? 'bg-teal-50 dark:bg-slate-800 text-teal-600 dark:text-teal-400 font-bold' : ''
+              }`}
+            >
+              Marketplace
+            </Link>
+            <Link
+              to="/compare-services"
+              onClick={closeMenu}
+              className={`p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ${
+                isActive('/compare-services') ? 'bg-teal-50 dark:bg-slate-800 text-teal-600 dark:text-teal-400 font-bold' : ''
+              }`}
+            >
+              Compare Prices
             </Link>
             <Link
               to="/services"

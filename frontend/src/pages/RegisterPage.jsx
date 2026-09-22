@@ -142,12 +142,20 @@ const RegisterPage = () => {
           </button>
         </form>
 
-        <p className="text-center text-xs text-slate-500 dark:text-slate-400">
-          Already have an account?{' '}
-          <Link to="/login" className="font-bold text-teal-600 dark:text-teal-400 hover:underline">
-            Login here
-          </Link>
-        </p>
+        <div className="space-y-2 text-center text-xs text-slate-500 dark:text-slate-400 border-t border-slate-100 dark:border-slate-800 pt-3">
+          <p>
+            Already have an account?{' '}
+            <Link to="/login" className="font-bold text-teal-600 dark:text-teal-400 hover:underline">
+              Login here
+            </Link>
+          </p>
+          <p>
+            Are you a Pet Business Owner?{' '}
+            <Link to="/register-business" className="font-bold text-teal-600 dark:text-teal-400 hover:underline">
+              Register Business Here
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

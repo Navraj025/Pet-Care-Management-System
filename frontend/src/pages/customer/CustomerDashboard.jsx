@@ -169,43 +169,57 @@ const CustomerDashboard = () => {
         <div className="space-y-4">
           <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100">Next Upcoming Appointment</h3>
 
-          {upcomingAppt ? (
-            <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
-              <div className="flex justify-between items-start">
-                <span className="text-xs font-bold text-teal-600 dark:text-teal-400 uppercase tracking-wider">
-                  {upcomingAppt.service?.category}
-                </span>
-                <StatusBadge status={upcomingAppt.status} />
-              </div>
+          {upcomingAppt ? (() => {
+            const servicesList = (upcomingAppt.appointment_services && upcomingAppt.appointment_services.length > 0)
+              ? upcomingAppt.appointment_services
+              : upcomingAppt.service
+              ? [{ service: upcomingAppt.service }]
+              : [];
+            const isMulti = servicesList.length > 1;
+            const primaryService = servicesList[0]?.service || upcomingAppt.service;
+            const serviceTitle = isMulti
+              ? servicesList.map(s => s.service?.name).filter(Boolean).join(', ')
+              : primaryService?.name || 'Veterinary Care';
+            const serviceCat = primaryService?.category || 'Care';
 
-              <div>
-                <h4 className="font-bold text-slate-900 dark:text-slate-100 text-base">{upcomingAppt.service?.name}</h4>
-                <p className="text-xs text-slate-500 dark:text-slate-400">For {upcomingAppt.pet?.name} ({upcomingAppt.pet?.species})</p>
-              </div>
+            return (
+              <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
+                <div className="flex justify-between items-start">
+                  <span className="text-xs font-bold text-teal-600 dark:text-teal-400 uppercase tracking-wider">
+                    {isMulti ? `${servicesList.length} Services` : serviceCat}
+                  </span>
+                  <StatusBadge status={upcomingAppt.status} />
+                </div>
 
-              <div className="space-y-2 bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 text-xs">
-                <div className="flex items-center space-x-2 text-slate-700 dark:text-slate-300">
-                  <Calendar className="w-4 h-4 text-teal-600 dark:text-teal-400" />
-                  <span>{upcomingAppt.appointment_date}</span>
+                <div>
+                  <h4 className="font-bold text-slate-900 dark:text-slate-100 text-base">{serviceTitle}</h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">For {upcomingAppt.pet?.name} ({upcomingAppt.pet?.species})</p>
                 </div>
-                <div className="flex items-center space-x-2 text-slate-700 dark:text-slate-300">
-                  <Clock className="w-4 h-4 text-teal-600 dark:text-teal-400" />
-                  <span>{upcomingAppt.start_time} - {upcomingAppt.end_time}</span>
-                </div>
-                <div className="flex items-center space-x-2 text-slate-700 dark:text-slate-300">
-                  <Dog className="w-4 h-4 text-teal-600 dark:text-teal-400" />
-                  <span>Doctor: {upcomingAppt.staff?.user?.full_name}</span>
-                </div>
-              </div>
 
-              <Link
-                to="/customer/appointments"
-                className="block text-center text-xs font-bold bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 text-white py-2.5 rounded-xl transition-colors"
-              >
-                Manage Booking
-              </Link>
-            </div>
-          ) : (
+                <div className="space-y-2 bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 text-xs">
+                  <div className="flex items-center space-x-2 text-slate-700 dark:text-slate-300">
+                    <Calendar className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+                    <span>{upcomingAppt.appointment_date}</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-slate-700 dark:text-slate-300">
+                    <Clock className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+                    <span>{upcomingAppt.start_time} - {upcomingAppt.end_time}</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-slate-700 dark:text-slate-300">
+                    <Dog className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+                    <span>Doctor: {upcomingAppt.staff?.user?.full_name}</span>
+                  </div>
+                </div>
+
+                <Link
+                  to="/customer/appointments"
+                  className="block text-center text-xs font-bold bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 text-white py-2.5 rounded-xl transition-colors"
+                >
+                  Manage Booking
+                </Link>
+              </div>
+            );
+          })() : (
             <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 text-center space-y-3 transition-colors">
               <Calendar className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto" />
               <p className="text-xs text-slate-500 dark:text-slate-400">No active upcoming appointments.</p>

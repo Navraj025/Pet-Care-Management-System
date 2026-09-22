@@ -44,6 +44,12 @@ def list_appointments(
     elif current_user.role == UserRole.STAFF:
         if current_user.staff_profile:
             query = query.filter(Appointment.staff_id == current_user.staff_profile.id)
+    elif current_user.role == UserRole.BUSINESS_OWNER:
+        from app.models.business import Business
+        biz = db.query(Business).filter(Business.owner_id == current_user.id).first()
+        if not biz:
+            return []
+        query = query.filter(Appointment.business_id == biz.id)
     else: # ADMIN can filter by specific params
         if customer_id:
             query = query.filter(Appointment.customer_id == customer_id)
@@ -104,6 +110,9 @@ def create_appointment(
     if len(selected_services) != len(target_service_ids):
         raise HTTPException(status_code=400, detail="One or more selected services are invalid or inactive")
 
+    # Determine business_id
+    business_id = data.business_id or (selected_services[0].business_id if selected_services else None)
+
     # Double Booking Prevention Check using Availability Engine
     available_slots = calculate_available_slots(
         db,
@@ -131,6 +140,7 @@ def create_appointment(
     # Create Appointment
     first_service_id = selected_services[0].id if selected_services else None
     appt = Appointment(
+        business_id=business_id,
         customer_id=target_customer_id,
         pet_id=data.pet_id,
         staff_id=data.staff_id,
@@ -162,6 +172,7 @@ def create_appointment(
     final_amount = round(total_service_price + tax, 2)
     
     payment = Payment(
+        business_id=business_id,
         appointment_id=appt.id,
         amount=total_service_price,
         tax=tax,

@@ -13,10 +13,10 @@ const ServicesPage = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const res = await API.get('/services');
+        const res = await API.get('/services/unique');
         setServices(res.data);
       } catch (err) {
-        console.error("Failed to load services:", err);
+        console.error("Failed to load unique services:", err);
       } finally {
         setLoading(false);
       }
@@ -41,7 +41,7 @@ const ServicesPage = () => {
         <h1 className="text-xs font-bold text-teal-600 dark:text-teal-400 uppercase tracking-widest">Our Service Catalog</h1>
         <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-slate-100">Veterinary & Grooming Services</h2>
         <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm">
-          Browse specialized medical consultations, immunizations, dental care, and aesthetic grooming in INR (₹).
+          Browse verified medical consultations, immunizations, dental care, and aesthetic grooming. Compare prices and availability across certified pet clinics.
         </p>
       </div>
 
@@ -79,7 +79,7 @@ const ServicesPage = () => {
 
       {/* Grid List */}
       {loading ? (
-        <div className="py-20 text-center text-slate-500 dark:text-slate-400 text-sm">Loading service catalog...</div>
+        <div className="py-20 text-center text-slate-500 dark:text-slate-400 text-sm">Loading verified service catalog...</div>
       ) : filtered.length === 0 ? (
         <div className="py-20 text-center text-slate-500 dark:text-slate-400 text-sm bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
           No services matching criteria.
@@ -88,7 +88,7 @@ const ServicesPage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filtered.map((service) => (
             <div
-              key={service.id}
+              key={service.name}
               className="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between hover:shadow-xl transition-all"
             >
               <div>
@@ -96,21 +96,31 @@ const ServicesPage = () => {
                   <span className="text-[10px] uppercase font-extrabold px-2.5 py-1 bg-teal-50 dark:bg-teal-950 text-teal-700 dark:text-teal-300 rounded-full border border-teal-200 dark:border-teal-800 shrink-0">
                     {service.category}
                   </span>
-                  <span className="text-lg sm:text-xl font-black text-slate-900 dark:text-slate-100 shrink-0">
-                    {formatCurrency(service.price)}
-                  </span>
+                  <div className="text-right">
+                    <span className="text-[10px] text-slate-400 block font-medium">Pricing</span>
+                    <span className="text-base sm:text-lg font-black text-teal-700 dark:text-teal-300 shrink-0">
+                      {service.min_price === service.max_price
+                        ? formatCurrency(service.min_price)
+                        : `Starts from ${formatCurrency(service.min_price)}`}
+                    </span>
+                  </div>
                 </div>
-                <h3 className="font-bold text-base sm:text-lg text-slate-900 dark:text-slate-100 mb-2">{service.name}</h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-6">{service.description}</p>
+                <h3 className="font-bold text-base sm:text-lg text-slate-900 dark:text-slate-100 mb-1">{service.name}</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-4">{service.description}</p>
               </div>
 
               <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2">
-                <div className="flex items-center space-x-1.5 text-xs text-slate-500 dark:text-slate-400">
-                  <Clock className="w-4 h-4 text-teal-600 dark:text-teal-400 shrink-0" />
-                  <span>{service.duration_minutes} mins</span>
+                <div className="space-y-0.5 text-xs text-slate-500 dark:text-slate-400">
+                  <div className="flex items-center space-x-1">
+                    <Clock className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400 shrink-0" />
+                    <span>~{service.default_duration} mins</span>
+                  </div>
+                  <span className="text-[11px] text-slate-400 block font-medium">
+                    Available at {service.business_count} {service.business_count === 1 ? 'clinic' : 'clinics'}
+                  </span>
                 </div>
                 <Link
-                  to="/register"
+                  to="/customer/book-appointment"
                   className="text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white px-3.5 sm:px-4 py-2 rounded-xl transition-colors shadow-sm shrink-0"
                 >
                   Book Service

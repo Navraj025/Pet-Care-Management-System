@@ -15,9 +15,18 @@ router = APIRouter(prefix="/customers", tags=["Customers"])
 def list_customers(
     search: Optional[str] = None,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles(["ADMIN", "STAFF"]))
+    current_user: User = Depends(require_roles(["ADMIN", "STAFF", "BUSINESS_OWNER"]))
 ):
     query = db.query(Customer).join(User)
+
+    if current_user.role == UserRole.BUSINESS_OWNER:
+        from app.models.business import Business
+        from app.models.appointment import Appointment
+        biz = db.query(Business).filter(Business.owner_id == current_user.id).first()
+        if not biz:
+            return []
+        query = query.join(Appointment, Customer.id == Appointment.customer_id).filter(Appointment.business_id == biz.id).distinct()
+
     if search:
         query = query.filter(
             (User.full_name.ilike(f"%{search}%")) |

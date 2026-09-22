@@ -19,6 +19,7 @@ class Appointment(Base):
     __tablename__ = "appointments"
 
     id = Column(Integer, primary_key=True, index=True)
+    business_id = Column(Integer, ForeignKey("businesses.id", ondelete="CASCADE"), nullable=True)
     customer_id = Column(Integer, ForeignKey("customers.id", ondelete="CASCADE"), nullable=False)
     pet_id = Column(Integer, ForeignKey("pets.id", ondelete="CASCADE"), nullable=False)
     staff_id = Column(Integer, ForeignKey("staff.id", ondelete="CASCADE"), nullable=False)
@@ -36,6 +37,7 @@ class Appointment(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     # Relationships
+    business = relationship("Business", back_populates="appointments")
     customer = relationship("Customer", back_populates="appointments")
     pet = relationship("Pet", back_populates="appointments")
     staff = relationship("Staff", back_populates="appointments")

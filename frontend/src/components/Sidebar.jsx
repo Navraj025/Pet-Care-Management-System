@@ -3,7 +3,7 @@ import { NavLink, Link, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, Users, UserCheck, Dog, Stethoscope, Calendar,
   Clock, CreditCard, BarChart3, ShieldAlert, Settings, Syringe,
-  FileText, Bell, Star, LogOut, PlusCircle, Heart, User as UserIcon, X
+  FileText, Bell, Star, LogOut, PlusCircle, Heart, User as UserIcon, X, Building2
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -21,6 +21,7 @@ const Sidebar = ({ mobileOpen = false, setMobileOpen = () => {} }) => {
 
   const adminLinks = [
     { to: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { to: '/admin/businesses', label: 'Business Management', icon: Building2 },
     { to: '/admin/customers', label: 'Customers', icon: Users },
     { to: '/admin/staff', label: 'Staff & Vets', icon: UserCheck },
     { to: '/admin/pets', label: 'Pet Directory', icon: Dog },
@@ -32,6 +33,21 @@ const Sidebar = ({ mobileOpen = false, setMobileOpen = () => {} }) => {
     { to: '/admin/audit-logs', label: 'System Audit Logs', icon: ShieldAlert },
     { to: '/admin/profile', label: 'My Profile', icon: UserIcon },
     { to: '/admin/settings', label: 'System Settings', icon: Settings },
+  ];
+
+  const businessOwnerLinks = [
+    { to: '/business-owner/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { to: '/business-owner/profile', label: 'Business Profile', icon: Building2 },
+    { to: '/business-owner/services', label: 'Services & Pricing', icon: Stethoscope },
+    { to: '/business-owner/staff', label: 'Staff & Team', icon: UserCheck },
+    { to: '/business-owner/availability', label: 'Shift Schedules', icon: Clock },
+    { to: '/business-owner/appointments', label: 'Appointments', icon: Calendar },
+    { to: '/business-owner/customers', label: 'Customer Directory', icon: Users },
+    { to: '/business-owner/pets', label: 'Pets Directory', icon: Dog },
+    { to: '/business-owner/reviews', label: 'Customer Reviews', icon: Star },
+    { to: '/business-owner/payments', label: 'Payments & Invoices', icon: CreditCard },
+    { to: '/business-owner/reports', label: 'Revenue Analytics', icon: BarChart3 },
+    { to: '/business-owner/settings', label: 'Settings', icon: Settings },
   ];
 
   const staffLinks = [
@@ -57,7 +73,7 @@ const Sidebar = ({ mobileOpen = false, setMobileOpen = () => {} }) => {
     { to: '/customer/profile', label: 'My Profile', icon: UserIcon },
   ];
 
-  const navLinks = role === 'ADMIN' ? adminLinks : role === 'STAFF' ? staffLinks : customerLinks;
+  const navLinks = role === 'ADMIN' ? adminLinks : role === 'BUSINESS_OWNER' ? businessOwnerLinks : role === 'STAFF' ? staffLinks : customerLinks;
 
   const sidebarContent = (
     <div className="h-full flex flex-col justify-between overflow-y-auto">

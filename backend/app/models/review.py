@@ -8,6 +8,7 @@ class Review(Base):
     __tablename__ = "reviews"
 
     id = Column(Integer, primary_key=True, index=True)
+    business_id = Column(Integer, ForeignKey("businesses.id", ondelete="CASCADE"), nullable=True)
     appointment_id = Column(Integer, ForeignKey("appointments.id", ondelete="CASCADE"), unique=True, nullable=False)
     customer_id = Column(Integer, ForeignKey("customers.id", ondelete="CASCADE"), nullable=False)
     service_id = Column(Integer, ForeignKey("services.id", ondelete="CASCADE"), nullable=False)
@@ -17,6 +18,7 @@ class Review(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     # Relationships
+    business = relationship("Business", back_populates="reviews")
     appointment = relationship("Appointment", back_populates="review")
     customer = relationship("Customer", back_populates="reviews")
     service = relationship("Service", back_populates="reviews")

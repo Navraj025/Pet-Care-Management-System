@@ -13,6 +13,7 @@ class StaffBase(BaseModel):
     break_start: str = "13:00"
     break_end: str = "14:00"
     is_available: bool = True
+    business_id: Optional[int] = None
 
 
 class StaffCreate(StaffBase):
@@ -29,11 +30,13 @@ class StaffUpdate(BaseModel):
     break_start: Optional[str] = None
     break_end: Optional[str] = None
     is_available: Optional[bool] = None
+    business_id: Optional[int] = None
 
 
 class StaffOut(StaffBase):
     id: int
     user_id: int
+    business_id: Optional[int] = None
     created_at: datetime
     user: UserOut
 

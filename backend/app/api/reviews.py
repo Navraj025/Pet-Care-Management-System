@@ -16,11 +16,14 @@ router = APIRouter(prefix="/reviews", tags=["Reviews"])
 @router.get("", response_model=List[ReviewOut])
 def list_reviews(
     service_id: Optional[int] = None,
+    business_id: Optional[int] = None,
     db: Session = Depends(get_db)
 ):
     query = db.query(Review)
     if service_id:
         query = query.filter(Review.service_id == service_id)
+    if business_id:
+        query = query.filter(Review.business_id == business_id)
     return query.order_by(Review.created_at.desc()).all()
 
 
@@ -47,6 +50,7 @@ def submit_review(
     review = Review(
         appointment_id=data.appointment_id,
         customer_id=current_user.customer_profile.id,
+        business_id=appt.business_id,
         service_id=appt.service_id,
         rating=data.rating,
         comment=data.comment

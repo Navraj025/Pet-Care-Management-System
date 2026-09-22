@@ -19,7 +19,12 @@ export const ToastProvider = ({ children }) => {
   };
 
   return (
-    <ToastContext.Provider value={{ showSuccess: (msg) => addToast(msg, 'success'), showError: (msg) => addToast(msg, 'error'), showInfo: (msg) => addToast(msg, 'info') }}>
+    <ToastContext.Provider value={{
+      showSuccess: (msg) => addToast(msg, 'success'),
+      showError: (msg) => addToast(msg, 'error'),
+      showInfo: (msg) => addToast(msg, 'info'),
+      showToast: (msg, type = 'success') => addToast(msg, type === 'warning' ? 'info' : type)
+    }}>
       {children}
       <div className="fixed bottom-5 right-5 z-50 flex flex-col space-y-3 max-w-md w-full px-4 pointer-events-none">
         {toasts.map((toast) => (

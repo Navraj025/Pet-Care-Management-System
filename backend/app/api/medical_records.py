@@ -25,7 +25,21 @@ def list_medical_records(
         if not current_user.customer_profile:
             return []
         query = query.join(Pet).filter(Pet.customer_id == current_user.customer_profile.id)
-    
+    elif current_user.role == UserRole.STAFF:
+        if current_user.staff_profile:
+            from app.models.staff import Staff
+            if current_user.staff_profile.business_id:
+                query = query.join(Staff, MedicalRecord.staff_id == Staff.id).filter(Staff.business_id == current_user.staff_profile.business_id)
+            else:
+                query = query.filter(MedicalRecord.staff_id == current_user.staff_profile.id)
+    elif current_user.role == UserRole.BUSINESS_OWNER:
+        from app.models.business import Business
+        from app.models.staff import Staff
+        biz = db.query(Business).filter(Business.owner_id == current_user.id).first()
+        if not biz:
+            return []
+        query = query.join(Staff, MedicalRecord.staff_id == Staff.id).filter(Staff.business_id == biz.id)
+
     if pet_id:
         query = query.filter(MedicalRecord.pet_id == pet_id)
 

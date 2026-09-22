@@ -61,6 +61,8 @@ export const AuthProvider = ({ children }) => {
     switch (role) {
       case 'ADMIN':
         return '/admin/dashboard';
+      case 'BUSINESS_OWNER':
+        return '/business-owner/dashboard';
       case 'STAFF':
         return '/staff/dashboard';
       case 'CUSTOMER':
@@ -74,6 +76,8 @@ export const AuthProvider = ({ children }) => {
     switch (role) {
       case 'ADMIN':
         return '/admin/profile';
+      case 'BUSINESS_OWNER':
+        return '/business-owner/profile';
       case 'STAFF':
         return '/staff/profile';
       case 'CUSTOMER':

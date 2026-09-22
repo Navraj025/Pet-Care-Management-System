@@ -1,4 +1,5 @@
 from app.models.user import User, UserRole
+from app.models.business import Business, BusinessStatus, BusinessType
 from app.models.customer import Customer
 from app.models.staff import Staff
 from app.models.pet import Pet
@@ -18,6 +19,9 @@ from app.models.system_setting import SystemSetting
 __all__ = [
     "User",
     "UserRole",
+    "Business",
+    "BusinessStatus",
+    "BusinessType",
     "Customer",
     "Staff",
     "Pet",

@@ -81,12 +81,13 @@ const MyAppointmentsPage = () => {
       ) : (
         <div className="space-y-4">
           {appointments.map((appt) => {
-            const hasMultipleServices = appt.appointment_services && appt.appointment_services.length > 0;
-            const servicesList = hasMultipleServices
+            const servicesList = (appt.appointment_services && appt.appointment_services.length > 0)
               ? appt.appointment_services
               : appt.service
               ? [{ id: appt.service.id, service: appt.service, price_at_booking: appt.service.price }]
               : [];
+            const isMultiService = servicesList.length > 1;
+            const primaryService = servicesList[0]?.service || appt.service;
             const subtotalPrice = servicesList.reduce((sum, item) => sum + (item.price_at_booking || item.service?.price || 0), 0);
 
             return (
@@ -98,13 +99,13 @@ const MyAppointmentsPage = () => {
                   <div className="flex flex-wrap items-center gap-2">
                     <StatusBadge status={appt.status} />
                     <span className="text-[11px] sm:text-xs font-bold text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-950 px-2.5 py-0.5 rounded border border-teal-200 dark:border-teal-800">
-                      {hasMultipleServices ? `${servicesList.length} Services Booked` : appt.service?.category}
+                      {isMultiService ? `${servicesList.length} Services Booked` : (primaryService?.category || 'Care')}
                     </span>
                   </div>
 
-                  {/* Multi Services Title Breakdown */}
+                  {/* Service Title Breakdown */}
                   <div>
-                    {hasMultipleServices ? (
+                    {isMultiService ? (
                       <div className="space-y-1">
                         <h3 className="font-extrabold text-slate-900 dark:text-slate-100 text-sm sm:text-base">
                           Multi-Service Booking ({formatCurrency(subtotalPrice)})
@@ -112,14 +113,14 @@ const MyAppointmentsPage = () => {
                         <div className="flex flex-wrap gap-1.5 pt-0.5">
                           {servicesList.map((item) => (
                             <span key={item.id} className="text-xs font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2.5 py-0.5 rounded-lg border border-slate-200 dark:border-slate-700">
-                              ✓ {item.service?.name || 'Service'} ({formatCurrency(item.price_at_booking)})
+                              ✓ {item.service?.name || 'Service'} ({formatCurrency(item.price_at_booking || item.service?.price)})
                             </span>
                           ))}
                         </div>
                       </div>
                     ) : (
                       <h3 className="font-extrabold text-slate-900 dark:text-slate-100 text-base sm:text-lg">
-                        {appt.service?.name} ({formatCurrency(subtotalPrice)})
+                        {primaryService?.name || 'Veterinary Service'} ({formatCurrency(subtotalPrice)})
                       </h3>
                     )}
                   </div>

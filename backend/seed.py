@@ -2,15 +2,16 @@ from datetime import datetime, date, timedelta
 import random
 from app.database import SessionLocal, Base, engine
 from app.models import (
-    User, UserRole, Customer, Staff, Pet, Service,
+    User, UserRole, Business, BusinessStatus, Customer, Staff, Pet, Service,
     Appointment, AppointmentStatus, AppointmentService, MedicalRecord, Vaccination,
     VaccinationStatus, Availability, Payment, PaymentStatus, PaymentMethod,
     Invoice, Notification, Review, AuditLog, SystemSetting
 )
 from app.auth.security import get_password_hash
 
+
 def seed_database(drop_existing: bool = True):
-    print("[INFO] Initializing Database Seeding...")
+    print("[INFO] Initializing Multi-Business Marketplace Database Seeding...")
     if drop_existing:
         Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
@@ -20,10 +21,10 @@ def seed_database(drop_existing: bool = True):
     try:
         # 1. System Settings
         settings_data = [
-            ("clinic_name", "Smart Pet Care & Veterinary Center"),
-            ("clinic_email", "contact@smartpetcare.com"),
-            ("clinic_phone", "+91 98765 43210"),
-            ("clinic_address", "124 Healthcare Boulevard, Suite 400, Tech City, MH"),
+            ("platform_name", "Smart Pet Care Marketplace"),
+            ("support_email", "contact@petcaremarketplace.com"),
+            ("support_phone", "+91 98765 43210"),
+            ("platform_address", "Tech Innovation Hub, Suite 500, Mumbai, MH"),
             ("tax_rate_percent", "5.0"),
             ("cancellation_policy_hours", "2")
         ]
@@ -31,14 +32,14 @@ def seed_database(drop_existing: bool = True):
             db.add(SystemSetting(key=key, value=val))
         db.commit()
 
-        # 2. Users & Profiles
+        # Shared password hash for demo accounts
         password_hash = get_password_hash("password123")
 
-        # Admin
+        # 2. Platform Admin
         admin_user = User(
             email="admin@petcare.com",
             password_hash=password_hash,
-            full_name="Dr. Arthur Pendelton (Admin)",
+            full_name="Dr. Arthur Pendelton (Platform Admin)",
             phone="+91 98765 00000",
             role=UserRole.ADMIN,
             is_active=True
@@ -46,34 +47,223 @@ def seed_database(drop_existing: bool = True):
         db.add(admin_user)
         db.commit()
 
-        # Staff (3 Veterinarians & Groomers)
-        staff_data = [
-            ("dr.smith@petcare.com", "Dr. Robert Smith, DVM", "+91 98765 00001", "Senior Veterinarian & Surgeon", "Specializes in canine internal medicine and orthopedic surgeries."),
-            ("dr.emily@petcare.com", "Dr. Emily Watson", "+91 98765 00002", "Feline & Exotic Pet Specialist", "Focuses on feline wellness, nutrition, and small mammal care."),
-            ("groomer.alex@petcare.com", "Alex Rivera", "+91 98765 00003", "Master Pet Stylist & Groomer", "Certified professional groomer with 8+ years of styling experience.")
+        # 3. Business Owners & Businesses
+        businesses_seed_data = [
+            {
+                "owner_email": "owner.happypaws@petcare.com",
+                "owner_name": "Rajesh Sharma (Owner)",
+                "business_name": "Happy Paws Pet Care Center",
+                "slug": "happy-paws-pet-care-center",
+                "business_type": "Pet Care Center",
+                "city": "Mumbai",
+                "state": "Maharashtra",
+                "pincode": "400001",
+                "address": "12 Bandra Reclamation, Hill Road, Mumbai",
+                "phone": "+91 98200 11111",
+                "email": "contact@happypaws.in",
+                "lat": 18.9388,
+                "lng": 72.8353,
+                "opening_time": "08:30",
+                "closing_time": "20:00",
+                "working_days": "Mon,Tue,Wed,Thu,Fri,Sat,Sun",
+                "description": "Mumbai's premier full-service pet wellness, styling salon, and clinical consultation hub equipped with modern diagnostic tools and gentle care specialists.",
+                "logo_url": "https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=300&auto=format&fit=crop&q=80",
+                "cover_image_url": "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=1000&auto=format&fit=crop&q=80",
+                "services": [
+                    ("General Health Checkup", "Veterinary", "Full physical checkup, weight & vitals tracking, and nutritional advice.", 30, 1500.0),
+                    ("Full Grooming Package", "Grooming", "Styling haircut, bath, blow dry, nail clip, ear cleaning, and coat conditioning.", 60, 1800.0),
+                    ("Dental Cleaning & Scaling", "Dental", "Ultrasonic scaling, tartar removal, and oral antiseptic rinse.", 45, 2200.0),
+                    ("Bath & De-Shedding Dry", "Grooming", "Deep cleansing shampoo, undercoat removal, and blow dry.", 45, 1200.0),
+                    ("Nail Trimming & Paw Care", "Grooming", "Claw trimming, filing, and paw pad balm massage.", 20, 400.0)
+                ],
+                "staff_data": [
+                    ("dr.smith@petcare.com", "Dr. Robert Smith, DVM", "+91 98765 00001", "Senior Veterinarian & Surgeon", "Specializes in canine internal medicine and orthopedic care.")
+                ]
+            },
+            {
+                "owner_email": "owner.petcareplus@petcare.com",
+                "owner_name": "Priya Verma (Owner)",
+                "business_name": "PetCare Plus Clinic & Surgery",
+                "slug": "petcare-plus-clinic-surgery",
+                "business_type": "Veterinary Clinic",
+                "city": "Mumbai",
+                "state": "Maharashtra",
+                "pincode": "400050",
+                "address": "45 Linking Road, Khar West, Mumbai",
+                "phone": "+91 98200 22222",
+                "email": "info@petcareplus.com",
+                "lat": 19.0596,
+                "lng": 72.8295,
+                "opening_time": "09:00",
+                "closing_time": "19:00",
+                "working_days": "Mon,Tue,Wed,Thu,Fri,Sat",
+                "description": "Advanced veterinary medical clinic offering emergency surgery, preventative vaccinations, specialized feline medicine, and oral healthcare.",
+                "logo_url": "https://images.unsplash.com/photo-1576201836106-db1758fd1c97?w=300&auto=format&fit=crop&q=80",
+                "cover_image_url": "https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?w=1000&auto=format&fit=crop&q=80",
+                "services": [
+                    ("General Health Checkup", "Veterinary", "Comprehensive checkup and vitals assessment.", 30, 1800.0),
+                    ("Veterinary Consultation", "Veterinary", "Clinical examination for illness, injury, or prescription management.", 45, 2500.0),
+                    ("Rabies Vaccination", "Vaccination", "Anti-rabies immunization with government certified record.", 15, 800.0),
+                    ("DHPP Core Vaccine", "Vaccination", "5-in-1 combination vaccine for dogs (Distemper, Parvo, Hepatitis, Parainfluenza).", 15, 1400.0),
+                    ("Dental Cleaning & Scaling", "Dental", "Veterinary dental cleaning and scaling under mild sedation.", 60, 2500.0)
+                ],
+                "staff_data": [
+                    ("dr.emily@petcare.com", "Dr. Emily Watson", "+91 98765 00002", "Feline & Exotic Pet Specialist", "Focuses on feline wellness, diagnostics, and exotic pet care.")
+                ]
+            },
+            {
+                "owner_email": "owner.pawsome@petcare.com",
+                "owner_name": "Vikram Malhotra (Owner)",
+                "business_name": "Pawsome Grooming & Spa",
+                "slug": "pawsome-grooming-spa",
+                "business_type": "Grooming Center",
+                "city": "Pune",
+                "state": "Maharashtra",
+                "pincode": "411001",
+                "address": "88 FC Road, Deccan Gymkhana, Pune",
+                "phone": "+91 98200 33333",
+                "email": "hello@pawsomegrooming.in",
+                "lat": 18.5204,
+                "lng": 73.8567,
+                "opening_time": "10:00",
+                "closing_time": "19:30",
+                "working_days": "Mon,Tue,Wed,Thu,Fri,Sat,Sun",
+                "description": "Boutique pet styling spa offering aromatherapy baths, show-dog cuts, de-shedding treatments, and soothing paw spa therapies.",
+                "logo_url": "https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=300&auto=format&fit=crop&q=80",
+                "cover_image_url": "https://images.unsplash.com/photo-1535294435445-d7249524ef2e?w=1000&auto=format&fit=crop&q=80",
+                "services": [
+                    ("Full Grooming Package", "Grooming", "Luxury haircut, aromatic bath, ear cleaning, and styling.", 60, 1400.0),
+                    ("Bath & De-Shedding Dry", "Grooming", "Hypoallergenic shampoo bath, de-shedding brush, blow dry.", 45, 950.0),
+                    ("Nail Trimming & Paw Care", "Grooming", "Precision claw filing and organic paw butter therapy.", 20, 350.0),
+                    ("Pet Spa & Coat Treatment", "Pet Spa", "Essential oil bath spa and coat repair treatment.", 45, 1600.0)
+                ],
+                "staff_data": [
+                    ("groomer.alex@petcare.com", "Alex Rivera", "+91 98765 00003", "Master Pet Stylist & Groomer", "Certified groomer with 8+ years of experience.")
+                ]
+            },
+            {
+                "owner_email": "owner.vetlife@petcare.com",
+                "owner_name": "Ananya Roy (Owner)",
+                "business_name": "VetLife Medical Center",
+                "slug": "vetlife-medical-center",
+                "business_type": "Veterinary Clinic",
+                "city": "Bengaluru",
+                "state": "Karnataka",
+                "pincode": "560001",
+                "address": "104 MG Road, Indiranagar, Bengaluru",
+                "phone": "+91 98200 44444",
+                "email": "contact@vetlife.in",
+                "lat": 12.9716,
+                "lng": 77.5946,
+                "opening_time": "08:00",
+                "closing_time": "21:00",
+                "working_days": "Mon,Tue,Wed,Thu,Fri,Sat,Sun",
+                "description": "Multi-specialty 24/7 veterinary healthcare hospital specializing in canine cardiology, orthopedics, ultrasound diagnostics, and routine healthcare.",
+                "logo_url": "https://images.unsplash.com/photo-1596272875729-ed2ff7d6d9c5?w=300&auto=format&fit=crop&q=80",
+                "cover_image_url": "https://images.unsplash.com/photo-1576201836106-db1758fd1c97?w=1000&auto=format&fit=crop&q=80",
+                "services": [
+                    ("General Health Checkup", "Veterinary", "Routine health screening, temperature & weight evaluation.", 30, 1600.0),
+                    ("Veterinary Consultation", "Veterinary", "Senior doctor consultation for acute or chronic conditions.", 45, 2200.0),
+                    ("Rabies Vaccination", "Vaccination", "Standard anti-rabies vaccine with digital health passport entry.", 15, 750.0),
+                    ("DHPP Core Vaccine", "Vaccination", "Comprehensive 5-in-1 immunizing vaccination.", 15, 1300.0),
+                    ("Dental Cleaning & Scaling", "Dental", "Ultrasonic dental cleaning and polishing.", 60, 2100.0)
+                ],
+                "staff_data": [
+                    ("dr.ananya@petcare.com", "Dr. Ananya Roy, DVM", "+91 98765 00004", "Chief Veterinary Officer", "12+ years experience in veterinary surgery and internal medicine.")
+                ]
+            }
         ]
-        staff_list = []
-        for email, name, phone, spec, bio in staff_data:
-            user = User(email=email, password_hash=password_hash, full_name=name, phone=phone, role=UserRole.STAFF, is_active=True)
-            db.add(user)
-            db.commit()
-            
-            st = Staff(
-                user_id=user.id,
-                specialization=spec,
-                bio=bio,
-                working_days="Mon,Tue,Wed,Thu,Fri,Sat",
-                start_time="09:00",
-                end_time="18:00",
-                break_start="13:00",
-                break_end="14:00",
-                is_available=True
-            )
-            db.add(st)
-            db.commit()
-            staff_list.append(st)
 
-        # Customers (10 Owners)
+        created_businesses = []
+        created_services_map = {} # b_id -> list of services
+        all_staff_list = []
+
+        for bdata in businesses_seed_data:
+            # Create Owner User
+            owner_user = User(
+                email=bdata["owner_email"],
+                password_hash=password_hash,
+                full_name=bdata["owner_name"],
+                phone=bdata["phone"],
+                role=UserRole.BUSINESS_OWNER,
+                is_active=True
+            )
+            db.add(owner_user)
+            db.commit()
+
+            # Create Approved Business
+            biz = Business(
+                owner_id=owner_user.id,
+                name=bdata["business_name"],
+                slug=bdata["slug"],
+                business_type=bdata["business_type"],
+                logo_url=bdata["logo_url"],
+                cover_image_url=bdata["cover_image_url"],
+                description=bdata["description"],
+                phone=bdata["phone"],
+                email=bdata["email"],
+                address=bdata["address"],
+                city=bdata["city"],
+                state=bdata["state"],
+                pincode=bdata["pincode"],
+                latitude=bdata["lat"],
+                longitude=bdata["lng"],
+                opening_time=bdata["opening_time"],
+                closing_time=bdata["closing_time"],
+                working_days=bdata["working_days"],
+                status=BusinessStatus.APPROVED
+            )
+            db.add(biz)
+            db.commit()
+            created_businesses.append(biz)
+
+            # Create Services for this Business
+            b_services = []
+            for sname, scat, sdesc, sdur, sprice in bdata["services"]:
+                srv = Service(
+                    business_id=biz.id,
+                    name=sname,
+                    category=scat,
+                    description=sdesc,
+                    duration_minutes=sdur,
+                    price=sprice,
+                    is_active=True
+                )
+                db.add(srv)
+                db.commit()
+                b_services.append(srv)
+            created_services_map[biz.id] = b_services
+
+            # Create Staff for this Business
+            for st_email, st_name, st_phone, st_spec, st_bio in bdata["staff_data"]:
+                st_user = User(
+                    email=st_email,
+                    password_hash=password_hash,
+                    full_name=st_name,
+                    phone=st_phone,
+                    role=UserRole.STAFF,
+                    is_active=True
+                )
+                db.add(st_user)
+                db.commit()
+
+                st = Staff(
+                    user_id=st_user.id,
+                    business_id=biz.id,
+                    specialization=st_spec,
+                    bio=st_bio,
+                    working_days="Mon,Tue,Wed,Thu,Fri,Sat",
+                    start_time="09:00",
+                    end_time="18:00",
+                    break_start="13:00",
+                    break_end="14:00",
+                    is_available=True
+                )
+                db.add(st)
+                db.commit()
+                all_staff_list.append(st)
+
+        # 4. Customers (10 Owners)
         customer_raw = [
             ("customer@petcare.com", "Main Demo Owner", "+91 98765 00010", "742 Evergreen Terrace, Mumbai", "Emergency: +91 98765 99999"),
             ("john.doe@gmail.com", "John Doe", "+91 98765 00011", "123 Elm Street, Bengaluru", "Wife: +91 98765 88888"),
@@ -97,25 +287,7 @@ def seed_database(drop_existing: bool = True):
             db.commit()
             customers_list.append(cust)
 
-        # 3. Services (Prices in INR ₹)
-        services_raw = [
-            ("General Health Checkup", "Veterinary", "Comprehensive physical examination, vitals check, and general health report.", 30, 4250.0),
-            ("Veterinary Consultation", "Veterinary", "In-depth clinical assessment for sick or injured pets with treatment plan.", 45, 6800.0),
-            ("Rabies Vaccination", "Vaccination", "Standard anti-rabies immunizing vaccine for dogs and cats.", 15, 3400.0),
-            ("DHPP Core Vaccine", "Vaccination", "5-in-1 combination vaccine covering Distemper, Hepatitis, Parainfluenza, Parvovirus.", 15, 5100.0),
-            ("Dental Cleaning & Scaling", "Dental", "Ultrasonic dental scaling, polishing, and oral hygiene treatment.", 60, 12750.0),
-            ("Full Grooming Package", "Grooming", "Breed-specific haircut, bath, blow dry, nail clipping, and ear cleaning.", 60, 8500.0),
-            ("Bath & De-Shedding Dry", "Grooming", "Hypoallergenic shampoo bath, de-shedding brush out, and coat blow dry.", 45, 5100.0),
-            ("Nail Trimming & Paw Care", "Grooming", "Precision claw trimming, filing, and paw pad soothing balm treatment.", 20, 2550.0)
-        ]
-        service_list = []
-        for name, cat, desc, dur, price in services_raw:
-            srv = Service(name=name, category=cat, description=desc, duration_minutes=dur, price=price, is_active=True)
-            db.add(srv)
-            db.commit()
-            service_list.append(srv)
-
-        # 4. Pets (16 Pets)
+        # 5. Pets (16 Pets)
         pets_raw = [
             (customers_list[0].id, "Max", "Dog", "Golden Retriever", "Male", date(2021, 4, 12), 31.5, "Golden", "9851410001", "Chicken protein allergy", "Mild seasonal dermatitis"),
             (customers_list[0].id, "Bella", "Cat", "Siamese", "Female", date(2022, 8, 20), 4.2, "Cream & Chocolate", "9851410002", "None", "Sensitive stomach"),
@@ -153,28 +325,30 @@ def seed_database(drop_existing: bool = True):
             db.commit()
             pet_list.append(pet)
 
-        # 5. Appointments, Payments, Invoices, Reviews (Past & Future)
+        # 6. Appointments, Payments, Invoices, Reviews linked to Businesses
         today = date.today()
         
-        # Historical Appointments
-        for i in range(12):
+        for i in range(16):
+            biz = created_businesses[i % len(created_businesses)]
+            b_services = created_services_map[biz.id]
+            b_staff = db.query(Staff).filter(Staff.business_id == biz.id).all()
+            staff = b_staff[0] if b_staff else all_staff_list[0]
+            pet = pet_list[i % len(pet_list)]
+
             past_date = today - timedelta(days=random.randint(2, 40))
-            pet = random.choice(pet_list)
-            staff = random.choice(staff_list)
-            # Pick 1 or 2 services for multi-service demonstration
-            selected_srvs = random.sample(service_list, k=2 if i % 3 == 0 else 1)
+            selected_srvs = random.sample(b_services, k=2 if i % 3 == 0 and len(b_services) >= 2 else 1)
             primary_srv = selected_srvs[0]
             tot_duration = sum(s.duration_minutes for s in selected_srvs)
             tot_subtotal = sum(s.price for s in selected_srvs)
 
             sh = 10 + (i % 6)
             start_time_str = f"{sh:02d}:00"
-            end_min = tot_duration
-            eh = sh + (end_min // 60)
-            em = end_min % 60
+            eh = sh + (tot_duration // 60)
+            em = tot_duration % 60
             end_time_str = f"{eh:02d}:{em:02d}"
 
             appt = Appointment(
+                business_id=biz.id,
                 customer_id=pet.customer_id,
                 pet_id=pet.id,
                 staff_id=staff.id,
@@ -183,12 +357,11 @@ def seed_database(drop_existing: bool = True):
                 start_time=start_time_str,
                 end_time=end_time_str,
                 status=AppointmentStatus.COMPLETED,
-                notes="Routine follow-up completed successfully."
+                notes="Service completed with full satisfaction."
             )
             db.add(appt)
             db.commit()
 
-            # Add AppointmentService records
             for srv in selected_srvs:
                 appt_srv = AppointmentService(
                     appointment_id=appt.id,
@@ -199,10 +372,10 @@ def seed_database(drop_existing: bool = True):
                 db.add(appt_srv)
             db.commit()
 
-            # Payment
             tax = round(tot_subtotal * 0.05, 2)
             tot = round(tot_subtotal + tax, 2)
             payment = Payment(
+                business_id=biz.id,
                 appointment_id=appt.id,
                 amount=tot_subtotal,
                 tax=tax,
@@ -216,8 +389,8 @@ def seed_database(drop_existing: bool = True):
             db.add(payment)
             db.commit()
 
-            # Invoice
             inv = Invoice(
+                business_id=biz.id,
                 appointment_id=appt.id,
                 payment_id=payment.id,
                 invoice_number=f"INV-2026-{1000+i}",
@@ -228,54 +401,40 @@ def seed_database(drop_existing: bool = True):
             db.add(inv)
             db.commit()
 
-            # Medical Record for consultation/health check
-            if any(s.category in ["Veterinary", "Dental"] for s in selected_srvs):
-                med = MedicalRecord(
-                    pet_id=pet.id,
-                    staff_id=staff.id,
-                    appointment_id=appt.id,
-                    date=past_date,
-                    symptoms="Mild lethargy and appetite decrease reported by owner.",
-                    diagnosis="Mild dental tartar buildup and minor gum irritation.",
-                    treatment="Administered oral cleansing spray and prescribed antibiotics.",
-                    prescription="Amoxicillin 100mg - 1 tablet twice daily for 5 days.",
-                    weight=pet.weight,
-                    temperature=38.6,
-                    follow_up_date=past_date + timedelta(days=14),
-                    notes="Owner advised to maintain regular brushing."
-                )
-                db.add(med)
-                db.commit()
-
-            # Review
-            if i % 2 == 0:
-                rev = Review(
-                    appointment_id=appt.id,
-                    customer_id=pet.customer_id,
-                    service_id=primary_srv.id,
-                    rating=random.choice([4, 5]),
-                    comment=f"Excellent service by {staff.user.full_name}! {pet.name} was treated with care."
-                )
-                db.add(rev)
-                db.commit()
+            # Reviews
+            rev = Review(
+                business_id=biz.id,
+                appointment_id=appt.id,
+                customer_id=pet.customer_id,
+                service_id=primary_srv.id,
+                rating=random.choice([4, 5]),
+                comment=f"Awesome experience at {biz.name}! {pet.name} was treated with care and affection."
+            )
+            db.add(rev)
+            db.commit()
 
         # Upcoming Appointments
-        for i in range(5):
+        for i in range(6):
+            biz = created_businesses[i % len(created_businesses)]
+            b_services = created_services_map[biz.id]
+            b_staff = db.query(Staff).filter(Staff.business_id == biz.id).all()
+            staff = b_staff[0] if b_staff else all_staff_list[0]
+            pet = pet_list[i % len(pet_list)]
             future_date = today + timedelta(days=random.randint(1, 10))
-            pet = pet_list[i]
-            staff = staff_list[i % len(staff_list)]
-            selected_srvs = [service_list[i % len(service_list)], service_list[(i + 2) % len(service_list)]] if i % 2 == 1 else [service_list[i % len(service_list)]]
-            primary_srv = selected_srvs[0]
-            tot_duration = sum(s.duration_minutes for s in selected_srvs)
-            tot_subtotal = sum(s.price for s in selected_srvs)
 
-            sh = 10 + i
+            selected_srvs = [b_services[0]]
+            primary_srv = selected_srvs[0]
+            tot_duration = primary_srv.duration_minutes
+            tot_subtotal = primary_srv.price
+
+            sh = 11 + i
             start_time_str = f"{sh:02d}:00"
             eh = sh + (tot_duration // 60)
             em = tot_duration % 60
             end_time_str = f"{eh:02d}:{em:02d}"
 
             appt = Appointment(
+                business_id=biz.id,
                 customer_id=pet.customer_id,
                 pet_id=pet.id,
                 staff_id=staff.id,
@@ -284,12 +443,11 @@ def seed_database(drop_existing: bool = True):
                 start_time=start_time_str,
                 end_time=end_time_str,
                 status=AppointmentStatus.CONFIRMED if i % 2 == 0 else AppointmentStatus.PENDING,
-                notes="Standard appointment booking."
+                notes="Upcoming appointment booking."
             )
             db.add(appt)
             db.commit()
 
-            # Add AppointmentService records
             for srv in selected_srvs:
                 appt_srv = AppointmentService(
                     appointment_id=appt.id,
@@ -303,6 +461,7 @@ def seed_database(drop_existing: bool = True):
             tax = round(tot_subtotal * 0.05, 2)
             tot = round(tot_subtotal + tax, 2)
             payment = Payment(
+                business_id=biz.id,
                 appointment_id=appt.id,
                 amount=tot_subtotal,
                 tax=tax,
@@ -316,67 +475,44 @@ def seed_database(drop_existing: bool = True):
             db.add(payment)
             db.commit()
 
-        # 6. Vaccinations (Completed, Upcoming, Overdue)
-        vac_records = [
-            (pet_list[0].id, staff_list[0].id, "Rabies Immunization", today - timedelta(days=180), today + timedelta(days=185), "BAT-2025-01", VaccinationStatus.COMPLETED),
-            (pet_list[0].id, staff_list[0].id, "DHPP 5-in-1 Vaccine", today - timedelta(days=370), today - timedelta(days=5), "BAT-2024-99", VaccinationStatus.OVERDUE),
-            (pet_list[1].id, staff_list[1].id, "Feline Leukemia (FeLV)", today - timedelta(days=90), today + timedelta(days=275), "BAT-FELV-44", VaccinationStatus.COMPLETED),
-            (pet_list[2].id, staff_list[0].id, "Canine Parvovirus Booster", today - timedelta(days=350), today + timedelta(days=15), "BAT-PARVO-88", VaccinationStatus.UPCOMING),
-            (pet_list[3].id, staff_list[1].id, "FVRCP Core Vaccine", today - timedelta(days=400), today - timedelta(days=35), "BAT-FVR-12", VaccinationStatus.OVERDUE)
-        ]
-        for pid, stid, vname, dadm, ndue, batch, vstat in vac_records:
-            vac = Vaccination(
-                pet_id=pid,
-                staff_id=stid,
-                vaccine_name=vname,
-                date_administered=dadm,
-                next_due_date=ndue,
-                batch_number=batch,
-                status=vstat,
-                notes="Administered subcutaneously."
-            )
-            db.add(vac)
+        # 7. Vaccinations & Notifications
+        vac = Vaccination(
+            pet_id=pet_list[0].id,
+            staff_id=all_staff_list[0].id,
+            vaccine_name="Rabies Immunization",
+            date_administered=today - timedelta(days=180),
+            next_due_date=today + timedelta(days=185),
+            batch_number="BAT-2025-01",
+            status=VaccinationStatus.COMPLETED,
+            notes="Administered subcutaneously."
+        )
+        db.add(vac)
         db.commit()
-
-        # 7. Notifications & Audit Logs
-        notif1 = Notification(
-            user_id=customers_list[0].user_id,
-            title="Vaccination Due Alert",
-            message=f"DHPP 5-in-1 Vaccine for {pet_list[0].name} is overdue. Please schedule a visit soon.",
-            type="VACCINATION",
-            link="/customer/vaccinations"
-        )
-        notif2 = Notification(
-            user_id=customers_list[0].user_id,
-            title="Appointment Reminder",
-            message=f"You have an upcoming appointment for {pet_list[0].name} scheduled for tomorrow.",
-            type="APPOINTMENT",
-            link="/customer/appointments"
-        )
-        db.add(notif1)
-        db.add(notif2)
 
         audit = AuditLog(
             user_id=admin_user.id,
-            action="SYSTEM_INIT",
+            action="MARKETPLACE_INIT",
             entity_type="SYSTEM",
             entity_id=1,
-            details="System database successfully seeded with initial commercial B.Tech project demo dataset."
+            details="System successfully seeded with multi-business pet care marketplace demo dataset."
         )
         db.add(audit)
         db.commit()
 
-        print("[SUCCESS] Database seeding complete!")
+        print("[SUCCESS] Multi-Business Pet Care Marketplace Seeding Complete!")
         print("\n--- DEMO LOGIN CREDENTIALS ---")
-        print("ADMIN:    admin@petcare.com     / password123")
-        print("VET/STAFF: dr.smith@petcare.com  / password123")
-        print("CUSTOMER: customer@petcare.com  / password123")
+        print("ADMIN:          admin@petcare.com           / password123")
+        print("BUSINESS OWNER: owner.happypaws@petcare.com / password123")
+        print("BUSINESS OWNER: owner.petcareplus@petcare.com / password123")
+        print("VET/STAFF:      dr.smith@petcare.com        / password123")
+        print("CUSTOMER:       customer@petcare.com        / password123")
 
     except Exception as e:
         print(f"[ERROR] Seeding Error: {e}")
         db.rollback()
     finally:
         db.close()
+
 
 if __name__ == "__main__":
     seed_database()

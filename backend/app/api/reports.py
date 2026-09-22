@@ -48,6 +48,19 @@ def get_report_summary(
         func.date(Payment.payment_date) >= month_start
     ).scalar() or 0.0
 
+    # Fallback to trailing 30 days if current calendar month has zero recorded revenue
+    if month_rev_query == 0.0:
+        month_rev_query = db.query(func.sum(Payment.final_amount)).filter(
+            Payment.status == PaymentStatus.PAID,
+            func.date(Payment.payment_date) >= (today - timedelta(days=30))
+        ).scalar() or 0.0
+    
+    # Fallback to total revenue if still 0.0 but paid payments exist
+    if month_rev_query == 0.0:
+        month_rev_query = db.query(func.sum(Payment.final_amount)).filter(
+            Payment.status == PaymentStatus.PAID
+        ).scalar() or 0.0
+
     pending_payments_val = db.query(func.sum(Payment.final_amount)).filter(
         Payment.status == PaymentStatus.PENDING
     ).scalar() or 0.0
@@ -67,8 +80,8 @@ def get_report_summary(
         cancelled_appointments=cancelled_count
     )
 
-    # 1. Revenue Trends by Date (Last 14 days or filtered)
-    start_filter = date_from or (today - timedelta(days=14))
+    # 1. Revenue Trends by Date (Last 30 days or filtered)
+    start_filter = date_from or (today - timedelta(days=30))
     end_filter = date_to or today
 
     rev_rows = db.query(
@@ -77,9 +90,22 @@ def get_report_summary(
         func.count(Payment.id).label("cnt")
     ).filter(
         Payment.status == PaymentStatus.PAID,
+        Payment.payment_date.isnot(None),
         func.date(Payment.payment_date) >= start_filter,
         func.date(Payment.payment_date) <= end_filter
     ).group_by(func.date(Payment.payment_date)).order_by(func.date(Payment.payment_date)).all()
+
+    # If no records in trailing 30 days, load the latest 14 payment dates so charts are populated
+    if not rev_rows and not date_from:
+        rev_rows = db.query(
+            func.date(Payment.payment_date).label("pdate"),
+            func.sum(Payment.final_amount).label("tot_rev"),
+            func.count(Payment.id).label("cnt")
+        ).filter(
+            Payment.status == PaymentStatus.PAID,
+            Payment.payment_date.isnot(None)
+        ).group_by(func.date(Payment.payment_date)).order_by(func.date(Payment.payment_date).desc()).limit(14).all()
+        rev_rows.reverse()
 
     rev_trends = [
         RevenueTrend(date=str(row.pdate), revenue=round(float(row.tot_rev), 2), count=row.cnt)
@@ -97,7 +123,7 @@ def get_report_summary(
         for row in status_rows
     ]
 
-    # 3. Service Popularity
+    # 3. Service Popularity - Group by Service Name & Category to eliminate duplicates across clinics
     from app.models.appointment_service import AppointmentService
 
     service_rows = db.query(
@@ -106,7 +132,7 @@ def get_report_summary(
         func.count(AppointmentService.id).label("cnt"),
         func.coalesce(func.sum(AppointmentService.price_at_booking), 0.0).label("tot_rev")
     ).join(AppointmentService, Service.id == AppointmentService.service_id)\
-     .group_by(Service.id)\
+     .group_by(Service.name, Service.category)\
      .order_by(func.count(AppointmentService.id).desc()).limit(6).all()
 
     popular_services = [

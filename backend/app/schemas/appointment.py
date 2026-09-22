@@ -21,6 +21,7 @@ class AppointmentServiceOut(BaseModel):
 
 
 class AppointmentBase(BaseModel):
+    business_id: Optional[int] = None
     pet_id: int
     staff_id: int
     service_id: Optional[int] = None
@@ -47,6 +48,7 @@ class AppointmentReschedule(BaseModel):
 
 class AppointmentOut(BaseModel):
     id: int
+    business_id: Optional[int] = None
     customer_id: int
     pet_id: int
     staff_id: int

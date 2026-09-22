@@ -23,6 +23,12 @@ def list_invoices(
         if not current_user.customer_profile:
             return []
         query = query.filter(Appointment.customer_id == current_user.customer_profile.id)
+    elif current_user.role == UserRole.BUSINESS_OWNER:
+        from app.models.business import Business
+        biz = db.query(Business).filter(Business.owner_id == current_user.id).first()
+        if not biz:
+            return []
+        query = query.filter(Invoice.business_id == biz.id)
 
     return query.order_by(Invoice.created_at.desc()).all()
 

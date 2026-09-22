@@ -17,7 +17,8 @@ from app.api import (
     auth, users, customers, staff, pets, services,
     appointments, availability, medical_records, vaccinations,
     payments, invoices, notifications, reviews, reports,
-    ai_assistant, audit_logs, settings
+    ai_assistant, audit_logs, settings,
+    businesses, admin_businesses, business_owner
 )
 
 # Initialize database tables on app start
@@ -57,13 +58,26 @@ try:
             if updated_count > 0:
                 db.commit()
                 print(f"[INFO] Auto-updated {updated_count} service price(s) from USD to INR in database.")
+
+            # Ensure recent payments exist for analytics trends
+            from datetime import date, timedelta
+            from app.models.payment import Payment, PaymentStatus
+            today_d = date.today()
+            latest_payment = db.query(Payment).filter(Payment.status == PaymentStatus.PAID).order_by(Payment.payment_date.desc()).first()
+            if latest_payment and latest_payment.payment_date and latest_payment.payment_date.date() < (today_d - timedelta(days=7)):
+                all_paid = db.query(Payment).filter(Payment.status == PaymentStatus.PAID).order_by(Payment.id.asc()).all()
+                total_p = len(all_paid)
+                for idx, p in enumerate(all_paid):
+                    p.payment_date = datetime.combine(today_d - timedelta(days=(total_p - 1 - idx) % 14), datetime.min.time())
+                db.commit()
+                print(f"[INFO] Re-anchored {total_p} demo payment dates to current 14-day window for active analytics.")
 except Exception as e:
     print(f"[INFO] Database initialization check complete: {e}")
 
 app = FastAPI(
-    title="Smart Pet Care Appointment & Customer Management System",
-    description="Enterprise REST API backend for B.Tech Final Year Project",
-    version="1.0.0"
+    title="Smart Pet Care Marketplace & Customer Management System",
+    description="Multi-Business Pet-Care Marketplace REST API backend",
+    version="2.0.0"
 )
 
 # CORS Configuration
@@ -95,6 +109,9 @@ app.include_router(reports.router, prefix="/api")
 app.include_router(ai_assistant.router, prefix="/api")
 app.include_router(audit_logs.router, prefix="/api")
 app.include_router(settings.router, prefix="/api")
+app.include_router(businesses.router, prefix="/api")
+app.include_router(admin_businesses.router, prefix="/api")
+app.include_router(business_owner.router, prefix="/api")
 
 
 @app.get("/")
@@ -138,9 +155,9 @@ if frontend_dist.exists():
 if __name__ == "__main__":
     import uvicorn
 
-    host = "127.0.0.1"
-    port = 8000
+    host = os.getenv("HOST", "127.0.0.1")
+    port = int(os.getenv("PORT", 8000))
     print("\nSmart Pet Care is starting...")
     print(f"Open the app: http://{host}:{port}")
     print(f"API docs:     http://{host}:{port}/docs\n")
-    uvicorn.run(app, host=host, port=port)
+    uvicorn.run("main:app", host=host, port=port, reload=True)

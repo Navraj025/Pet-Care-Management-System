@@ -9,6 +9,7 @@ class UserRole(str, enum.Enum):
     ADMIN = "ADMIN"
     STAFF = "STAFF"
     CUSTOMER = "CUSTOMER"
+    BUSINESS_OWNER = "BUSINESS_OWNER"
 
 
 class User(Base):
@@ -28,5 +29,6 @@ class User(Base):
     # Relationships
     customer_profile = relationship("Customer", back_populates="user", uselist=False, cascade="all, delete-orphan")
     staff_profile = relationship("Staff", back_populates="user", uselist=False, cascade="all, delete-orphan")
+    owned_businesses = relationship("Business", back_populates="owner", cascade="all, delete-orphan")
     notifications = relationship("Notification", back_populates="user", cascade="all, delete-orphan")
     audit_logs = relationship("AuditLog", back_populates="user")

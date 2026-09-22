@@ -8,6 +8,7 @@ class Invoice(Base):
     __tablename__ = "invoices"
 
     id = Column(Integer, primary_key=True, index=True)
+    business_id = Column(Integer, ForeignKey("businesses.id", ondelete="CASCADE"), nullable=True)
     appointment_id = Column(Integer, ForeignKey("appointments.id", ondelete="CASCADE"), unique=True, nullable=False)
     payment_id = Column(Integer, ForeignKey("payments.id", ondelete="SET NULL"), unique=True, nullable=True)
     
@@ -19,5 +20,6 @@ class Invoice(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     # Relationships
+    business = relationship("Business", back_populates="invoices")
     appointment = relationship("Appointment", back_populates="invoice")
     payment = relationship("Payment", back_populates="invoice")

@@ -26,6 +26,22 @@ class RegisterCustomerRequest(BaseModel):
     emergency_contact: Optional[str] = None
 
 
+class RegisterBusinessOwnerRequest(BaseModel):
+    email: EmailStr
+    password: str
+    full_name: str
+    phone: Optional[str] = None
+    business_name: str
+    business_type: str = "Pet Care Center"
+    city: str
+    pincode: Optional[str] = None
+    address: Optional[str] = None
+    description: Optional[str] = None
+    opening_time: str = "09:00"
+    closing_time: str = "18:00"
+    working_days: str = "Mon,Tue,Wed,Thu,Fri,Sat"
+
+
 class ForgotPasswordRequest(BaseModel):
     email: EmailStr
 

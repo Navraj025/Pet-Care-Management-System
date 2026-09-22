@@ -28,6 +28,12 @@ def list_payments(
         if not current_user.customer_profile:
             return []
         query = query.join(Appointment).filter(Appointment.customer_id == current_user.customer_profile.id)
+    elif current_user.role == UserRole.BUSINESS_OWNER:
+        from app.models.business import Business
+        biz = db.query(Business).filter(Business.owner_id == current_user.id).first()
+        if not biz:
+            return []
+        query = query.filter(Payment.business_id == biz.id)
 
     if status:
         query = query.filter(Payment.status == status)
@@ -67,6 +73,7 @@ def process_payment(
         due_date = datetime.utcnow().date()
 
         invoice = Invoice(
+            business_id=payment.business_id,
             appointment_id=data.appointment_id,
             payment_id=payment.id,
             invoice_number=invoice_number,

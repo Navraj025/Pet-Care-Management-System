@@ -24,6 +24,7 @@ class Payment(Base):
     __tablename__ = "payments"
 
     id = Column(Integer, primary_key=True, index=True)
+    business_id = Column(Integer, ForeignKey("businesses.id", ondelete="CASCADE"), nullable=True)
     appointment_id = Column(Integer, ForeignKey("appointments.id", ondelete="CASCADE"), unique=True, nullable=False)
     
     amount = Column(Float, nullable=False)
@@ -39,5 +40,6 @@ class Payment(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     # Relationships
+    business = relationship("Business", back_populates="payments")
     appointment = relationship("Appointment", back_populates="payment")
     invoice = relationship("Invoice", back_populates="payment", uselist=False)

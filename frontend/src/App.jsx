@@ -15,7 +15,11 @@ import ServicesPage from './pages/ServicesPage';
 import ContactPage from './pages/ContactPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import RegisterBusinessPage from './pages/RegisterBusinessPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import PublicMarketplacePage from './pages/PublicMarketplacePage';
+import PublicBusinessProfilePage from './pages/PublicBusinessProfilePage';
+import ServiceComparisonPage from './pages/ServiceComparisonPage';
 
 // Common User Profile Page
 import UserProfilePage from './pages/UserProfilePage';
@@ -33,6 +37,16 @@ import InvoiceViewPage from './pages/customer/InvoiceViewPage';
 import NotificationsPage from './pages/customer/NotificationsPage';
 import ReviewsPage from './pages/customer/ReviewsPage';
 
+// Business Owner Pages
+import BusinessOwnerDashboard from './pages/business/BusinessOwnerDashboard';
+import BusinessProfilePage from './pages/business/BusinessProfilePage';
+import BusinessServicesPage from './pages/business/BusinessServicesPage';
+import BusinessStaffPage from './pages/business/BusinessStaffPage';
+import BusinessAppointmentsPage from './pages/business/BusinessAppointmentsPage';
+import BusinessReviewsPage from './pages/business/BusinessReviewsPage';
+import BusinessPaymentsPage from './pages/business/BusinessPaymentsPage';
+import BusinessReportsPage from './pages/business/BusinessReportsPage';
+
 // Staff Pages
 import StaffDashboard from './pages/staff/StaffDashboard';
 import StaffAppointmentsPage from './pages/staff/StaffAppointmentsPage';
@@ -43,6 +57,7 @@ import StaffAvailabilityPage from './pages/staff/StaffAvailabilityPage';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminBusinessesPage from './pages/admin/AdminBusinessesPage';
 import AdminCustomersPage from './pages/admin/AdminCustomersPage';
 import AdminStaffPage from './pages/admin/AdminStaffPage';
 import AdminServicesPage from './pages/admin/AdminServicesPage';
@@ -63,9 +78,13 @@ function App() {
                 <Route index element={<LandingPage />} />
                 <Route path="about" element={<AboutPage />} />
                 <Route path="services" element={<ServicesPage />} />
+                <Route path="businesses" element={<PublicMarketplacePage />} />
+                <Route path="businesses/:slug" element={<PublicBusinessProfilePage />} />
+                <Route path="compare-services" element={<ServiceComparisonPage />} />
                 <Route path="contact" element={<ContactPage />} />
                 <Route path="login" element={<LoginPage />} />
                 <Route path="register" element={<RegisterPage />} />
+                <Route path="register-business" element={<RegisterBusinessPage />} />
                 <Route path="forgot-password" element={<ForgotPasswordPage />} />
               </Route>
 
@@ -88,6 +107,25 @@ function App() {
                 <Route path="profile" element={<UserProfilePage />} />
               </Route>
 
+              {/* Business Owner Routes */}
+              <Route
+                path="/business-owner"
+                element={<DashboardLayout allowedRoles={['BUSINESS_OWNER']} title="Business Owner Portal" />}
+              >
+                <Route path="dashboard" element={<BusinessOwnerDashboard />} />
+                <Route path="profile" element={<BusinessProfilePage />} />
+                <Route path="services" element={<BusinessServicesPage />} />
+                <Route path="staff" element={<BusinessStaffPage />} />
+                <Route path="availability" element={<StaffAvailabilityPage />} />
+                <Route path="appointments" element={<BusinessAppointmentsPage />} />
+                <Route path="customers" element={<AdminCustomersPage />} />
+                <Route path="pets" element={<StaffPetsPage />} />
+                <Route path="reviews" element={<BusinessReviewsPage />} />
+                <Route path="payments" element={<BusinessPaymentsPage />} />
+                <Route path="reports" element={<BusinessReportsPage />} />
+                <Route path="settings" element={<AdminSettingsPage />} />
+              </Route>
+
               {/* Staff Routes */}
               <Route
                 path="/staff"
@@ -105,9 +143,10 @@ function App() {
               {/* Admin Routes */}
               <Route
                 path="/admin"
-                element={<DashboardLayout allowedRoles={['ADMIN']} title="Admin Operations Portal" />}
+                element={<DashboardLayout allowedRoles={['ADMIN']} title="Platform Admin Operations Portal" />}
               >
                 <Route path="dashboard" element={<AdminDashboard />} />
+                <Route path="businesses" element={<AdminBusinessesPage />} />
                 <Route path="customers" element={<AdminCustomersPage />} />
                 <Route path="staff" element={<AdminStaffPage />} />
                 <Route path="pets" element={<StaffPetsPage />} />

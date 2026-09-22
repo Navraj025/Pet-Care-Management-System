@@ -13,6 +13,7 @@ class ReviewCreate(BaseModel):
 
 class ReviewOut(BaseModel):
     id: int
+    business_id: Optional[int] = None
     appointment_id: int
     customer_id: int
     service_id: int

@@ -9,6 +9,7 @@ class Staff(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), unique=True, nullable=False)
+    business_id = Column(Integer, ForeignKey("businesses.id", ondelete="CASCADE"), nullable=True)
     specialization = Column(String(255), nullable=False)  # e.g., "Veterinary Surgeon", "Pet Groomer"
     bio = Column(Text, nullable=True)
     working_days = Column(String(255), default="Mon,Tue,Wed,Thu,Fri,Sat")  # Comma separated
@@ -21,6 +22,7 @@ class Staff(Base):
 
     # Relationships
     user = relationship("User", back_populates="staff_profile")
+    business = relationship("Business", back_populates="staff")
     appointments = relationship("Appointment", back_populates="staff")
     medical_records = relationship("MedicalRecord", back_populates="staff")
     vaccinations = relationship("Vaccination", back_populates="staff")
